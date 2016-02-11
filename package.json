@@ -1,0 +1,58 @@
+{
+  "name": "@kevinoid/project-template",
+  "version": "0.1.0",
+  "description": "A Node.js/npm project template with codecov, coveralls, ESLint, github_changelog_generator, istanbul, JSDoc, and mocha.",
+  "keywords": [
+    "project-template",
+    "template"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/kevinoid/node-project-template",
+  "bugs": "https://github.com/kevinoid/node-project-template/issues",
+  "author": "Kevin Locke <kevin@kevinlocke.name>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kevinoid/node-project-template.git"
+  },
+  "main": "index.js",
+  "bin": {
+    "index": "bin/index.js"
+  },
+  "files": [
+    "LICENSE.txt",
+    "README.md",
+    "bin",
+    "index.js",
+    "lib"
+  ],
+  "//": "All scripts should run in POSIX sh and Windows cmd.exe",
+  "scripts": {
+    "doc": "jsdoc -c jsdoc.conf.json .",
+    "lint": "npm run lint-js && npm run lint-doc",
+    "lint-doc": "jsdoc -c jsdoc.conf.json -a all --pedantic . && echo JSDoc passed.",
+    "lint-js": "eslint . && echo ESLint passed.",
+    "postversion": "git push --follow-tags origin master && echo Remember to update GitHub Releases from CHANGELOG.md && echo until skywinder/github-changelog-generator#56 is fixed.",
+    "preversion": "git-branch-is master && travis-status -b -c -qwx",
+    "test": "npm run lint && npm run test-unit",
+    "test-cov": "npm run lint && npm run test-unit-cov",
+    "test-unit": "mocha --recursive test",
+    "test-unit-cov": "istanbul cover _mocha --recursive test",
+    "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
+    "version": "github_changelog_generator -t \"$npm_config_github_token\""
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "codecov": "^1.0.1",
+    "coveralls": "^2.11.6",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^4.0.0",
+    "git-branch-is": "^0.1.0",
+    "istanbul": "^0.4.1",
+    "mocha": "^2.3.4",
+    "travis-status": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=0.10"
+  }
+}
