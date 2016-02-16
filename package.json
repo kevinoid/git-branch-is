@@ -25,7 +25,7 @@
   ],
   "//": "All scripts should run in POSIX sh and Windows cmd.exe",
   "scripts": {
-    "doc": "jsdoc -c jsdoc.conf.json .",
+    "doc": "rimraf doc/api && jsdoc -c jsdoc.conf.json .",
     "lint": "npm run lint-js && npm run lint-doc",
     "lint-doc": "jsdoc -c jsdoc-lint.conf.json . && echo JSDoc passed.",
     "lint-js": "eslint . && echo ESLint passed.",
