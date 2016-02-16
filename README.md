@@ -1,54 +1,114 @@
-Release Scripts
+`git-branch-is`
 ===============
 
-[![Build status](https://img.shields.io/travis/kevinoid/release-scripts.svg?style=flat)](https://travis-ci.org/kevinoid/release-scripts)
-[![Coverage](https://img.shields.io/codecov/c/github/kevinoid/release-scripts.svg?style=flat)](https://codecov.io/github/kevinoid/release-scripts?branch=master)
-[![Dependency Status](https://img.shields.io/david/kevinoid/release-scripts.svg?style=flat)](https://david-dm.org/kevinoid/release-scripts)
-[![Supported Node Version](https://img.shields.io/node/v/@kevinoid/release-scripts.svg?style=flat)](https://www.npmjs.com/package/@kevinoid/release-scripts)
-[![Version on NPM](https://img.shields.io/npm/v/@kevinoid/release-scripts.svg?style=flat)](https://www.npmjs.com/package/@kevinoid/release-scripts)
+[![Build status](https://img.shields.io/travis/kevinoid/git-branch-is.svg?style=flat)](https://travis-ci.org/kevinoid/git-branch-is)
+[![Coverage](https://img.shields.io/codecov/c/github/kevinoid/git-branch-is.svg?style=flat)](https://codecov.io/github/kevinoid/git-branch-is?branch=master)
+[![Dependency Status](https://img.shields.io/david/kevinoid/git-branch-is.svg?style=flat)](https://david-dm.org/kevinoid/git-branch-is)
+[![Supported Node Version](https://img.shields.io/node/v/git-branch-is.svg?style=flat)](https://www.npmjs.com/package/git-branch-is)
+[![Version on NPM](https://img.shields.io/npm/v/git-branch-is.svg?style=flat)](https://www.npmjs.com/package/git-branch-is)
 
-A collection of utility scripts for releasing npm packages designed to be
-used in [npm version scripts](https://docs.npmjs.com/cli/version).
+Assert that the name of the current branch of a git repository has a particular value.
 
-This package is currently in the `@kevinoid` scope because they are only used
-by [kevinoid](https://github.com/kevinoid/)'s projects.  [Semantic
-Versioning](http://semver.org) is being followed.  (Expect incompatible
-changes from minor number changes before 1.0, but not from patch number
-changes.)  If you are interested in using (or maintaining) this package,
-please open an issue and I'll consider providing proper project management and
-un-scoping the module.
+## Introductory Example
 
-## Similar Packages
+To check that the current branch is named `release` and print an error if not,
+run the following command:
 
-Some similar packages which were considered before embarking on this project
-are listed below.  Note that all of these packages provide an automated
-release process (one which use `git` and `npm`), unlike this package which is
-designed to be called by the [npm version
-scripts](https://docs.npmjs.com/cli/version).
+```
+$ git-branch-is release
+Error: Current branch is "master", not "release".
+$ echo $?
+1
+```
 
-* [semantic-release](https://github.com/semantic-release/semantic-release) -
-  Performs automatic releases after CI build with automated version changes,
-  that implement semantic versioning, based on commit messages.
-* [grunt-release](https://github.com/geddski/grunt-release) - Single
-  Grunt-command release process.
-* [Release It!](https://github.com/webpro/release-it) - Single-command
-  interactive release process.
-* [rf-release](https://github.com/ryanflorence/rf-release) - Single-command
-  release process which tags in `git` and runs
-  [rf-changelog](https://github.com/rpflorence/rf-changelog) to update a
-  ChangeLog.
-* [Releasor](https://github.com/kimmobrunfeldt/releasor) - Single-command
-  release process which calls `git` and `npm`.
-* [release-script](https://github.com/alexkval/release-script) -
-  Single-command release tool with support for git status checks, changelog
-  generation with [rf-changelog](https://github.com/rpflorence/rf-changelog) or
-  [mt-changelog](https://github.com/mtscout6/mt-changelog), releasing with
-  `bower` and `npm`, and pushing a separate documents repo.
-* [eslint-release](https://github.com/eslint/eslint-release) - Single-command
-  release tool used by ESLint organization projects which runs tests, creates
-  a ChangeLog from git commit messages, and calls `npm version`.
-* [git-release](https://github.com/oligot/git-release) - Single-command release
-  process which calls `git` and `npm`.
+This can be useful as part of a [`preversion`
+script](https://docs.npmjs.com/cli/version) in `package.json`:
+
+```json
+{
+  "name": "super-cool-package",
+  "version": "1.2.3",
+  "scripts": {
+    "preversion": "git-branch-is release && echo Preversion checks passed."
+  }
+}
+```
+
+## Installation
+
+[This package](https://www.npmjs.com/package/browserify) can be installed
+using [npm](https://www.npmjs.com/), either globally or locally, by running:
+
+```sh
+npm install git-branch-is
+```
+
+## Command Usage
+
+The command options are intended to be similar to `git` and are documented in
+the `--help` output:
+
+    Usage: git-branch-is [options] <branch name>
+
+    Options:
+
+      -h, --help         output usage information
+      -C <path>          run as if started in <path>
+      --git-dir <dir>    set the path to the repository
+      --git-path <path>  set the path to the git binary
+      -q, --quiet        suppress warning message if branch differs
+      -v, --verbose      print a message if the branch matches
+      -V, --version      output the version number
+
+## API Usage
+
+To use the API with a callback function:
+
+```js
+var gitBranchIs = require('git-branch-is');
+gitBranchIs('master', function(err, result) {
+  if (err) console.error(err);
+  else console.log(result ? 'On master' : 'Not on master');
+});
+```
+
+Alternatively, if a callback is not provided, `gitBranchIs` will return a
+`Promise`:
+
+```js
+var gitBranchIs = require('git-branch-is');
+gitBranchIs('master').then(
+  function(result) { console.log(result ? 'On master' : 'Not on master'); },
+  function(err) { console.error(err); }
+);
+```
+
+## API Docs
+
+To use this module as a library, see the [API
+Documentation](https://kevinoid.github.io/git-branch-is/api).
+
+## Rationale
+
+What's the value of this command over scripting with `git` directly?  Good
+question.  The [Introductory Example](#introductory-example) could instead be
+approximated with the following:
+
+```json
+{
+  "name": "super-cool-package",
+  "version": "1.2.3",
+  "scripts": {
+    "preversion": "if [ \"$(git symbolic-ref HEAD)\" = release ] ; then echo Preversion checks passed. ; else echo Error: Not on branch release. ; exit 1 ; fi"
+  }
+}
+```
+
+For packages which are only targeting POSIX systems, this may be a preferable
+solution.  However, it doesn't work on systems which don't support the POSIX
+shell language (e.g. Windows, which runs scripts in `cmd.exe`).  To support
+these systems it is necessary to either introduce a dependency on Bash, to
+use this script, or code up something else.
 
 ## License
 

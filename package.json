@@ -1,38 +1,38 @@
 {
-  "name": "@kevinoid/project-template",
+  "name": "git-branch-is",
   "version": "0.1.0",
-  "description": "A Node.js/npm project template with codecov, coveralls, ESLint, github_changelog_generator, istanbul, JSDoc, and mocha.",
+  "description": "Assert that the name of the current branch of a git repository has a particular value.",
   "keywords": [
-    "project-template",
-    "template"
+    "assert",
+    "assertion",
+    "git",
+    "test"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/kevinoid/node-project-template",
-  "bugs": "https://github.com/kevinoid/node-project-template/issues",
+  "homepage": "https://github.com/kevinoid/git-branch-is",
+  "bugs": "https://github.com/kevinoid/git-branch-is/issues",
   "author": "Kevin Locke <kevin@kevinlocke.name>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kevinoid/node-project-template.git"
+    "url": "https://github.com/kevinoid/git-branch-is.git"
   },
   "main": "index.js",
   "bin": {
-    "index": "bin/index.js"
+    "git-branch-is": "bin/git-branch-is.js"
   },
   "files": [
     "LICENSE.txt",
     "README.md",
-    "bin",
-    "index.js",
-    "lib"
+    "bin"
   ],
   "//": "All scripts should run in POSIX sh and Windows cmd.exe",
   "scripts": {
     "doc": "jsdoc -c jsdoc.conf.json .",
     "lint": "npm run lint-js && npm run lint-doc",
-    "lint-doc": "jsdoc -c jsdoc.conf.json -a all --pedantic . && echo JSDoc passed.",
+    "lint-doc": "jsdoc -c jsdoc-lint.conf.json . && echo JSDoc passed.",
     "lint-js": "eslint . && echo ESLint passed.",
     "postversion": "git push --follow-tags origin master && echo Remember to update GitHub Releases from CHANGELOG.md && echo until skywinder/github-changelog-generator#56 is fixed.",
-    "preversion": "git-branch-is master && travis-status -b -c -qwx",
+    "preversion": "./bin/git-branch-is.js master",
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
     "test-unit": "mocha --recursive test",
@@ -41,16 +41,20 @@
     "version": "github_changelog_generator -t \"$npm_config_github_token\""
   },
   "dependencies": {
+    "commander": "^2.9.0",
+    "which": "^1.2.4"
   },
   "devDependencies": {
+    "bluebird": "^3.3.0",
     "codecov": "^1.0.1",
     "coveralls": "^2.11.6",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^4.0.0",
-    "git-branch-is": "^0.1.0",
     "istanbul": "^0.4.1",
+    "jsdoc": "^3.4.0",
     "mocha": "^2.3.4",
-    "travis-status": "^0.1.0"
+    "pify": "^2.3.0",
+    "rimraf": "^2.5.1"
   },
   "engines": {
     "node": ">=0.10"

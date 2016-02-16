@@ -20,9 +20,9 @@ rules:
 
   # Best Practices
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#best-practices
-  ## disallow reassignment of function parameters
-  ## allow assignment to properties, since not all functions can be are pure
-  no-param-reassign: [2, {"props": false}]
+  ## allow reassignment of function parameters
+  # simplicity for optional arguments outweighs the perf advantage, usually
+  no-param-reassign: 0
   ## disallow unnecessary use of Function.prototype.{apply,call}
   no-useless-call: 2
   ## allow vars anywhere that satisfies other linting constraints
@@ -38,10 +38,10 @@ rules:
   ## disallow shadowing of variables
   no-shadow: [2, { "builtinGlobals": true, "hoist": "all" }]
   ## disallow declaration of variables that are not used in the code
-  ## allow unused args for documentation, future use, and correct .length
+  # allow unused args for documentation, future use, and correct .length
   no-unused-vars: [2, {"args": "none"}]
   ## disallow referencing variables before declaring them, excluding functions
-  ## since it is required for mutually-recursive functions
+  # since it is required for mutually-recursive functions
   no-use-before-define: [2, "nofunc"]
 
   # Stylistic Issues
@@ -51,9 +51,16 @@ rules:
   ## allow unnamed functions
   func-names: 0
   ## max 80 length
-  max-len: [2, 80, 2]
+  # ignore URLs to allow unbroken URLs in comments
+  max-len: [2, 80, 2, {"ignoreUrls": true}]
   ## require parens for Constructor
   new-parens: 2
+  ## allow nested ternary expressions
+  # if they are indented one-expression-per-line, they are clear enough for me
+  no-nested-ternary: 0
+  ## disallow process.exit()
+  # this is disabled locally only when require.main === module
+  no-process-exit: 2
   ## disallow extra spaces in object literals
   object-curly-spacing: [2, "never"]
   ## allow multiple variable declarations per block/function and multiple

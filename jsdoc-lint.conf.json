@@ -1,19 +1,16 @@
 {
-  "//": "JSDoc configuration",
+  "//": "JSDoc configuration for linting",
   "opts": {
+    "access": "all",
     "destination": "doc/api",
+    "pedantic": true,
     "recurse": true
   },
   "source": {
-    "include": [
-      "README.md"
-    ],
     "exclude": [
       "coverage",
       "doc",
-      "node_modules",
-      "test",
-      "test-bin"
+      "node_modules"
     ]
   },
   "tags": {
