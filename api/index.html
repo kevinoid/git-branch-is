@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1><code>git-branch-is</code></h1><p><a href="https://travis-ci.org/kevinoid/git-branch-is"><img src="https://img.shields.io/travis/kevinoid/git-branch-is.svg?style=flat" alt="Build status"></a>
+<a href="https://codecov.io/github/kevinoid/git-branch-is?branch=master"><img src="https://img.shields.io/codecov/c/github/kevinoid/git-branch-is.svg?style=flat" alt="Coverage"></a>
+<a href="https://david-dm.org/kevinoid/git-branch-is"><img src="https://img.shields.io/david/kevinoid/git-branch-is.svg?style=flat" alt="Dependency Status"></a>
+<a href="https://www.npmjs.com/package/git-branch-is"><img src="https://img.shields.io/node/v/git-branch-is.svg?style=flat" alt="Supported Node Version"></a>
+<a href="https://www.npmjs.com/package/git-branch-is"><img src="https://img.shields.io/npm/v/git-branch-is.svg?style=flat" alt="Version on NPM"></a></p>
+<p>Assert that the name of the current branch of a git repository has a particular value.</p>
+<h2>Introductory Example</h2><p>To check that the current branch is named <code>release</code> and print an error if not,
+run the following command:</p>
+<pre class="prettyprint source"><code>$ git-branch-is release
+Error: Current branch is &quot;master&quot;, not &quot;release&quot;.
+$ echo $?
+1</code></pre><p>This can be useful as part of a <a href="https://docs.npmjs.com/cli/version"><code>preversion</code>
+script</a> in <code>package.json</code>:</p>
+<pre class="prettyprint source lang-json"><code>{
+  &quot;name&quot;: &quot;super-cool-package&quot;,
+  &quot;version&quot;: &quot;1.2.3&quot;,
+  &quot;scripts&quot;: {
+    &quot;preversion&quot;: &quot;git-branch-is release && echo Preversion checks passed.&quot;
+  }
+}</code></pre><h2>Installation</h2><p><a href="https://www.npmjs.com/package/browserify">This package</a> can be installed
+using <a href="https://www.npmjs.com/">npm</a>, either globally or locally, by running:</p>
+<pre class="prettyprint source lang-sh"><code>npm install git-branch-is</code></pre><h2>Command Usage</h2><p>The command options are intended to be similar to <code>git</code> and are documented in
+the <code>--help</code> output:</p>
+<pre class="prettyprint source"><code>Usage: git-branch-is [options] &lt;branch name>
+
+Options:
+
+  -h, --help         output usage information
+  -C &lt;path>          run as if started in &lt;path>
+  --git-dir &lt;dir>    set the path to the repository
+  --git-path &lt;path>  set the path to the git binary
+  -q, --quiet        suppress warning message if branch differs
+  -v, --verbose      print a message if the branch matches
+  -V, --version      output the version number</code></pre><h2>API Usage</h2><p>To use the API with a callback function:</p>
+<pre class="prettyprint source lang-js"><code>var gitBranchIs = require('git-branch-is');
+gitBranchIs('master', function(err, result) {
+  if (err) console.error(err);
+  else console.log(result ? 'On master' : 'Not on master');
+});</code></pre><p>Alternatively, if a callback is not provided, <code>gitBranchIs</code> will return a
+<code>Promise</code>:</p>
+<pre class="prettyprint source lang-js"><code>var gitBranchIs = require('git-branch-is');
+gitBranchIs('master').then(
+  function(result) { console.log(result ? 'On master' : 'Not on master'); },
+  function(err) { console.error(err); }
+);</code></pre><h2>API Docs</h2><p>To use this module as a library, see the <a href="https://kevinoid.github.io/git-branch-is/api">API
+Documentation</a>.</p>
+<h2>Rationale</h2><p>What's the value of this command over scripting with <code>git</code> directly?  Good
+question.  The <a href="#introductory-example">Introductory Example</a> could instead be
+approximated with the following:</p>
+<pre class="prettyprint source lang-json"><code>{
+  &quot;name&quot;: &quot;super-cool-package&quot;,
+  &quot;version&quot;: &quot;1.2.3&quot;,
+  &quot;scripts&quot;: {
+    &quot;preversion&quot;: &quot;if [ \&quot;$(git symbolic-ref HEAD)\&quot; = release ] ; then echo Preversion checks passed. ; else echo Error: Not on branch release. ; exit 1 ; fi&quot;
+  }
+}</code></pre><p>For packages which are only targeting POSIX systems, this may be a preferable
+solution.  However, it doesn't work on systems which don't support the POSIX
+shell language (e.g. Windows, which runs scripts in <code>cmd.exe</code>).  To support
+these systems it is necessary to either introduce a dependency on Bash, to
+use this script, or code up something else.</p>
+<h2>License</h2><p>This package is available under the terms of the
+<a href="https://opensource.org/licenses/MIT">MIT License</a>.</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#gitBranchIs">gitBranchIs</a></li><li><a href="global.html#gitBranchIsCmd">gitBranchIsCmd</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Feb 15 2016 23:03:55 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
