@@ -48,7 +48,7 @@
     "codecov": "^1.0.1",
     "coveralls": "^2.11.6",
     "eslint": "^1.10.3",
-    "eslint-config-airbnb": "^4.0.0",
+    "eslint-config-airbnb": "^5.0.1",
     "istanbul": "^0.4.1",
     "jsdoc": "^3.4.0",
     "mocha": "^2.3.4"
