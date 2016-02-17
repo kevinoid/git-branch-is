@@ -51,7 +51,8 @@ rules:
   ## allow unnamed functions
   func-names: 0
   ## max 80 length
-  max-len: [2, 80, 2]
+  # ignore URLs to allow unbroken URLs in comments
+  max-len: [2, 80, 2, {"ignoreUrls": true}]
   ## require parens for Constructor
   new-parens: 2
   ## disallow extra spaces in object literals
