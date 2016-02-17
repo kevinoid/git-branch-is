@@ -20,9 +20,9 @@ rules:
 
   # Best Practices
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#best-practices
-  ## disallow reassignment of function parameters
-  ## allow assignment to properties, since not all functions can be are pure
-  no-param-reassign: [2, {"props": false}]
+  ## allow reassignment of function parameters
+  # simplicity for optional arguments outweighs the perf advantage, usually
+  no-param-reassign: 0
   ## disallow unnecessary use of Function.prototype.{apply,call}
   no-useless-call: 2
   ## allow vars anywhere that satisfies other linting constraints
