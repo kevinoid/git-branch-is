@@ -32,7 +32,7 @@
     "lint-doc": "jsdoc -c jsdoc-lint.conf.json . && echo JSDoc passed.",
     "lint-js": "eslint . && echo ESLint passed.",
     "postversion": "git push --follow-tags origin master && echo Remember to update GitHub Releases from CHANGELOG.md && echo until skywinder/github-changelog-generator#56 is fixed.",
-    "preversion": "git-branch-is master && travis-status -b -c -qwx",
+    "preversion": "git-branch-is master && travis-status -b -c -qwx && depcheck && david",
     "start": "supervisor --quiet --no-restart-on exit --extensions js,json --ignore test --poll-interval 2000 server.js",
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
@@ -40,7 +40,7 @@
     "test-unit-cov": "istanbul cover _mocha --recursive test",
     "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
     "version": "github_changelog_generator -t \"$npm_config_github_token\"",
-    "version-deps": "npm install git-branch-is travis-status"
+    "version-deps": "npm install david depcheck git-branch-is travis-status"
   },
   "dependencies": {
   },
