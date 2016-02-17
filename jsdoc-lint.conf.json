@@ -1,0 +1,23 @@
+{
+  "//": "JSDoc configuration for linting",
+  "opts": {
+    "access": "all",
+    "destination": "doc/api",
+    "pedantic": true,
+    "recurse": true
+  },
+  "source": {
+    "exclude": [
+      "coverage",
+      "doc",
+      "node_modules"
+    ]
+  },
+  "tags": {
+    "allowUnknownTags": false,
+    "dictionaries": [
+      "closure",
+      "jsdoc"
+    ]
+  }
+}

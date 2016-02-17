@@ -29,7 +29,7 @@
   "scripts": {
     "doc": "jsdoc -c jsdoc.conf.json .",
     "lint": "npm run lint-js && npm run lint-doc",
-    "lint-doc": "jsdoc -c jsdoc.conf.json -a all --pedantic . && echo JSDoc passed.",
+    "lint-doc": "jsdoc -c jsdoc-lint.conf.json . && echo JSDoc passed.",
     "lint-js": "eslint . && echo ESLint passed.",
     "postversion": "git push --follow-tags origin master && echo Remember to update GitHub Releases from CHANGELOG.md && echo until skywinder/github-changelog-generator#56 is fixed.",
     "preversion": "git-branch-is master && travis-status -b -c -qwx",
