@@ -5,6 +5,9 @@
     "recurse": true
   },
   "source": {
+    "include": [
+      "README.md"
+    ],
     "exclude": [
       "coverage",
       "doc",
