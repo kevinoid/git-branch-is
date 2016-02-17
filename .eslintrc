@@ -38,10 +38,10 @@ rules:
   ## disallow shadowing of variables
   no-shadow: [2, { "builtinGlobals": true, "hoist": "all" }]
   ## disallow declaration of variables that are not used in the code
-  ## allow unused args for documentation, future use, and correct .length
+  # allow unused args for documentation, future use, and correct .length
   no-unused-vars: [2, {"args": "none"}]
   ## disallow referencing variables before declaring them, excluding functions
-  ## since it is required for mutually-recursive functions
+  # since it is required for mutually-recursive functions
   no-use-before-define: [2, "nofunc"]
 
   # Stylistic Issues
