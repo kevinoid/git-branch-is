@@ -39,7 +39,8 @@
     "test-unit": "mocha --recursive test",
     "test-unit-cov": "istanbul cover _mocha --recursive test",
     "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
-    "version": "github_changelog_generator -t \"$npm_config_github_token\""
+    "version": "github_changelog_generator -t \"$npm_config_github_token\"",
+    "version-deps": "npm install git-branch-is travis-status"
   },
   "dependencies": {
   },
@@ -48,11 +49,9 @@
     "coveralls": "^2.11.6",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^4.0.0",
-    "git-branch-is": "^0.1.0",
     "istanbul": "^0.4.1",
     "jsdoc": "^3.4.0",
-    "mocha": "^2.3.4",
-    "travis-status": "^0.1.0"
+    "mocha": "^2.3.4"
   },
   "engines": {
     "node": ">=0.10"
