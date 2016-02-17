@@ -11,7 +11,8 @@
     "exclude": [
       "coverage",
       "doc",
-      "node_modules"
+      "node_modules",
+      "test"
     ]
   },
   "tags": {
