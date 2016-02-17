@@ -55,6 +55,9 @@ rules:
   max-len: [2, 80, 2, {"ignoreUrls": true}]
   ## require parens for Constructor
   new-parens: 2
+  ## allow nested ternary expressions
+  # if they are indented one-expression-per-line, they are clear enough for me
+  no-nested-ternary: 0
   ## disallow extra spaces in object literals
   object-curly-spacing: [2, "never"]
   ## allow multiple variable declarations per block/function and multiple
