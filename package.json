@@ -49,6 +49,7 @@
     "eslint-config-airbnb": "^4.0.0",
     "git-branch-is": "^0.1.0",
     "istanbul": "^0.4.1",
+    "jsdoc": "^3.4.0",
     "mocha": "^2.3.4",
     "travis-status": "^0.1.0"
   },
