@@ -1,7 +1,7 @@
 {
   "//": "JSDoc configuration",
   "opts": {
-    "destination": "doc",
+    "destination": "doc/api",
     "recurse": true
   },
   "source": {
