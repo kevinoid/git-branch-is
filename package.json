@@ -42,8 +42,7 @@
     "version": "github_changelog_generator -t \"$npm_config_github_token\"",
     "version-deps": "npm install david depcheck git-branch-is travis-status"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "codecov": "^1.0.1",
     "coveralls": "^2.11.6",
