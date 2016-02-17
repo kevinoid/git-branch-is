@@ -16,6 +16,7 @@ module.exports = scriptname;
 
 if (require.main === module) {
   // This file was invoked directly.
+  /* eslint-disable no-process-exit */
   scriptname.main(process.argv).catch(function(err) {
     if (err.stderr) {
       process.stderr.write(err.stderr);

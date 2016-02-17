@@ -58,6 +58,9 @@ rules:
   ## allow nested ternary expressions
   # if they are indented one-expression-per-line, they are clear enough for me
   no-nested-ternary: 0
+  ## disallow process.exit()
+  # this is disabled locally only when require.main === module
+  no-process-exit: 2
   ## disallow extra spaces in object literals
   object-curly-spacing: [2, "never"]
   ## allow multiple variable declarations per block/function and multiple
