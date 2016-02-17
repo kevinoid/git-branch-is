@@ -7,21 +7,77 @@
  */
 'use strict';
 
-var cmdname = {};
+var Command = require('commander').Command;
+var modulename = require('..');
+var packageJson = require('../package.json');
 
-cmdname.main = function main(args) {
-};
+/** Result from command entry points.
+ *
+ * @typedef {{
+ *   code: (?number|undefined),
+ *   stdout: (?string|undefined),
+ *   stderr: (?string|undefined)
+ * }} CommandResult
+ * @property {?number=} code Exit code for the command.
+ * @property {?string=} stdout Content to write to stdout.
+ * @property {?string=} stderr Content to write to stderr.
+ */
 
-module.exports = cmdname;
+/** Entry point for this command.
+ *
+ * @param {!Array<string>} args Command-line arguments.
+ * @param {?function(Error, ?CommandResult=)=}
+ * callback Callback for the command result or error.  Required if
+ * <code>global.Promise</code> is not defined.
+ * @return {Promise|undefined} If <code>callback</code> is not given and
+ * <code>global.Promise</code> is defined, a <code>Promise</code> which will
+ * resolve on completion.
+ */
+function modulenameCmd(args, callback) {
+  if (!callback && typeof Promise === 'function') {
+    return new Promise(function(resolve, reject) {
+      modulenameCmd(args, function(err, result) {
+        if (err) reject(err); else resolve(result);
+      });
+    });
+  }
+
+  if (typeof callback !== 'function') {
+    throw new TypeError('callback must be a function');
+  }
+
+  // TODO:  Proxy console.{error,log} and process.exit so we can return result
+  var command = new Command()
+    // .arguments() splits on white space.  Call .parseExpectedArgs directly.
+    .parseExpectedArgs(['<arg name>'])
+    .option('-q, --quiet', 'print less output')
+    .option('-v, --verbose', 'print more output')
+    .version(packageJson.version)
+    .parse(args);
+
+  if (command.args.length !== 1) {
+    callback(new Error('Exactly one argument is required.\n' +
+          command.helpInformation()));
+    return undefined;
+  }
+
+  // Parse arguments and call API function with parsed options
+  modulename();
+}
+
+module.exports = modulenameCmd;
 
 if (require.main === module) {
   // This file was invoked directly.
   /* eslint-disable no-process-exit */
-  cmdname.main(process.argv).catch(function(err) {
-    if (err.stderr) {
-      process.stderr.write(err.stderr);
-    }
-    process.stderr.write(err.name + ': ' + err.message + '\n');
-    process.exit(typeof err.code === 'number' ? err.code : 1);
+  modulenameCmd(process.argv, function(err, result) {
+    var errOrResult = err || result;
+    if (errOrResult.stdout) process.stdout.write(errOrResult.stdout);
+    if (errOrResult.stderr) process.stderr.write(errOrResult.stderr);
+    if (err) process.stderr.write(err.name + ': ' + err.message + '\n');
+
+    var code = typeof errOrResult.code === 'number' ? errOrResult.code :
+                err ? 1 : 0;
+    process.exit(code);
   });
 }
