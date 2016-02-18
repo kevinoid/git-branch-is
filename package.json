@@ -41,8 +41,7 @@
     "version": "github_changelog_generator -t \"$npm_config_github_token\""
   },
   "dependencies": {
-    "commander": "^2.9.0",
-    "which": "^1.2.4"
+    "commander": "^2.9.0"
   },
   "devDependencies": {
     "bluebird": "^3.3.0",

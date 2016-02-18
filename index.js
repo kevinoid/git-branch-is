@@ -5,8 +5,6 @@
 'use strict';
 
 var execFile = require('child_process').execFile;
-var path = require('path');
-var which = require('which');
 
 /** Options for {@link gitBranchIs}.
  *
@@ -118,31 +116,16 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
     combinedOpts[prop] = options[prop];
   });
 
-  // which does not use relative paths.  Make paths absolute.
-  if (String(combinedOpts.gitPath).indexOf(path.sep) >= 0) {
-    combinedOpts.gitPath = path.resolve(
-        combinedOpts.cwd ? String(combinedOpts.cwd) : '',
-        combinedOpts.gitPath
-    );
+  var gitArgs = ['symbolic-ref', '--short', 'HEAD'];
+  if (combinedOpts.gitDir) {
+    gitArgs.unshift('--git-dir=' + combinedOpts.gitDir);
   }
 
-  which(combinedOpts.gitPath, function(errWhich, gitPath) {
-    if (errWhich) {
-      callback(errWhich);
-      return;
-    }
-
-    var gitArgs = ['symbolic-ref', '--short', 'HEAD'];
-    if (combinedOpts.cwd) {
-      gitArgs.unshift('-C', combinedOpts.cwd);
-    }
-    if (combinedOpts.gitDir) {
-      gitArgs.unshift('--git-dir=' + combinedOpts.gitDir);
-    }
-
+  try {
     execFile(
-        gitPath,
+        combinedOpts.gitPath,
         gitArgs,
+        {cwd: combinedOpts.cwd},
         function(errExec, stdout, stderr) {
           if (errExec) {
             callback(errExec);
@@ -154,7 +137,12 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
           callback(null, stdout.trimRight());
         }
     );
-  });
+  } catch (errExec) {
+    process.nextTick(function() {
+      callback(errExec);
+    });
+    return undefined;
+  }
 };
 
 module.exports = gitBranchIs;
