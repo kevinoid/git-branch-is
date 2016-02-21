@@ -29,6 +29,8 @@ function scriptname(args, callback) {
   if (typeof callback !== 'function') {
     throw new TypeError('callback must be a function');
   }
+
+  return undefined;
 }
 
 module.exports = scriptname;

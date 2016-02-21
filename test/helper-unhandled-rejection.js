@@ -7,6 +7,9 @@
  */
 'use strict';
 
+// Allow using window global if it is not undefined
+/* global window:false */
+
 // Allow logging to console to notify user that they may miss rejections.
 /* eslint-disable no-console */
 

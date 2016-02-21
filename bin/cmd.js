@@ -63,6 +63,7 @@ function modulenameCmd(args, callback) {
 
   // Parse arguments and call API function with parsed options
   modulename();
+  return undefined;
 }
 
 module.exports = modulenameCmd;
