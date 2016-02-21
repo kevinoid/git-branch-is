@@ -19,8 +19,6 @@
     "index": "bin/index.js"
   },
   "files": [
-    "LICENSE.txt",
-    "README.md",
     "bin",
     "index.js",
     "lib"
