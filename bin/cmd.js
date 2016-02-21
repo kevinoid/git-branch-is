@@ -48,6 +48,7 @@ function modulenameCmd(args, callback) {
 
   // TODO:  Proxy console.{error,log} and process.exit so we can return result
   var command = new Command()
+    .description('Does the thing with the thing and stuff.')
     // .arguments() splits on white space.  Call .parseExpectedArgs directly.
     .parseExpectedArgs(['<arg name>'])
     .option('-q, --quiet', 'print less output')
