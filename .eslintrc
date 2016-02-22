@@ -72,8 +72,7 @@ rules:
   ## declarators per declaration
   one-var: 0
   ## require initialized variables to be declared on separate lines
-  # TODO: Uncomment when ESLint 2.0 is released (if not included by airbnb)
-  #one-var-declaration-per-line: [2, "initializations"]
+  one-var-declaration-per-line: [2, "initializations"]
   ## no space before function, eg. 'function()'
   space-before-function-paren: [2, "never"]
 
