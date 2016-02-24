@@ -1,0 +1,45 @@
+  </div><!-- .container -->
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/2.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/highlight.js/9.1.0/highlight.min.js"></script>
+  <script type="text/javascript">//<![CDATA[
+'use strict';
+// Adjust the nested heading level to match depth
+$('section section h1').each(function() {
+  var $this = $(this);
+  var depth = Math.min($this.parents('section').length, 6);
+  // http://stackoverflow.com/a/30059450/503410
+  $this.wrapInner(document.createElement('h' + depth)).children().unwrap();
+});
+
+// Make the tests collapsible
+var testNum = 0;
+$('dt + dd')
+  .addClass('collapse')
+  .attr('role', 'tabpanel')
+  .attr('aria-expanded', 'false')
+  .each(function() {
+    var $this = $(this);
+    var $dt = $this.prev();
+
+    ++testNum;
+    var id = 'test' + testNum;
+    var idDt = id + '-title';
+    var idDd = id + '-desc';
+
+    $dt.attr('id', idDt);
+    $this.attr('id', idDd);
+
+    $dt.wrapInner('<a role="button" data-toggle="collapse" href="#' + idDd +
+        '" aria-expanded="false" aria-controls="' + idDd + '"></a>')
+      .children()
+      .collapse();
+  });
+
+// Enable syntax highlighting for the code (which is all JavaScript)
+hljs.configure({languages: ['javascript']});
+hljs.initHighlighting();
+//]]></script>
+</body>
+</html>

@@ -36,6 +36,9 @@ npm install git-branch-is
 ## Recipes
 
 
+More examples can be found in the [test
+specifications](https://kevinoid.github.io/project-template/specs).
+
 ## API Docs
 
 To use this module as a library, see the [API
