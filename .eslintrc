@@ -25,6 +25,8 @@ rules:
 
   # Best Practices
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#best-practices
+  ## require curly braces around all control statements
+  curly: [2, "all"]
   ## allow reassignment of function parameters
   # simplicity for optional arguments outweighs the perf advantage, usually
   no-param-reassign: 0

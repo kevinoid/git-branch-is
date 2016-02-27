@@ -15,7 +15,7 @@ modulename.func = function func(options, callback) {
   if (!callback && typeof Promise === 'function') {
     return new Promise(function(resolve, reject) {
       func(options, function(err, result) {
-        if (err) reject(err); else resolve(result);
+        if (err) { reject(err); } else { resolve(result); }
       });
     });
   }

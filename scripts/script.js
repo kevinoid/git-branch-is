@@ -21,7 +21,7 @@ function scriptname(args, callback) {
   if (!callback && typeof Promise === 'function') {
     return new Promise(function(resolve, reject) {
       scriptname(args, function(err, result) {
-        if (err) reject(err); else resolve(result);
+        if (err) { reject(err); } else { resolve(result); }
       });
     });
   }
@@ -40,9 +40,9 @@ if (require.main === module) {
   /* eslint-disable no-process-exit */
   scriptname(process.argv, function(err, result) {
     var errOrResult = err || result;
-    if (errOrResult.stdout) process.stdout.write(errOrResult.stdout);
-    if (errOrResult.stderr) process.stderr.write(errOrResult.stderr);
-    if (err) process.stderr.write(err.name + ': ' + err.message + '\n');
+    if (errOrResult.stdout) { process.stdout.write(errOrResult.stdout); }
+    if (errOrResult.stderr) { process.stderr.write(errOrResult.stderr); }
+    if (err) { process.stderr.write(err.name + ': ' + err.message + '\n'); }
 
     var code = typeof errOrResult.code === 'number' ? errOrResult.code :
                 err ? 1 : 0;
