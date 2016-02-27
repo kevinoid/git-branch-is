@@ -25,6 +25,7 @@
   ],
   "//": "All scripts should run in POSIX sh and Windows cmd.exe",
   "scripts": {
+    "clean": "rimraf coverage && rimraf doc",
     "doc": "npm run doc-js && npm run doc-spec",
     "doc-js": "rimraf doc/api && jsdoc -c jsdoc.conf.json .",
     "doc-spec": "rimraf doc/spec && mocha --reporter doc --recursive test | cat doc-src/spec/header.xhtml - doc-src/spec/footer.xhtml >> doc/spec/index.xhtml",
