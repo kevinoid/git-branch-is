@@ -10,14 +10,20 @@
 /** Entry point for this command.
  *
  * @param {!Array<string>} args Command-line arguments.
- * @param {?function(Error, {code:?number, stdout:?string, stderr:?string}=)=}
- * callback Callback for the command result or error.  Required if
+ * @param {CommandOptions=} options Options.
+ * @param {?function(Error, number=)=}
+ * callback Callback for the exit code or an <code>Error</code>.  Required if
  * <code>global.Promise</code> is not defined.
- * @return {Promise} If <code>callback</code> is not given and
- * <code>global.Promise</code> is defined, a <code>Promise</code> which will
- * resolve on completion.
+ * @return {Promise<number>|undefined} If <code>callback</code> is not given
+ * and <code>global.Promise</code> is defined, a <code>Promise</code> with the
+ * exit code or <code>Error</code>.
  */
-function scriptname(args, callback) {
+function scriptname(args, options, callback) {
+  if (!callback && typeof options === 'function') {
+    callback = options;
+    options = null;
+  }
+
   if (!callback && typeof Promise === 'function') {
     return new Promise(function(resolve, reject) {
       scriptname(args, function(err, result) {
@@ -38,14 +44,20 @@ module.exports = scriptname;
 if (require.main === module) {
   // This file was invoked directly.
   /* eslint-disable no-process-exit */
-  scriptname(process.argv, function(err, result) {
-    var errOrResult = err || result;
-    if (errOrResult.stdout) { process.stdout.write(errOrResult.stdout); }
-    if (errOrResult.stderr) { process.stderr.write(errOrResult.stderr); }
-    if (err) { process.stderr.write(err.name + ': ' + err.message + '\n'); }
+  var mainOptions = {
+    in: process.stdin,
+    out: process.stdout,
+    err: process.stderr
+  };
+  scriptname(process.argv, mainOptions, function(err, code) {
+    if (err) {
+      if (err.stdout) { process.stdout.write(err.stdout); }
+      if (err.stderr) { process.stderr.write(err.stderr); }
+      process.stderr.write(err.name + ': ' + err.message + '\n');
 
-    var code = typeof errOrResult.code === 'number' ? errOrResult.code :
-                err ? 1 : 0;
+      code = typeof err.code === 'number' ? err.code : 1;
+    }
+
     process.exit(code);
   });
 }
