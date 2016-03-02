@@ -1,4 +1,4 @@
-coverage/
-doc/
+/coverage/
+/doc/
 node_modules/
 npm-debug.log
