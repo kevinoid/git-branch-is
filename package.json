@@ -18,11 +18,6 @@
   "bin": {
     "index": "bin/index.js"
   },
-  "files": [
-    "bin",
-    "index.js",
-    "lib"
-  ],
   "//": "All scripts should run in POSIX sh and Windows cmd.exe",
   "scripts": {
     "clean": "rimraf coverage && rimraf doc",
