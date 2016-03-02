@@ -26,15 +26,15 @@ in case it may be useful to others with similar tastes.
 
 ## Installation
 
-[This package](https://www.npmjs.com/package/browserify) can be installed
-using [npm](https://www.npmjs.com/), either globally or locally, by running:
+[This package](https://www.npmjs.com/package/@kevinoid/project-template) can be
+installed using [npm](https://www.npmjs.com/), either globally or locally, by
+running:
 
 ```sh
-npm install git-branch-is
+npm install @kevinoid/project-template
 ```
 
 ## Recipes
-
 
 More examples can be found in the [test
 specifications](https://kevinoid.github.io/project-template/specs).
