@@ -45,6 +45,7 @@ function modulenameCmd(args, options, callback) {
   }
 
   if (!callback && typeof Promise === 'function') {
+    // eslint-disable-next-line no-undef
     return new Promise(function(resolve, reject) {
       modulenameCmd(args, function(err, result) {
         if (err) { reject(err); } else { resolve(result); }

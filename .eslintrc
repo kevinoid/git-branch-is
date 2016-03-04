@@ -11,12 +11,6 @@ env:
   # Note: Only works for ESLint 2+: https://github.com/eslint/eslint/issues/3915
   browser: false
 
-globals:
-  ## allow using global Promise
-  # uses should always be protected by (typeof Promise !== 'undefined')
-  # Note: Added for ESLint 2+: https://github.com/eslint/eslint/issues/4085
-  Promise: true
-
 rules:
   # Possible Errors
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#possible-errors
