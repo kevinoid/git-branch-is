@@ -1,6 +1,6 @@
 {
   "name": "@kevinoid/project-template",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "A Node.js/npm project template with codecov, coveralls, ESLint, github_changelog_generator, istanbul, JSDoc, and mocha.",
   "keywords": [
     "project-template",
