@@ -36,7 +36,7 @@
     "test-unit": "mocha --recursive test",
     "test-unit-cov": "istanbul cover _mocha -- --recursive test",
     "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
-    "version": "github_changelog_generator -t \"$npm_config_gcg_github_token\" && echo Please edit CHANGELOG.md as desired, then exit && $npm_config_shell && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
+    "version": "github_changelog_generator -t \"$npm_config_gcg_github_token\" --future-release \"$npm_package_version\" && echo && echo === Please edit CHANGELOG.md as desired, then exit === && echo && $npm_config_shell && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
     "version-deps": "npm install david depcheck git-branch-is travis-status"
   },
   "dependencies": {},
