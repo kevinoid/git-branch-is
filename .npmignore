@@ -8,4 +8,5 @@
 /doc/
 /scripts
 /test
+TODO.*
 jsdoc*.conf.json
