@@ -1,3 +1,8 @@
+.editorconfig
+.eslintignore
+.eslintrc
+.npmignore
+.travis.yml
 /coverage/
 /doc-src/
 /doc/
