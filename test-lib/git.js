@@ -5,6 +5,7 @@
 'use strict';
 
 var BBPromise = require('bluebird').Promise;
+// eslint-disable-next-line no-undef
 var PPromise = typeof Promise === 'function' ? Promise : BBPromise;
 var execFile = require('child_process').execFile;
 var pify = require('pify');

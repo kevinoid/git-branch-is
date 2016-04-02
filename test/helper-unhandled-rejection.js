@@ -7,6 +7,9 @@
  */
 'use strict';
 
+// Allow using window global if it is not undefined
+/* global window:false */
+
 // Allow logging to console to notify user that they may miss rejections.
 /* eslint-disable no-console */
 
@@ -24,7 +27,7 @@ if (typeof process !== 'undefined') {
   } else {
     var oldOHR = window.onunhandledrejection;
     window.onunhandledrejection = function(evt) {
-      if (typeof oldOHR === 'function') oldOHR.apply(this, arguments);
+      if (typeof oldOHR === 'function') { oldOHR.apply(this, arguments); }
       throw evt.detail.reason;
     };
   }

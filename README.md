@@ -110,6 +110,16 @@ shell language (e.g. Windows, which runs scripts in `cmd.exe`).  To support
 these systems it is necessary to either introduce a dependency on Bash, to
 use this script, or code up something else.
 
+## Contributing
+
+Contributions are welcome and very much appreciated!  Please add tests to
+cover any changes and ensure `npm test` passes.
+
+If the desired change is large, complex, backwards-incompatible, can have
+significantly differing implementations, or may not be in scope for this
+project, opening an issue before writing the code can avoid frustration and
+save a lot of time and effort.
+
 ## License
 
 This package is available under the terms of the

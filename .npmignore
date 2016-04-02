@@ -1,0 +1,8 @@
+/coverage/
+/doc-src/
+/doc/
+/scripts
+/test
+/test-bin
+/test-lib
+jsdoc*.conf.json

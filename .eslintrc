@@ -7,9 +7,8 @@ extends: "airbnb/legacy"
 
 env:
   node: true
-  # Disable unused browser env from airbnb/legacy
-  # Note:  Won't fully work until ESLint v2 is released due to
-  # https://github.com/eslint/eslint/issues/3915
+  ## disable unwanted browser env from airbnb/legacy
+  # Note: Only works for ESLint 2+: https://github.com/eslint/eslint/issues/3915
   browser: false
 
 rules:
@@ -20,6 +19,8 @@ rules:
 
   # Best Practices
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#best-practices
+  ## require curly braces around all control statements
+  curly: [2, "all"]
   ## allow reassignment of function parameters
   # simplicity for optional arguments outweighs the perf advantage, usually
   no-param-reassign: 0
@@ -67,8 +68,7 @@ rules:
   ## declarators per declaration
   one-var: 0
   ## require initialized variables to be declared on separate lines
-  # TODO: Uncomment when ESLint 2.0 is released (if not included by airbnb)
-  #one-var-declaration-per-line: [2, "initializations"]
+  one-var-declaration-per-line: [2, "initializations"]
   ## no space before function, eg. 'function()'
   space-before-function-paren: [2, "never"]
 

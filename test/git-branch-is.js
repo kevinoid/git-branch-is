@@ -7,6 +7,7 @@
 var gitBranchIs = require('..');
 
 var BBPromise = require('bluebird').Promise;
+// eslint-disable-next-line no-undef
 var PPromise = typeof Promise === 'function' ? Promise : BBPromise;
 var assert = require('assert');
 var path = require('path');
@@ -151,7 +152,7 @@ describe('gitBranchIs', function() {
 
     it('Promise resolves true for same branch name', function() {
       var promise = gitBranchIs(BRANCH_CURRENT);
-      assert(promise instanceof Promise);
+      assert(promise instanceof global.Promise);
       return promise.then(function(result) {
         assert.strictEqual(result, true);
       });
@@ -159,7 +160,7 @@ describe('gitBranchIs', function() {
 
     it('Promise resolves false for different branch name', function() {
       var promise = gitBranchIs('invalid');
-      assert(promise instanceof Promise);
+      assert(promise instanceof global.Promise);
       return promise.then(function(result) {
         assert.strictEqual(result, false);
       });
@@ -167,7 +168,7 @@ describe('gitBranchIs', function() {
 
     it('Promise rejects on Error', function() {
       var promise = gitBranchIs(BRANCH_CURRENT, 'opts');
-      assert(promise instanceof Promise);
+      assert(promise instanceof global.Promise);
       return promise.then(
           function(result) { throw new Error('expecting Error'); },
           function(err) {
@@ -180,7 +181,7 @@ describe('gitBranchIs', function() {
     describe('.getBranch()', function() {
       it('resolves to the branch name', function() {
         var promise = gitBranchIs.getBranch();
-        assert(promise instanceof Promise);
+        assert(promise instanceof global.Promise);
         return promise.then(function(result) {
           assert.strictEqual(result, BRANCH_CURRENT);
         });
@@ -188,7 +189,7 @@ describe('gitBranchIs', function() {
 
       it('rejects on Error', function() {
         var promise = gitBranchIs.getBranch(BRANCH_CURRENT);
-        assert(promise instanceof Promise);
+        assert(promise instanceof global.Promise);
         return promise.then(
           function(result) { throw new Error('expecting Error'); },
           function(err) {

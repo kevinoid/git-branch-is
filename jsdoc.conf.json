@@ -13,7 +13,8 @@
       "doc",
       "node_modules",
       "test",
-      "test-bin"
+      "test-bin",
+      "test-lib"
     ]
   },
   "tags": {

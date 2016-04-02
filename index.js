@@ -45,9 +45,10 @@ function gitBranchIs(branchName, options, callback) {
   }
 
   if (!callback && typeof Promise === 'function') {
+    // eslint-disable-next-line no-undef
     return new Promise(function(resolve, reject) {
       gitBranchIs(branchName, options, function(err, result) {
-        if (err) reject(err); else resolve(result);
+        if (err) { reject(err); } else { resolve(result); }
       });
     });
   }
@@ -58,7 +59,7 @@ function gitBranchIs(branchName, options, callback) {
 
   if (options && typeof options !== 'object') {
     process.nextTick(function() {
-      callback(new TypeError('options must be an Object'));
+      callback(new TypeError('options must be an object'));
     });
     return undefined;
   }
@@ -71,6 +72,7 @@ function gitBranchIs(branchName, options, callback) {
 
     callback(null, branchName === currentBranch);
   });
+  return undefined;
 }
 
 /** Checks that the current branch of a git repository has a given name.
@@ -90,9 +92,10 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
   }
 
   if (!callback && typeof Promise === 'function') {
+    // eslint-disable-next-line no-undef
     return new Promise(function(resolve, reject) {
       getBranch(options, function(err, result) {
-        if (err) reject(err); else resolve(result);
+        if (err) { reject(err); } else { resolve(result); }
       });
     });
   }
@@ -143,6 +146,8 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
     });
     return undefined;
   }
+
+  return undefined;
 };
 
 module.exports = gitBranchIs;

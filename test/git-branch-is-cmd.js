@@ -7,6 +7,7 @@
 var gitBranchIsCmd = require('../bin/git-branch-is');
 
 var BBPromise = require('bluebird').Promise;
+// eslint-disable-next-line no-undef
 var PPromise = typeof Promise === 'function' ? Promise : BBPromise;
 var assert = require('assert');
 var execFile = require('child_process').execFile;
@@ -126,7 +127,7 @@ describe('git-branch-is', function() {
 
     it('returns a Promise with the result', function() {
       var promise = gitBranchIsCmd(ARGS.concat('master'));
-      assert(promise instanceof Promise);
+      assert(promise instanceof global.Promise);
       return promise.then(function(result) {
         assert.strictEqual(result.code, 0);
         assert(!result.stdout);
@@ -136,7 +137,7 @@ describe('git-branch-is', function() {
 
     it('rejects the Promise with an Error', function() {
       var promise = gitBranchIsCmd(ARGS.concat('-C', 'invalid', 'master'));
-      assert(promise instanceof Promise);
+      assert(promise instanceof global.Promise);
       return promise.then(
         function(result) { throw new Error('expecting Error'); },
         function(err) { assert(err instanceof Error); }
