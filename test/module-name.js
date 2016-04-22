@@ -9,6 +9,6 @@ var modulename = require('..');
 describe('modulename', function() {
   it('does something', function(done) {
     // Assert something about modulename here
-    modulename.works();
+    modulename.func();
   });
 });
