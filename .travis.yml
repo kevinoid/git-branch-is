@@ -1,3 +1,4 @@
+# https://docs.travis-ci.com/user/customizing-the-build/
 language: node_js
 # Be aware of https://github.com/nodejs/LTS when choosing versions to test
 # Update engines.node in package.json if removing old versions.
