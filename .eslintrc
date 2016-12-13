@@ -3,7 +3,7 @@
 # rules which would cause breakage in old Node versions (e.g. ES6 features).
 # Uses Airbnb's ES5 styles where they don't conflict with Node core or my prefs.
 
-extends: "airbnb/legacy"
+extends: "airbnb-base/legacy"
 
 env:
   node: true

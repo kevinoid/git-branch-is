@@ -1,0 +1,35 @@
+# http://www.appveyor.com/docs/appveyor-yml
+
+# Use CR-LF line endings on Windows (default is core.autocrlf input)
+init:
+- git config --global core.autocrlf true
+
+# Be aware of https://github.com/nodejs/LTS when choosing versions to test
+# Update engines.node in package.json if removing old versions.
+environment:
+  matrix:
+    - nodejs_version: "0.10"
+    - nodejs_version: "0.12"
+    - nodejs_version: "7"
+
+# If the package has arch-dependent features, uncomment this.
+#platform:
+#  - x86
+#  - x64
+
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - npm -g install npm
+  - npm install
+
+test_script:
+  - node --version
+  - npm --version
+  - npm test
+
+# Disable build step, which we don't need
+build: off
+
+# If any job fails, fail build immediately to avoid wasting time/resources.
+matrix:
+  fast_finish: true
