@@ -11,5 +11,6 @@ describe('modulename', function() {
   it('does something', function(done) {
     // Assert something about modulename here
     modulename.func();
+    done();
   });
 });
