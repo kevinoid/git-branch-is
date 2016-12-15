@@ -1,9 +1,5 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
-# Use CR-LF line endings on Windows (default is core.autocrlf input)
-init:
-- git config --global core.autocrlf true
-
 # Be aware of https://github.com/nodejs/LTS when choosing versions to test
 # Update engines.node in package.json if removing old versions.
 environment:
