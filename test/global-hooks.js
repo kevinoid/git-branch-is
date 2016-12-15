@@ -8,6 +8,7 @@
 var BBPromise = require('bluebird').Promise;
 // eslint-disable-next-line no-undef
 var PPromise = typeof Promise === 'function' ? Promise : BBPromise;
+var constants = require('../test-lib/constants');
 var fs = require('fs');
 var git = require('../test-lib/git');
 var path = require('path');
@@ -17,15 +18,14 @@ var rimraf = require('rimraf');
 var fsP = pify(fs, PPromise);
 var rimrafP = pify(rimraf, PPromise);
 
+// Local copy of shared constants
+var BRANCH_SAME_COMMIT = constants.BRANCH_SAME_COMMIT;
+var SUBDIR_NAME = constants.SUBDIR_NAME;
+var TEST_REPO_PATH = constants.TEST_REPO_PATH;
+
 // Global variables
 var origCWD;
 
-/** Name of a branch on the same commit as the current branch. */
-var BRANCH_SAME_COMMIT = 'same-commit';
-/** Name of a subdirectory to create within the git repo. */
-var SUBDIR_NAME = 'subdir';
-/** Path to repository in which tests are run. */
-var TEST_REPO_PATH = path.join(__dirname, '..', 'test-repo');
 
 before('setup test repository', function() {
   return rimrafP(TEST_REPO_PATH)

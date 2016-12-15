@@ -11,13 +11,15 @@ var BBPromise = require('bluebird').Promise;
 // eslint-disable-next-line no-undef
 var PPromise = typeof Promise === 'function' ? Promise : BBPromise;
 var assert = require('assert');
+var constants = require('../test-lib/constants');
 var execFile = require('child_process').execFile;
 var path = require('path');
 
 /** Initial command arguments. */
 var ARGS = [process.argv[0], 'git-branch-is'];
-/** Name of a subdirectory to create within the git repo. */
-var SUBDIR_NAME = 'subdir';
+
+// Local copy of shared constants
+var SUBDIR_NAME = constants.SUBDIR_NAME;
 
 describe('git-branch-is', function() {
   it('exit code 0 silently for same branch name', function(done) {

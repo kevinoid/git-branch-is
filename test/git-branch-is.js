@@ -11,16 +11,14 @@ var BBPromise = require('bluebird').Promise;
 // eslint-disable-next-line no-undef
 var PPromise = typeof Promise === 'function' ? Promise : BBPromise;
 var assert = require('assert');
+var constants = require('../test-lib/constants');
 var path = require('path');
 
-/** Name of the current branch. */
-var BRANCH_CURRENT = 'master';
-/** Name of a branch which does not exist. */
-var BRANCH_NON_EXISTENT = 'non-existent';
-/** Name of a branch on the same commit as the current branch. */
-var BRANCH_SAME_COMMIT = 'same-commit';
-/** Name of a subdirectory to create within the git repo. */
-var SUBDIR_NAME = 'subdir';
+// Local copy of shared constants
+var BRANCH_CURRENT = constants.BRANCH_CURRENT;
+var BRANCH_NON_EXISTENT = constants.BRANCH_NON_EXISTENT;
+var BRANCH_SAME_COMMIT = constants.BRANCH_SAME_COMMIT;
+var SUBDIR_NAME = constants.SUBDIR_NAME;
 
 describe('gitBranchIs', function() {
   it('callback true for current branch name', function(done) {
