@@ -19,6 +19,7 @@ var fsP = pify(fs, PPromise);
 var rimrafP = pify(rimraf, PPromise);
 
 // Local copy of shared constants
+var BRANCH_CURRENT = constants.BRANCH_CURRENT;
 var BRANCH_SAME_COMMIT = constants.BRANCH_SAME_COMMIT;
 var SUBDIR_NAME = constants.SUBDIR_NAME;
 var TEST_REPO_PATH = constants.TEST_REPO_PATH;
@@ -45,6 +46,9 @@ before('setup test repository', function() {
     .then(function createCommit() {
       return git('-C', TEST_REPO_PATH,
           'commit', '-q', '-m', 'Initial Commit', '--allow-empty');
+    })
+    .then(function renameMaster() {
+      return git('-C', TEST_REPO_PATH, 'branch', '-m', BRANCH_CURRENT);
     })
     .then(function makeBranch() {
       return git('-C', TEST_REPO_PATH, 'branch', BRANCH_SAME_COMMIT);
