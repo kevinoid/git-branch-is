@@ -19,12 +19,15 @@ var path = require('path');
 var ARGS = [process.argv[0], 'git-branch-is'];
 
 // Local copy of shared constants
+var BRANCH_CURRENT = constants.BRANCH_CURRENT;
 var SUBDIR_NAME = constants.SUBDIR_NAME;
 var TEST_REPO_PATH = constants.TEST_REPO_PATH;
 
+var BRANCH_CURRENT_RE = new RegExp('\\b' + constants.BRANCH_CURRENT + '\\b');
+
 describe('git-branch-is', function() {
   it('exit code 0 silently for same branch name', function(done) {
-    gitBranchIsCmd(ARGS.concat('master'), function(err, result) {
+    gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT), function(err, result) {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
       assert(!result.stdout);
@@ -39,7 +42,7 @@ describe('git-branch-is', function() {
       assert.strictEqual(result.code, 1);
       assert(!result.stdout);
       assert(/\binvalid\b/.test(result.stderr));
-      assert(/\bmaster\b/.test(result.stderr));
+      assert(BRANCH_CURRENT_RE.test(result.stderr));
       done();
     });
   });
@@ -56,11 +59,11 @@ describe('git-branch-is', function() {
   });
 
   it('exit code 0 with message if verbose', function(done) {
-    var args = ARGS.concat('-v', 'master');
+    var args = ARGS.concat('-v', BRANCH_CURRENT);
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
-      assert(/\bmaster\b/.test(result.stdout));
+      assert(BRANCH_CURRENT_RE.test(result.stdout));
       assert(!result.stderr);
       done();
     });
@@ -68,7 +71,7 @@ describe('git-branch-is', function() {
 
   // Note:  This is one of the few errors that doesn't call process.exit
   it('callback Error for multiple args', function(done) {
-    gitBranchIsCmd(ARGS.concat('master', 'foo'), function(err, result) {
+    gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT, 'foo'), function(err, result) {
       assert(err instanceof Error);
       assert(/\bargument/i.test(err.message));
       assert(/\busage/i.test(err.message));
@@ -81,7 +84,7 @@ describe('git-branch-is', function() {
         '-C',
         SUBDIR_NAME,
         '--git-arg=--git-dir=../.git',
-        'master'
+        BRANCH_CURRENT
     );
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
@@ -98,7 +101,7 @@ describe('git-branch-is', function() {
         '..',
         '--git-arg=-C',
         '--git-arg=' + TEST_REPO_PATH,
-        'master'
+        BRANCH_CURRENT
     );
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
@@ -117,7 +120,7 @@ describe('git-branch-is', function() {
         TEST_REPO_PATH,
         '-C',
         '..',
-        'master'
+        BRANCH_CURRENT
     );
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
@@ -134,7 +137,7 @@ describe('git-branch-is', function() {
         // Note:  Also tests that Commander interprets this as option argument
         '--git-dir=.git',
         '--git-dir=invalid',
-        'master'
+        BRANCH_CURRENT
     );
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
@@ -169,7 +172,7 @@ describe('git-branch-is', function() {
         '-C',
         SUBDIR_NAME,
         '--git-dir=' + path.join('..', '.git'),
-        'master'
+        BRANCH_CURRENT
     );
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
@@ -200,7 +203,7 @@ describe('git-branch-is', function() {
     });
 
     it('returns a Promise with the result', function() {
-      var promise = gitBranchIsCmd(ARGS.concat('master'));
+      var promise = gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
       assert(promise instanceof global.Promise);
       return promise.then(function(result) {
         assert.strictEqual(result.code, 0);
@@ -210,7 +213,11 @@ describe('git-branch-is', function() {
     });
 
     it('rejects the Promise with an Error', function() {
-      var promise = gitBranchIsCmd(ARGS.concat('-C', 'invalid', 'master'));
+      var promise = gitBranchIsCmd(ARGS.concat(
+        '-C',
+        'invalid',
+        BRANCH_CURRENT
+      ));
       assert(promise instanceof global.Promise);
       return promise.then(
         function(result) { throw new Error('expecting Error'); },
@@ -245,7 +252,7 @@ describe('git-branch-is', function() {
     it('throws without a callback', function() {
       assert.throws(
           function() {
-            gitBranchIsCmd(ARGS.concat('master'));
+            gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
           },
           function(err) {
             return err instanceof TypeError &&
@@ -258,7 +265,7 @@ describe('git-branch-is', function() {
   it('exit code 0 works when executed', function(done) {
     execFile(
       process.execPath,
-      ['../bin/git-branch-is', 'master'],
+      ['../bin/git-branch-is', BRANCH_CURRENT],
       function(err, result) {
         assert.ifError(err);
         assert(!result.stdout);
@@ -276,7 +283,7 @@ describe('git-branch-is', function() {
         assert(err instanceof Error);
         assert.strictEqual(err.code, 1);
         assert(/\binvalid\b/.test(err.message));
-        assert(/\bmaster\b/.test(err.message));
+        assert(BRANCH_CURRENT_RE.test(err.message));
         done();
       }
     );
