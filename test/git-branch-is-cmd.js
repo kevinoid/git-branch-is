@@ -279,7 +279,7 @@ describe('git-branch-is', function() {
   it('exit code 1 works when executed', function(done) {
     execFile(
       process.execPath,
-      ['../bin/git-branch-is', 'invalid'],
+      [path.join('..', 'bin', 'git-branch-is.js'), 'invalid'],
       function(err, result) {
         assert(err instanceof Error);
         assert.strictEqual(err.code, 1);
