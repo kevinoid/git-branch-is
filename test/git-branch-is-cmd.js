@@ -266,11 +266,11 @@ describe('git-branch-is', function() {
   it('exit code 0 works when executed', function(done) {
     execFile(
       process.execPath,
-      [path.join('..', 'bin', 'git-branch-is.js'), BRANCH_CURRENT],
-      function(err, result) {
+      [path.join('..', 'bin', 'git-branch-is.js'), '-v', BRANCH_CURRENT],
+      function(err, stdout, stderr) {
         assert.ifError(err);
-        assert(!result.stdout);
-        assert(!result.stderr);
+        assertMatch(stdout, BRANCH_CURRENT_RE);
+        assert(!stderr);
         done();
       }
     );
@@ -280,11 +280,25 @@ describe('git-branch-is', function() {
     execFile(
       process.execPath,
       [path.join('..', 'bin', 'git-branch-is.js'), 'invalid'],
-      function(err, result) {
+      function(err, stdout, stderr) {
         assert(err instanceof Error);
         assert.strictEqual(err.code, 1);
-        assertMatch(err.message, /\binvalid\b/);
-        assertMatch(err.message, BRANCH_CURRENT_RE);
+        assertMatch(stderr, /\binvalid\b/);
+        assertMatch(stderr, BRANCH_CURRENT_RE);
+        done();
+      }
+    );
+  });
+
+  it('exit code 1 with extra args works when executed', function(done) {
+    execFile(
+      process.execPath,
+      [path.join('..', 'bin', 'git-branch-is.js'), 'invalid', 'extra arg'],
+      function(err, stdout, stderr) {
+        assert(err instanceof Error);
+        assert.strictEqual(err.code, 1);
+        assert(!stdout);
+        assertMatch(stderr, /\bargument/);
         done();
       }
     );
