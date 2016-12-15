@@ -266,7 +266,7 @@ describe('git-branch-is', function() {
   it('exit code 0 works when executed', function(done) {
     execFile(
       process.execPath,
-      ['../bin/git-branch-is', BRANCH_CURRENT],
+      [path.join('..', 'bin', 'git-branch-is.js'), BRANCH_CURRENT],
       function(err, result) {
         assert.ifError(err);
         assert(!result.stdout);
