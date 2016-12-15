@@ -18,7 +18,7 @@ var execFile = require('child_process').execFile;
  * tested.
  * @property {?string=} gitDir Path to the repository (i.e.
  * <code>--git-dir=</code> option to <code>git</code>).
- * @property {string=} git Git binary name or path to use (default:
+ * @property {string=} gitPath Git binary name or path to use (default:
  * <code>'git'</code>).
  */
 var GitBranchIsOptions = {
