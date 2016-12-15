@@ -8,8 +8,11 @@
 var path = require('path');
 
 module.exports = Object.freeze({
-  /** Name of the current branch. */
-  BRANCH_CURRENT: 'master',
+  /** Name of the current branch.
+   * Should not be a branch name which exists in the code repository to avoid
+   * false-negatives in the tests.
+   * Must not contain RegExp metachars. */
+  BRANCH_CURRENT: 'test-branch',
   /** Name of a branch which does not exist. */
   BRANCH_NON_EXISTENT: 'non-existent',
   /** Name of a branch on the same commit as the current branch. */
