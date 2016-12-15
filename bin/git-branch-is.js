@@ -7,6 +7,7 @@
 'use strict';
 
 var Command = require('commander').Command;
+var exit = require('exit');
 var gitBranchIs = require('..');
 var packageJson = require('../package.json');
 
@@ -116,6 +117,6 @@ if (require.main === module) {
 
     var code = typeof errOrResult.code === 'number' ? errOrResult.code :
                 err ? 1 : 0;
-    process.exit(code);
+    exit(code);
   });
 }

@@ -50,6 +50,7 @@
     "eslint": "^3.0.0",
     "eslint-config-airbnb-base": "^11.0.0",
     "eslint-plugin-import": "^2.2.0",
+    "exit": "^0.1.2",
     "istanbul": "^0.4.1",
     "jsdoc": "^3.4.0",
     "mocha": "^2.3.4",
