@@ -11,6 +11,7 @@ var BBPromise = require('bluebird').Promise;
 // eslint-disable-next-line no-undef
 var PPromise = typeof Promise === 'function' ? Promise : BBPromise;
 var assert = require('assert');
+var assertMatch = require('../test-lib/assert-match');
 var constants = require('../test-lib/constants');
 var path = require('path');
 
@@ -201,7 +202,7 @@ describe('gitBranchIs', function() {
           function(result) { throw new Error('expecting Error'); },
           function(err) {
             assert(err instanceof TypeError);
-            assert(/\boptions\b/.test(err.message));
+            assertMatch(err.message, /\boptions\b/);
           }
       );
     });
@@ -222,7 +223,7 @@ describe('gitBranchIs', function() {
           function(result) { throw new Error('expecting Error'); },
           function(err) {
             assert(err instanceof TypeError);
-            assert(/\boptions\b/.test(err.message));
+            assertMatch(err.message, /\boptions\b/);
           }
         );
       });

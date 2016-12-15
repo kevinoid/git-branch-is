@@ -11,6 +11,7 @@ var BBPromise = require('bluebird').Promise;
 // eslint-disable-next-line no-undef
 var PPromise = typeof Promise === 'function' ? Promise : BBPromise;
 var assert = require('assert');
+var assertMatch = require('../test-lib/assert-match');
 var constants = require('../test-lib/constants');
 var execFile = require('child_process').execFile;
 var path = require('path');
@@ -41,8 +42,8 @@ describe('git-branch-is', function() {
       assert.ifError(err);
       assert.strictEqual(result.code, 1);
       assert(!result.stdout);
-      assert(/\binvalid\b/.test(result.stderr));
-      assert(BRANCH_CURRENT_RE.test(result.stderr));
+      assertMatch(result.stderr, /\binvalid\b/);
+      assertMatch(result.stderr, BRANCH_CURRENT_RE);
       done();
     });
   });
@@ -63,7 +64,7 @@ describe('git-branch-is', function() {
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
-      assert(BRANCH_CURRENT_RE.test(result.stdout));
+      assertMatch(result.stdout, BRANCH_CURRENT_RE);
       assert(!result.stderr);
       done();
     });
@@ -73,8 +74,8 @@ describe('git-branch-is', function() {
   it('callback Error for multiple args', function(done) {
     gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT, 'foo'), function(err, result) {
       assert(err instanceof Error);
-      assert(/\bargument/i.test(err.message));
-      assert(/\busage/i.test(err.message));
+      assertMatch(err.message, /\bargument/i);
+      assertMatch(err.message, /\busage/i);
       done();
     });
   });
@@ -282,8 +283,8 @@ describe('git-branch-is', function() {
       function(err, result) {
         assert(err instanceof Error);
         assert.strictEqual(err.code, 1);
-        assert(/\binvalid\b/.test(err.message));
-        assert(BRANCH_CURRENT_RE.test(err.message));
+        assertMatch(err.message, /\binvalid\b/);
+        assertMatch(err.message, BRANCH_CURRENT_RE);
         done();
       }
     );
