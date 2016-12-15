@@ -55,9 +55,36 @@ describe('gitBranchIs', function() {
     });
   });
 
-  it('can specify git executable', function(done) {
-    var altGitPath = path.join('..', 'test-bin', 'echo-surprise.js');
-    gitBranchIs('surprise', {gitPath: altGitPath}, function(err, result) {
+  it('can specify additional git arguments', function(done) {
+    var options = {
+      cwd: '..',
+      gitArgs: ['-C', process.cwd()]
+    };
+    gitBranchIs(BRANCH_CURRENT, options, function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result, true);
+      done();
+    });
+  });
+
+  it('gitArgs takes precedence over gitDir', function(done) {
+    var options = {
+      gitArgs: ['--git-dir=.git'],
+      gitDir: 'invalid'
+    };
+    gitBranchIs(BRANCH_CURRENT, options, function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result, true);
+      done();
+    });
+  });
+
+  it('can specify git executable and args', function(done) {
+    var options = {
+      gitArgs: [path.join('..', 'test-bin', 'echo-surprise.js')],
+      gitPath: process.execPath
+    };
+    gitBranchIs('surprise', options, function(err, result) {
       assert.ifError(err);
       assert.strictEqual(result, true);
       done();
@@ -113,7 +140,8 @@ describe('gitBranchIs', function() {
   it('gitPath is relative to cwd', function(done) {
     var options = {
       cwd: SUBDIR_NAME,
-      gitPath: path.join('..', '..', 'test-bin', 'echo-surprise.js')
+      gitArgs: [path.join('..', '..', 'test-bin', 'echo-surprise.js')],
+      gitPath: path.relative(SUBDIR_NAME, process.execPath)
     };
     gitBranchIs('surprise', options, function(err, result) {
       assert.ifError(err);

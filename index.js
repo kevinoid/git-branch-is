@@ -11,11 +11,13 @@ var execFile = require('child_process').execFile;
  *
  * @typedef {{
  *   cwd: (?string|undefined),
+ *   gitArgs: (Array|undefined),
  *   gitDir: (?string|undefined),
  *   gitPath: (string|undefined)
  * }}
  * @property {?string=} cwd Current working directory where the branch name is
  * tested.
+ * @property {Array=} gitArgs Extra arguments to pass to git.
  * @property {?string=} gitDir Path to the repository (i.e.
  * <code>--git-dir=</code> option to <code>git</code>).
  * @property {string=} gitPath Git binary name or path to use (default:
@@ -23,6 +25,7 @@ var execFile = require('child_process').execFile;
  */
 var GitBranchIsOptions = {
   cwd: '',
+  gitArgs: [],
   gitDir: '',
   gitPath: 'git'
 };
@@ -120,10 +123,13 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
     combinedOpts[prop] = options[prop];
   });
 
-  var gitArgs = ['symbolic-ref', '--short', 'HEAD'];
+  var gitArgs = combinedOpts.gitArgs ?
+    Array.prototype.slice.call(combinedOpts.gitArgs, 0) :
+    [];
   if (combinedOpts.gitDir) {
     gitArgs.unshift('--git-dir=' + combinedOpts.gitDir);
   }
+  gitArgs.push('symbolic-ref', '--short', 'HEAD');
 
   try {
     execFile(
