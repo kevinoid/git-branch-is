@@ -67,6 +67,14 @@ describe('gitBranchIs', function() {
     });
   });
 
+  it('null gitArgs is ignored', function(done) {
+    gitBranchIs(BRANCH_CURRENT, {gitArgs: null}, function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result, true);
+      done();
+    });
+  });
+
   it('gitArgs takes precedence over gitDir', function(done) {
     var options = {
       gitArgs: ['--git-dir=.git'],
