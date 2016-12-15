@@ -10,6 +10,11 @@ var Command = require('commander').Command;
 var gitBranchIs = require('..');
 var packageJson = require('../package.json');
 
+function collect(arg, args) {
+  args.push(arg);
+  return args;
+}
+
 /** Result from command entry points.
  *
  * @typedef {{
@@ -51,6 +56,8 @@ function gitBranchIsCmd(args, callback) {
     // .arguments() splits on white space.  Call .parseExpectedArgs directly.
     .parseExpectedArgs(['<branch name>'])
     .option('-C <path>', 'run as if started in <path>')
+    .option('--git-arg <arg>', 'additional argument to git (can be repeated)',
+            collect, [])
     .option('--git-dir <dir>', 'set the path to the repository')
     .option('--git-path <path>', 'set the path to the git binary')
     .option('-q, --quiet', 'suppress warning message if branch differs')
@@ -66,6 +73,9 @@ function gitBranchIsCmd(args, callback) {
 
   // -C option is cmd in options Object
   command.cwd = command.C;
+
+  // pluralize --git-arg to cover multiple uses
+  command.gitArgs = command.gitArg;
 
   var expectedBranch = command.args[0];
   gitBranchIs.getBranch(command, function(err, currentBranch) {

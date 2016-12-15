@@ -73,12 +73,82 @@ describe('git-branch-is', function() {
     });
   });
 
-  it('can specify git executable', function(done) {
-    var gitPath = path.join('..', '..', 'test-bin', 'echo-surprise.js');
+  it('can specify an additional git argument', function(done) {
     var args = ARGS.concat(
         '-C',
         SUBDIR_NAME,
-        '--git-path=' + gitPath,
+        '--git-arg=--git-dir=../.git',
+        'master'
+    );
+    gitBranchIsCmd(args, function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 0);
+      assert(!result.stdout);
+      assert(!result.stderr);
+      done();
+    });
+  });
+
+  it('can specify multiple additional git arguments', function(done) {
+    var args = ARGS.concat(
+        '-C',
+        '..',
+        '--git-arg=-C',
+        '--git-arg=' + process.cwd(),
+        'master'
+    );
+    gitBranchIsCmd(args, function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 0);
+      assert(!result.stdout);
+      assert(!result.stderr);
+      done();
+    });
+  });
+
+  it('can specify an additional git arguments separately', function(done) {
+    var args = ARGS.concat(
+        '--git-arg',
+        '-C',
+        '--git-arg',
+        process.cwd(),
+        '-C',
+        '..',
+        'master'
+    );
+    gitBranchIsCmd(args, function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 0);
+      assert(!result.stdout);
+      assert(!result.stderr);
+      done();
+    });
+  });
+
+  it('gitArgs takes precedence over gitDir', function(done) {
+    var args = ARGS.concat(
+        '--git-arg',
+        // Note:  Also tests that Commander interprets this as option argument
+        '--git-dir=.git',
+        '--git-dir=invalid',
+        'master'
+    );
+    gitBranchIsCmd(args, function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 0);
+      assert(!result.stdout);
+      assert(!result.stderr);
+      done();
+    });
+  });
+
+  it('can specify git executable and args', function(done) {
+    var gitArg = path.join('..', '..', 'test-bin', 'echo-surprise.js');
+    var args = ARGS.concat(
+        '-C',
+        SUBDIR_NAME,
+        '--git-arg=' + gitArg,
+        '--git-path=' + process.execPath,
         'surprise'
     );
     gitBranchIsCmd(args, function(err, result) {
