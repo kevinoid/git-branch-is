@@ -20,6 +20,7 @@ var ARGS = [process.argv[0], 'git-branch-is'];
 
 // Local copy of shared constants
 var SUBDIR_NAME = constants.SUBDIR_NAME;
+var TEST_REPO_PATH = constants.TEST_REPO_PATH;
 
 describe('git-branch-is', function() {
   it('exit code 0 silently for same branch name', function(done) {
@@ -96,7 +97,7 @@ describe('git-branch-is', function() {
         '-C',
         '..',
         '--git-arg=-C',
-        '--git-arg=' + process.cwd(),
+        '--git-arg=' + TEST_REPO_PATH,
         'master'
     );
     gitBranchIsCmd(args, function(err, result) {
@@ -113,7 +114,7 @@ describe('git-branch-is', function() {
         '--git-arg',
         '-C',
         '--git-arg',
-        process.cwd(),
+        TEST_REPO_PATH,
         '-C',
         '..',
         'master'

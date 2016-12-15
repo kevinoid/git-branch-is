@@ -19,6 +19,7 @@ var BRANCH_CURRENT = constants.BRANCH_CURRENT;
 var BRANCH_NON_EXISTENT = constants.BRANCH_NON_EXISTENT;
 var BRANCH_SAME_COMMIT = constants.BRANCH_SAME_COMMIT;
 var SUBDIR_NAME = constants.SUBDIR_NAME;
+var TEST_REPO_PATH = constants.TEST_REPO_PATH;
 
 describe('gitBranchIs', function() {
   it('callback true for current branch name', function(done) {
@@ -56,7 +57,7 @@ describe('gitBranchIs', function() {
   it('can specify additional git arguments', function(done) {
     var options = {
       cwd: '..',
-      gitArgs: ['-C', process.cwd()]
+      gitArgs: ['-C', TEST_REPO_PATH]
     };
     gitBranchIs(BRANCH_CURRENT, options, function(err, result) {
       assert.ifError(err);
