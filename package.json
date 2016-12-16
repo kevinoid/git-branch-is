@@ -48,7 +48,7 @@
     "eslint-plugin-import": "^2.2.0",
     "istanbul": "^0.4.1",
     "jsdoc": "^3.4.0",
-    "mocha": "^2.3.4",
+    "mocha": "^3.2.0",
     "node-version-check": "^2.1.1",
     "nodecat": "^0.1.0",
     "rimraf": "^2.2.0"
