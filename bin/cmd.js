@@ -114,8 +114,8 @@ function modulenameCmd(args, options, callback) {
   var stdoutDesc = Object.getOwnPropertyDescriptor(process, 'stdout');
   var stderrDesc = Object.getOwnPropertyDescriptor(process, 'stderr');
   var errExit = new Error('process.exit() called');
-  process.exit = function throwOnExit(code) {
-    errExit.code = code;
+  process.exit = function throwOnExit(exitCode) {
+    errExit.exitCode = Number(exitCode) || 0;
     throw errExit;
   };
   if (options.out) {
@@ -142,7 +142,7 @@ function modulenameCmd(args, options, callback) {
       }
       callback(
         null,
-        typeof errParse.code === 'number' ? errParse.code : 1
+        typeof errParse.exitCode === 'number' ? errParse.exitCode : 1
       );
     });
     return undefined;
@@ -173,15 +173,15 @@ if (require.main === module) {
     out: process.stdout,
     err: process.stderr
   };
-  modulenameCmd(process.argv, mainOptions, function(err, code) {
+  modulenameCmd(process.argv, mainOptions, function(err, exitCode) {
     if (err) {
       if (err.stdout) { process.stdout.write(err.stdout); }
       if (err.stderr) { process.stderr.write(err.stderr); }
       process.stderr.write(err.name + ': ' + err.message + '\n');
 
-      code = typeof err.code === 'number' ? err.code : 1;
+      exitCode = typeof err.exitCode === 'number' ? err.exitCode : 1;
     }
 
-    process.exit(code);
+    process.exit(exitCode);
   });
 }
