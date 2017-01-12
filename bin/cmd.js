@@ -2,7 +2,7 @@
 /**
  * An executable command which will be added to $PATH.
  *
- * @copyright Copyright 2016 Kevin Locke <kevin@kevinlocke.name>
+ * @copyright Copyright 2017 Kevin Locke <kevin@kevinlocke.name>
  * @license MIT
  */
 
