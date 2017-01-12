@@ -115,6 +115,8 @@ function modulenameCmd(args, options, callback) {
   var yargs = new Yargs()
     .usage('Usage: $0 [options] [args...]')
     .help()
+    .alias('help', 'h')
+    .alias('help', '?')
     .option('quiet', {
       alias: 'q',
       describe: 'Print less output',
@@ -126,6 +128,7 @@ function modulenameCmd(args, options, callback) {
       count: true
     })
     .version()
+    .alias('version', 'V')
     .strict();
   parseYargs(yargs, args, function(err, argOpts, output) {
     if (err) {
