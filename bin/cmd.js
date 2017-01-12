@@ -10,6 +10,7 @@
 
 var Yargs = require('yargs/yargs');
 var assign = require('object-assign');
+var packageJson = require('../package.json');
 var modulename = require('..');
 
 /** Calls <code>yargs.parse</code> and passes any thrown errors to the callback.
@@ -127,7 +128,7 @@ function modulenameCmd(args, options, callback) {
       describe: 'Print more output',
       count: true
     })
-    .version()
+    .version(packageJson.name + ' ' + packageJson.version)
     .alias('version', 'V')
     .strict();
   parseYargs(yargs, args, function(err, argOpts, output) {
