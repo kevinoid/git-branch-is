@@ -71,7 +71,7 @@ function modulenameCmd(args, options, callback) {
       args = Array.prototype.slice.call(args, 2).map(String);
     }
 
-    if (options && typeof options !== 'object') {
+    if (options !== undefined && typeof options !== 'object') {
       throw new TypeError('options must be an object');
     }
 
