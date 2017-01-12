@@ -135,13 +135,15 @@ function modulenameCmd(args, options, callback) {
   try {
     command.parse(args);
   } catch (errParse) {
-    var exitCode = errParse === errExit ? errExit.code || 0 : null;
     process.nextTick(function() {
-      if (exitCode !== null) {
-        callback(null, exitCode);
-      } else {
-        callback(errParse);
+      if (errParse !== errExit) {
+        // Match commander formatting for consistency
+        options.err.write('\n  error: ' + errParse.message + '\n\n');
       }
+      callback(
+        null,
+        typeof errParse.code === 'number' ? errParse.code : 1
+      );
     });
     return undefined;
   } finally {
