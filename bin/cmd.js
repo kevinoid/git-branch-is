@@ -8,10 +8,21 @@
 
 'use strict';
 
-var Command = require('commander').Command;
+var Yargs = require('yargs/yargs');
 var assign = require('object-assign');
 var modulename = require('..');
-var packageJson = require('../package.json');
+
+/** Calls <code>yargs.parse</code> and passes any thrown errors to the callback.
+ * Workaround for https://github.com/yargs/yargs/issues/755
+ */
+function parseYargs(yargs, args, callback) {
+  try {
+    yargs.parse(args, callback);
+  } catch (err) {
+    // Since yargs doesn't nextTick its callback, don't here either
+    callback(err);
+  }
+}
 
 /** Options for command entry points.
  *
@@ -101,66 +112,53 @@ function modulenameCmd(args, options, callback) {
     return undefined;
   }
 
-  var command = new Command()
-    .description('Does the thing with the thing and stuff.')
-    // .arguments() splits on white space.  Call .parseExpectedArgs directly.
-    .parseExpectedArgs(['<arg name>'])
-    .option('-q, --quiet', 'print less output')
-    .option('-v, --verbose', 'print more output')
-    .version(packageJson.version);
+  var yargs = new Yargs()
+    .usage('Usage: $0 [options] [args...]')
+    .help()
+    .option('quiet', {
+      alias: 'q',
+      describe: 'Print less output',
+      count: true
+    })
+    .option('verbose', {
+      alias: 'v',
+      describe: 'Print more output',
+      count: true
+    })
+    .version()
+    .strict();
+  parseYargs(yargs, args, function(err, argOpts, output) {
+    if (err) {
+      options.err.write(output ?
+                          output + '\n' :
+                          err.name + ': ' + err.message + '\n');
+      callback(null, 1);
+      return;
+    }
 
-  // Patch stdout, stderr, and exit for Commander
-  // See: https://github.com/tj/commander.js/pull/444
-  var exitDesc = Object.getOwnPropertyDescriptor(process, 'exit');
-  var stdoutDesc = Object.getOwnPropertyDescriptor(process, 'stdout');
-  var stderrDesc = Object.getOwnPropertyDescriptor(process, 'stderr');
-  var errExit = new Error('process.exit() called');
-  process.exit = function throwOnExit(exitCode) {
-    errExit.exitCode = Number(exitCode) || 0;
-    throw errExit;
-  };
-  if (options.out) {
-    Object.defineProperty(
-        process,
-        'stdout',
-        {configurable: true, enumerable: true, value: options.out}
-    );
-  }
-  if (options.err) {
-    Object.defineProperty(
-        process,
-        'stderr',
-        {configurable: true, enumerable: true, value: options.err}
-    );
-  }
-  try {
-    command.parse(args);
-  } catch (errParse) {
-    process.nextTick(function() {
-      if (errParse !== errExit) {
-        // Match commander formatting for consistency
-        options.err.write('\n  error: ' + errParse.message + '\n\n');
-      }
-      callback(
-        null,
-        typeof errParse.exitCode === 'number' ? errParse.exitCode : 1
-      );
-    });
-    return undefined;
-  } finally {
-    Object.defineProperty(process, 'exit', exitDesc);
-    Object.defineProperty(process, 'stdout', stdoutDesc);
-    Object.defineProperty(process, 'stderr', stderrDesc);
-  }
+    if (output) {
+      options.out.write(output + '\n');
+    }
 
-  if (command.args.length !== 1) {
-    callback(new Error('Exactly one argument is required.\n' +
-          command.helpInformation()));
-    return undefined;
-  }
+    if (argOpts.help || argOpts.version) {
+      callback(null, 0);
+      return;
+    }
 
-  // Parse arguments then call API function with parsed options
-  modulename(command, callback);
+    if (argOpts._.length !== 1) {
+      options.err.write('Error: Exactly one argument is required.\n');
+      callback(null, 1);
+      return;
+    }
+
+    // Parse arguments then call API function with parsed options
+    var cmdOpts = {
+      files: argOpts._,
+      verbosity: argOpts.verbose - argOpts.quiet
+    };
+    modulename(cmdOpts, callback);
+  });
+
   return undefined;
 }
 
