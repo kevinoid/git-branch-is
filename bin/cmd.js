@@ -59,6 +59,18 @@ function modulenameCmd(args, options, callback) {
   }
 
   try {
+    if (args === undefined ||
+        args === null ||
+        (typeof args === 'object' && args.length === 0)) {
+      args = [];
+    } else if (typeof args !== 'object' ||
+               Math.floor(args.length) !== args.length ||
+               args.length < 2) {
+      throw new TypeError('args must be Array-like with at least 2 elements');
+    } else {
+      args = Array.prototype.slice.call(args, 2).map(String);
+    }
+
     if (options && typeof options !== 'object') {
       throw new TypeError('options must be an object');
     }
