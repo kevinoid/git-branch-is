@@ -163,6 +163,7 @@ function modulenameCmd(args, options, callback) {
   return undefined;
 }
 
+modulenameCmd.default = modulenameCmd;
 module.exports = modulenameCmd;
 
 if (require.main === module) {
