@@ -9,6 +9,7 @@
 'use strict';
 
 var Command = require('commander').Command;
+var assign = require('object-assign');
 var modulename = require('..');
 var packageJson = require('../package.json');
 
@@ -75,7 +76,7 @@ function modulenameCmd(args, options, callback) {
       throw new TypeError('options must be an object');
     }
 
-    options = Object.assign(
+    options = assign(
       {
         in: process.stdin,
         out: process.stdout,
