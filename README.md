@@ -38,7 +38,7 @@ npm install @kevinoid/project-template
 ## Recipes
 
 More examples can be found in the [test
-specifications](https://kevinoid.github.io/project-template/specs).
+specifications](https://kevinoid.github.io/project-template/spec).
 
 ## API Docs
 
