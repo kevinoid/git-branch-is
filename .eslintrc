@@ -51,9 +51,14 @@ rules:
   block-spacing: [2, "always"]
   ## allow unnamed functions
   func-names: 0
-  ## max 80 length
-  # ignore URLs to allow unbroken URLs in comments
-  max-len: [2, 80, 2, {"ignoreUrls": true}]
+  ## max 80 length (other options match airbnb-base/legacy)
+  max-len: [2, 80, 2, {
+    ignoreUrls: true,
+    ignoreComments: false,
+    ignoreRegExpLiterals: true,
+    ignoreStrings: true,
+    ignoreTemplateLiterals: true,
+  }]
   ## require parens for Constructor
   new-parens: 2
   ## allow nested ternary expressions
