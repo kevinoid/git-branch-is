@@ -15,6 +15,7 @@ var modulename = require('..');
 
 /** Calls <code>yargs.parse</code> and passes any thrown errors to the callback.
  * Workaround for https://github.com/yargs/yargs/issues/755
+ * @private
  */
 function parseYargs(yargs, args, callback) {
   try {
