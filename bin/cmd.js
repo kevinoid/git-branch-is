@@ -18,11 +18,22 @@ var modulename = require('..');
  * @private
  */
 function parseYargs(yargs, args, callback) {
+  // Since yargs doesn't nextTick its callback, this function must be careful
+  // that exceptions thrown from callback (which propagate through yargs.parse)
+  // are not caught and passed to a second invocation of callback.
+  var called = false;
   try {
-    yargs.parse(args, callback);
+    yargs.parse(args, function() {
+      called = true;
+      return callback.apply(this, arguments);
+    });
   } catch (err) {
-    // Since yargs doesn't nextTick its callback, don't here either
-    callback(err);
+    if (called) {
+      // err was thrown after or by callback.  Let it propagate.
+      throw err;
+    } else {
+      callback(err);
+    }
   }
 }
 
