@@ -11,4 +11,5 @@
 /test-bin
 /test-lib
 TODO.*
+appveyor.yml
 jsdoc*.conf.json

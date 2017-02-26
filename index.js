@@ -61,7 +61,7 @@ function gitBranchIs(branchName, options, callback) {
     throw new TypeError('callback must be a function');
   }
 
-  if (options && typeof options !== 'object') {
+  if (options !== undefined && typeof options !== 'object') {
     process.nextTick(function() {
       callback(new TypeError('options must be an object'));
     });

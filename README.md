@@ -1,8 +1,8 @@
 `git-branch-is`
 ===============
 
-[![Build Status: Linux](https://img.shields.io/travis/kevinoid/git-branch-is.svg?style=flat&label=build+on+linux)](https://travis-ci.org/kevinoid/git-branch-is)
-[![Build Status: Windows](https://img.shields.io/appveyor/ci/kevinoid/git-branch-is.svg?style=flat&label=build+on+windows)](https://ci.appveyor.com/project/kevinoid/git-branch-is)
+[![Build Status: Linux](https://img.shields.io/travis/kevinoid/git-branch-is/master.svg?style=flat&label=build+on+linux)](https://travis-ci.org/kevinoid/git-branch-is)
+[![Build Status: Windows](https://img.shields.io/appveyor/ci/kevinoid/git-branch-is/master.svg?style=flat&label=build+on+windows)](https://ci.appveyor.com/project/kevinoid/git-branch-is)
 [![Coverage](https://img.shields.io/codecov/c/github/kevinoid/git-branch-is.svg?style=flat)](https://codecov.io/github/kevinoid/git-branch-is?branch=master)
 [![Dependency Status](https://img.shields.io/david/kevinoid/git-branch-is.svg?style=flat)](https://david-dm.org/kevinoid/git-branch-is)
 [![Supported Node Version](https://img.shields.io/node/v/git-branch-is.svg?style=flat)](https://www.npmjs.com/package/git-branch-is)
