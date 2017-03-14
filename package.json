@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "bluebird": "^3.3.0",
-    "codecov": "^1.0.1",
+    "codecov": "^2.0.1",
     "coveralls": "^2.11.6",
     "eslint": "^3.0.0",
     "eslint-config-airbnb-base": "^11.0.0",
