@@ -1,9 +1,12 @@
 # ESLint configuration
 # Intended to be a strict superset of Node core style, with the exception of
-# rules which would cause breakage in old Node versions (e.g. ES6 features).
-# Uses Airbnb's ES5 styles where they don't conflict with Node core or my prefs.
+# rules which would cause breakage in supported Node versions.
+# Uses Airbnb's styles where they don't conflict with Node core or my prefs.
 
-extends: "airbnb-base/legacy"
+extends: "airbnb-base"
+
+parserOptions:
+  sourceType: "script"
 
 env:
   node: true
@@ -76,5 +79,12 @@ rules:
   one-var-declaration-per-line: [2, "initializations"]
   ## no space before function, eg. 'function()'
   space-before-function-paren: [2, "never"]
+
+  # ECMAScript 6 Rules
+  # list: https://github.com/eslint/eslint/tree/master/docs/rules#ecmascript-6
+  ## require parentheses around arrow function arguments (as Node core does)
+  arrow-parens: [2, "always"]
+  ## Suggest using the rest parameters instead of arguments (for Node 4)
+  prefer-rest-params: 0
 
 # vi: set sts=2 sw=2 et ft=yaml:
