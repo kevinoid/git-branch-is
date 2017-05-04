@@ -27,8 +27,8 @@ function scriptname(args, options, callback) {
 
   if (!callback && typeof Promise === 'function') {
     // eslint-disable-next-line no-undef
-    return new Promise(function(resolve, reject) {
-      scriptname(args, function(err, result) {
+    return new Promise((resolve, reject) => {
+      scriptname(args, (err, result) => {
         if (err) { reject(err); } else { resolve(result); }
       });
     });
@@ -46,16 +46,16 @@ module.exports = scriptname;
 if (require.main === module) {
   // This file was invoked directly.
   /* eslint-disable no-process-exit */
-  var mainOptions = {
+  const mainOptions = {
     in: process.stdin,
     out: process.stdout,
     err: process.stderr
   };
-  scriptname(process.argv, mainOptions, function(err, code) {
+  scriptname(process.argv, mainOptions, (err, code) => {
     if (err) {
       if (err.stdout) { process.stdout.write(err.stdout); }
       if (err.stderr) { process.stderr.write(err.stderr); }
-      process.stderr.write(err.name + ': ' + err.message + '\n');
+      process.stderr.write(`${err.name}: ${err.message}\n`);
 
       code = typeof err.code === 'number' ? err.code : 1;
     }

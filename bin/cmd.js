@@ -8,10 +8,10 @@
 
 'use strict';
 
-var Yargs = require('yargs/yargs');
-var assign = require('object-assign');
-var packageJson = require('../package.json');
-var modulename = require('..');
+const Yargs = require('yargs/yargs');
+const assign = require('object-assign');
+const packageJson = require('../package.json');
+const modulename = require('..');
 
 /** Calls <code>yargs.parse</code> and passes any thrown errors to the callback.
  * Workaround for https://github.com/yargs/yargs/issues/755
@@ -21,7 +21,7 @@ function parseYargs(yargs, args, callback) {
   // Since yargs doesn't nextTick its callback, this function must be careful
   // that exceptions thrown from callback (which propagate through yargs.parse)
   // are not caught and passed to a second invocation of callback.
-  var called = false;
+  let called = false;
   try {
     yargs.parse(args, function() {
       called = true;
@@ -51,7 +51,7 @@ function parseYargs(yargs, args, callback) {
  * @property {stream.Writable=} err Stream to which errors (and non-output
  * status messages) are written. (default: <code>process.stderr</code>)
  */
-// var CommandOptions;
+// const CommandOptions;
 
 /** Entry point for this command.
  *
@@ -72,8 +72,8 @@ function modulenameCmd(args, options, callback) {
 
   if (!callback && typeof Promise === 'function') {
     // eslint-disable-next-line no-undef
-    return new Promise(function(resolve, reject) {
-      modulenameCmd(args, options, function(err, result) {
+    return new Promise((resolve, reject) => {
+      modulenameCmd(args, options, (err, result) => {
         if (err) { reject(err); } else { resolve(result); }
       });
     });
@@ -118,7 +118,7 @@ function modulenameCmd(args, options, callback) {
       throw new TypeError('options.err must be a stream.Writable');
     }
   } catch (err) {
-    process.nextTick(function() {
+    process.nextTick(() => {
       callback(err);
     });
     return undefined;
@@ -126,7 +126,7 @@ function modulenameCmd(args, options, callback) {
 
   // Workaround for https://github.com/yargs/yargs/issues/783
   require.main = module;
-  var yargs = new Yargs(null, null, require)
+  const yargs = new Yargs(null, null, require)
     .usage('Usage: $0 [options] [args...]')
     .help()
     .alias('help', 'h')
@@ -141,20 +141,20 @@ function modulenameCmd(args, options, callback) {
       describe: 'Print more output',
       count: true
     })
-    .version(packageJson.name + ' ' + packageJson.version)
+    .version(`${packageJson.name} ${packageJson.version}`)
     .alias('version', 'V')
     .strict();
-  parseYargs(yargs, args, function(err, argOpts, output) {
+  parseYargs(yargs, args, (err, argOpts, output) => {
     if (err) {
       options.err.write(output ?
-                          output + '\n' :
-                          err.name + ': ' + err.message + '\n');
+                          `${output}\n` :
+                          `${err.name}: ${err.message}\n`);
       callback(null, 1);
       return;
     }
 
     if (output) {
-      options.out.write(output + '\n');
+      options.out.write(`${output}\n`);
     }
 
     if (argOpts.help || argOpts.version) {
@@ -169,7 +169,7 @@ function modulenameCmd(args, options, callback) {
     }
 
     // Parse arguments then call API function with parsed options
-    var cmdOpts = {
+    const cmdOpts = {
       files: argOpts._,
       verbosity: argOpts.verbose - argOpts.quiet
     };
@@ -185,16 +185,16 @@ module.exports = modulenameCmd;
 if (require.main === module) {
   // This file was invoked directly.
   /* eslint-disable no-process-exit */
-  var mainOptions = {
+  const mainOptions = {
     in: process.stdin,
     out: process.stdout,
     err: process.stderr
   };
-  modulenameCmd(process.argv, mainOptions, function(err, exitCode) {
+  modulenameCmd(process.argv, mainOptions, (err, exitCode) => {
     if (err) {
       if (err.stdout) { process.stdout.write(err.stdout); }
       if (err.stderr) { process.stderr.write(err.stderr); }
-      process.stderr.write(err.name + ': ' + err.message + '\n');
+      process.stderr.write(`${err.name}: ${err.message}\n`);
 
       exitCode = typeof err.exitCode === 'number' ? err.exitCode : 1;
     }

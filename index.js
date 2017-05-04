@@ -5,7 +5,7 @@
 
 'use strict';
 
-var modulename = {};
+const modulename = {};
 
 modulename.func = function func(options, callback) {
   if (!callback && typeof options === 'function') {
@@ -15,8 +15,8 @@ modulename.func = function func(options, callback) {
 
   if (!callback && typeof Promise === 'function') {
     // eslint-disable-next-line no-undef
-    return new Promise(function(resolve, reject) {
-      func(options, function(err, result) {
+    return new Promise((resolve, reject) => {
+      func(options, (err, result) => {
         if (err) { reject(err); } else { resolve(result); }
       });
     });
@@ -27,7 +27,7 @@ modulename.func = function func(options, callback) {
   }
 
   if (options !== undefined && typeof options !== 'object') {
-    process.nextTick(function() {
+    process.nextTick(() => {
       callback(new TypeError('options must be an object'));
     });
     return undefined;

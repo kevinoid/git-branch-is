@@ -5,10 +5,10 @@
 
 'use strict';
 
-var modulename = require('..');
+const modulename = require('..');
 
-describe('modulename', function() {
-  it('does something', function(done) {
+describe('modulename', () => {
+  it('does something', (done) => {
     // Assert something about modulename here
     modulename.func();
     done();
