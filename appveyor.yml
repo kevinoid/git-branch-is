@@ -10,7 +10,7 @@ environment:
     - nodejs_version: "0.12"
       # 4.6.1 fails on Node 0.12 due to exit code of recursive npm run
       npm_version: "^4.5"
-    - nodejs_version: "7"
+    - nodejs_version: "8"
       npm_version: "latest"
 
 # If the package has arch-dependent features, uncomment this.
