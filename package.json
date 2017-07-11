@@ -26,7 +26,7 @@
     "doc-spec": "rimraf doc/spec && mkdir doc/spec && mocha --reporter doc --recursive test | nodecat doc-src/spec/header.xhtml - doc-src/spec/footer.xhtml > doc/spec/index.xhtml",
     "lint": "npm run lint-js && npm run lint-doc",
     "lint-doc": "jsdoc -t templates/silent -c jsdoc-lint.conf.json . && echo JSDoc passed.",
-    "lint-js": "node-version-gte-4 && eslint . && echo ESLint passed. || node-version-lt-4",
+    "lint-js": "eslint . && echo ESLint passed.",
     "postpublish": "git -C doc push && git push --follow-tags origin master gh-pages && echo Remember to update GitHub Releases from CHANGELOG.md && echo until skywinder/github-changelog-generator#56 is fixed.",
     "postversion": "rimraf doc && git clone -b gh-pages -l -q . doc && npm run doc && git -C doc add . && git -C doc commit -n -m \"Docs for v$npm_package_version\"",
     "preversion": "depcheck --ignores eslint-plugin-import --ignore-dirs doc && david && git-branch-is master && travis-status -b master -c -wx && appveyor-status -b master -c -w && istanbul check-coverage --statements 95 coverage/coverage.json",
@@ -49,7 +49,6 @@
     "istanbul": "^0.4.1",
     "jsdoc": "^3.4.1",
     "mocha": "^3.2.0",
-    "node-version-check": "^2.1.1",
     "nodecat": "^1.0.0",
     "rimraf": "^2.2.0"
   },
