@@ -74,5 +74,10 @@
       "lcov",
       "text"
     ]
+  },
+  "greenkeeper": {
+    "ignore": [
+      "jsdoc"
+    ]
   }
 }
