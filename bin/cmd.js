@@ -57,12 +57,10 @@ function parseYargs(yargs, args, callback) {
  *
  * @param {!Array<string>} args Command-line arguments.
  * @param {CommandOptions=} options Options.
- * @param {?function(Error, number=)=}
- * callback Callback for the exit code or an <code>Error</code>.  Required if
- * <code>global.Promise</code> is not defined.
- * @return {Promise<number>|undefined} If <code>callback</code> is not given
- * and <code>global.Promise</code> is defined, a <code>Promise</code> with the
- * exit code or <code>Error</code>.
+ * @param {?function(Error, number=)=} callback Optional callback for the exit
+ * code or an <code>Error</code>.
+ * @return {Promise<number>|undefined} If <code>callback</code> is not given,
+ * a <code>Promise</code> with the exit code or <code>Error</code>.
  */
 function modulenameCmd(args, options, callback) {
   if (!callback && typeof options === 'function') {
@@ -70,8 +68,7 @@ function modulenameCmd(args, options, callback) {
     options = null;
   }
 
-  if (!callback && typeof Promise === 'function') {
-    // eslint-disable-next-line no-undef
+  if (!callback) {
     return new Promise((resolve, reject) => {
       modulenameCmd(args, options, (err, result) => {
         if (err) { reject(err); } else { resolve(result); }

@@ -13,8 +13,7 @@ modulename.func = function func(options, callback) {
     options = null;
   }
 
-  if (!callback && typeof Promise === 'function') {
-    // eslint-disable-next-line no-undef
+  if (!callback) {
     return new Promise((resolve, reject) => {
       func(options, (err, result) => {
         if (err) { reject(err); } else { resolve(result); }
