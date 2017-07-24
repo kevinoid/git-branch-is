@@ -9,7 +9,6 @@
 'use strict';
 
 const Yargs = require('yargs/yargs');
-const assign = require('object-assign');
 const packageJson = require('../package.json');
 const modulename = require('..');
 
@@ -96,7 +95,7 @@ function modulenameCmd(args, options, callback) {
       throw new TypeError('options must be an object');
     }
 
-    options = assign(
+    options = Object.assign(
       {
         in: process.stdin,
         out: process.stdout,
