@@ -49,7 +49,7 @@
     "codecov": "^2.0.1",
     "coveralls": "^2.11.6",
     "eslint": "^3.0.0",
-    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint-config-airbnb-base": "^12.0.0",
     "eslint-plugin-import": "^2.2.0",
     "exit": "^0.1.2",
     "jsdoc": "~3.4.1",
