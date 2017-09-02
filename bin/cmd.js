@@ -142,9 +142,11 @@ function modulenameCmd(args, options, callback) {
     .strict();
   parseYargs(yargs, args, (err, argOpts, output) => {
     if (err) {
-      options.err.write(
-        output ? `${output}\n` : `${err.name}: ${err.message}\n`
-      );
+      if (output) {
+        options.err.write(`${output}\n`);
+      } else {
+        options.err.write(`${err.name}: ${err.message}\n`);
+      }
       callback(null, 1);
       return;
     }
