@@ -89,7 +89,8 @@ rules:
   ## Prefer destructuring from arrays and objects
   # Disabled since unsupported on Node < 6
   prefer-destructuring: 0
-  ## Suggest using the rest parameters instead of arguments (for Node 4)
+  ## Suggest using the rest parameters instead of arguments
+  # Disabled since unsupported on Node < 6
   prefer-rest-params: 0
 
 # vi: set sts=2 sw=2 et ft=yaml:
