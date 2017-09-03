@@ -86,6 +86,9 @@ rules:
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#ecmascript-6
   ## require parentheses around arrow function arguments (as Node core does)
   arrow-parens: [2, "always"]
+  ## Prefer destructuring from arrays and objects
+  # Disabled since unsupported on Node < 6
+  prefer-destructuring: 0
   ## Suggest using the rest parameters instead of arguments (for Node 4)
   prefer-rest-params: 0
 
