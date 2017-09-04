@@ -89,6 +89,10 @@ rules:
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#ecmascript-6
   ## require parentheses around arrow function arguments (as Node core does)
   arrow-parens: [2, "always"]
+  ## enforce consistent line breaks inside function parentheses
+  # Would prefer multiline if it allowed line breaks for single argument
+  # Since it doesn't, use consistent
+  function-paren-newline: [2, "consistent"]
   ## Prefer destructuring from arrays and objects
   # Disabled since unsupported on Node < 6
   prefer-destructuring: 0
