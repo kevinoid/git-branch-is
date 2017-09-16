@@ -25,14 +25,14 @@
   "scripts": {
     "clean": "rimraf coverage && rimraf doc",
     "doc": "npm run doc-js && npm run doc-spec",
-    "doc-js": "rimraf doc/api && jsdoc -c jsdoc.conf.json .",
+    "doc-js": "node-version-gte-4 && rimraf doc/api && jsdoc -c jsdoc.conf.json .",
     "doc-spec": "rimraf doc/spec && mkdir doc/spec && mocha --reporter doc --recursive test | nodecat doc-src/spec/header.xhtml - doc-src/spec/footer.xhtml > doc/spec/index.xhtml",
     "lint": "npm run lint-js && npm run lint-doc",
-    "lint-doc": "jsdoc -t templates/silent -c jsdoc-lint.conf.json . && echo JSDoc passed.",
+    "lint-doc": "node-version-gte-4 && jsdoc -t templates/silent -c jsdoc-lint.conf.json . && echo JSDoc passed. || node-version-lt-4",
     "lint-js": "node-version-gte-4 && eslint . && echo ESLint passed. || node-version-lt-4",
     "postpublish": "git -C doc push && git push --follow-tags origin master gh-pages && echo Remember to update GitHub Releases from CHANGELOG.md && echo until skywinder/github-changelog-generator#56 is fixed.",
     "postversion": "rimraf doc && git clone -b gh-pages -l -q . doc && npm run doc && git -C doc add . && git -C doc commit -n -m \"Docs for v$npm_package_version\"",
-    "preversion": "depcheck --ignores eslint-plugin-import --ignore-dirs doc && david -i jsdoc,nyc,pify && node ./bin/git-branch-is.js master && travis-status -b master -c -wx && appveyor-status -b master -c -w -p kevinoid/git-branch-is && nyc check-coverage --lines 95",
+    "preversion": "depcheck --ignore-dirs doc && david -i nyc,pify && node ./bin/git-branch-is.js master && travis-status -b master -c -wx && appveyor-status -b master -c -w -p kevinoid/git-branch-is && nyc check-coverage --lines 95",
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
     "test-unit": "mocha --recursive test",
@@ -48,11 +48,12 @@
     "bluebird": "^3.3.0",
     "codecov": "^2.0.1",
     "coveralls": "^2.11.6",
-    "eslint": "^3.0.0",
-    "eslint-config-airbnb-base": "^11.0.0",
-    "eslint-plugin-import": "^2.2.0",
+    "eslint": "^4.6.1",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0",
     "exit": "^0.1.2",
-    "jsdoc": "~3.4.1",
+    "istanbul": "^0.4.1",
+    "jsdoc": "^3.4.1",
     "mocha": "^3.2.0",
     "node-version-check": "^2.1.1",
     "nodecat": "^1.0.0",
@@ -77,7 +78,6 @@
   },
   "greenkeeper": {
     "ignore": [
-      "jsdoc",
       "nyc",
       "pify"
     ]
