@@ -147,8 +147,8 @@ function modulenameCmd(args, options, callback) {
   parseYargs(yargs, args, function(err, argOpts, output) {
     if (err) {
       options.err.write(output ?
-                          output + '\n' :
-                          err.name + ': ' + err.message + '\n');
+        output + '\n' :
+        err.name + ': ' + err.message + '\n');
       callback(null, 1);
       return;
     }
