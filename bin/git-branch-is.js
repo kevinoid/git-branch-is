@@ -57,8 +57,10 @@ function gitBranchIsCmd(args, callback) {
     // .arguments() splits on white space.  Call .parseExpectedArgs directly.
     .parseExpectedArgs(['<branch name>'])
     .option('-C <path>', 'run as if started in <path>')
-    .option('--git-arg <arg>', 'additional argument to git (can be repeated)',
-            collect, [])
+    .option(
+      '--git-arg <arg>', 'additional argument to git (can be repeated)',
+      collect, []
+    )
     .option('--git-dir <dir>', 'set the path to the repository')
     .option('--git-path <path>', 'set the path to the git binary')
     .option('-q, --quiet', 'suppress warning message if branch differs')
@@ -116,7 +118,7 @@ if (require.main === module) {
     if (err) { process.stderr.write(err.name + ': ' + err.message + '\n'); }
 
     var code = typeof errOrResult.code === 'number' ? errOrResult.code :
-                err ? 1 : 0;
+      err ? 1 : 0;
     exit(code);
   });
 }

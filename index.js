@@ -133,19 +133,19 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
 
   try {
     execFile(
-        combinedOpts.gitPath,
-        gitArgs,
-        {cwd: combinedOpts.cwd},
-        function(errExec, stdout, stderr) {
-          if (errExec) {
-            callback(errExec);
-            return;
-          }
-
-          // Note:  ASCII space and control characters are forbidden in names
-          // https://www.kernel.org/pub/software/scm/git/docs/git-check-ref-format.html
-          callback(null, stdout.trimRight());
+      combinedOpts.gitPath,
+      gitArgs,
+      {cwd: combinedOpts.cwd},
+      function(errExec, stdout, stderr) {
+        if (errExec) {
+          callback(errExec);
+          return;
         }
+
+        // Note:  ASCII space and control characters are forbidden in names
+        // https://www.kernel.org/pub/software/scm/git/docs/git-check-ref-format.html
+        callback(null, stdout.trimRight());
+      }
     );
   } catch (errExec) {
     process.nextTick(function() {

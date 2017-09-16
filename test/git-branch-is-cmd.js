@@ -82,10 +82,10 @@ describe('git-branch-is', function() {
 
   it('can specify an additional git argument', function(done) {
     var args = ARGS.concat(
-        '-C',
-        SUBDIR_NAME,
-        '--git-arg=--git-dir=../.git',
-        BRANCH_CURRENT
+      '-C',
+      SUBDIR_NAME,
+      '--git-arg=--git-dir=../.git',
+      BRANCH_CURRENT
     );
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
@@ -98,11 +98,11 @@ describe('git-branch-is', function() {
 
   it('can specify multiple additional git arguments', function(done) {
     var args = ARGS.concat(
-        '-C',
-        '..',
-        '--git-arg=-C',
-        '--git-arg=' + TEST_REPO_PATH,
-        BRANCH_CURRENT
+      '-C',
+      '..',
+      '--git-arg=-C',
+      '--git-arg=' + TEST_REPO_PATH,
+      BRANCH_CURRENT
     );
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
@@ -115,13 +115,13 @@ describe('git-branch-is', function() {
 
   it('can specify an additional git arguments separately', function(done) {
     var args = ARGS.concat(
-        '--git-arg',
-        '-C',
-        '--git-arg',
-        TEST_REPO_PATH,
-        '-C',
-        '..',
-        BRANCH_CURRENT
+      '--git-arg',
+      '-C',
+      '--git-arg',
+      TEST_REPO_PATH,
+      '-C',
+      '..',
+      BRANCH_CURRENT
     );
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
@@ -134,11 +134,11 @@ describe('git-branch-is', function() {
 
   it('gitArgs takes precedence over gitDir', function(done) {
     var args = ARGS.concat(
-        '--git-arg',
-        // Note:  Also tests that Commander interprets this as option argument
-        '--git-dir=.git',
-        '--git-dir=invalid',
-        BRANCH_CURRENT
+      '--git-arg',
+      // Note:  Also tests that Commander interprets this as option argument
+      '--git-dir=.git',
+      '--git-dir=invalid',
+      BRANCH_CURRENT
     );
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
@@ -152,11 +152,11 @@ describe('git-branch-is', function() {
   it('can specify git executable and args', function(done) {
     var gitArg = path.join('..', '..', 'test-bin', 'echo-surprise.js');
     var args = ARGS.concat(
-        '-C',
-        SUBDIR_NAME,
-        '--git-arg=' + gitArg,
-        '--git-path=' + process.execPath,
-        'surprise'
+      '-C',
+      SUBDIR_NAME,
+      '--git-arg=' + gitArg,
+      '--git-path=' + process.execPath,
+      'surprise'
     );
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
@@ -170,10 +170,10 @@ describe('git-branch-is', function() {
   // Just like git -C and --git-dir
   it('gitDir is relative to cwd', function(done) {
     var args = ARGS.concat(
-        '-C',
-        SUBDIR_NAME,
-        '--git-dir=' + path.join('..', '.git'),
-        BRANCH_CURRENT
+      '-C',
+      SUBDIR_NAME,
+      '--git-dir=' + path.join('..', '.git'),
+      BRANCH_CURRENT
     );
     gitBranchIsCmd(args, function(err, result) {
       assert.ifError(err);
@@ -252,13 +252,13 @@ describe('git-branch-is', function() {
 
     it('throws without a callback', function() {
       assert.throws(
-          function() {
-            gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
-          },
-          function(err) {
-            return err instanceof TypeError &&
+        function() {
+          gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
+        },
+        function(err) {
+          return err instanceof TypeError &&
                 /\bcallback\b/.test(err.message);
-          }
+        }
       );
     });
   });

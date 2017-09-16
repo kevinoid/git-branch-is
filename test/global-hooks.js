@@ -36,16 +36,22 @@ before('setup test repository', function() {
     // The user name and email must be configured for the later git commands
     // to work.  On Travis CI (and probably others) there is no global config
     .then(function getConfigName() {
-      return git('-C', TEST_REPO_PATH,
-          'config', 'user.name', 'Test User');
+      return git(
+        '-C', TEST_REPO_PATH,
+        'config', 'user.name', 'Test User'
+      );
     })
     .then(function getConfigEmail() {
-      return git('-C', TEST_REPO_PATH,
-          'config', 'user.email', 'test@example.com');
+      return git(
+        '-C', TEST_REPO_PATH,
+        'config', 'user.email', 'test@example.com'
+      );
     })
     .then(function createCommit() {
-      return git('-C', TEST_REPO_PATH,
-          'commit', '-q', '-m', 'Initial Commit', '--allow-empty');
+      return git(
+        '-C', TEST_REPO_PATH,
+        'commit', '-q', '-m', 'Initial Commit', '--allow-empty'
+      );
     })
     .then(function renameMaster() {
       return git('-C', TEST_REPO_PATH, 'branch', '-m', BRANCH_CURRENT);

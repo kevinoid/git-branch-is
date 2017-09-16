@@ -207,11 +207,11 @@ describe('gitBranchIs', function() {
       var promise = gitBranchIs(BRANCH_CURRENT, 'opts');
       assert(promise instanceof global.Promise);
       return promise.then(
-          function(result) { throw new Error('expecting Error'); },
-          function(err) {
-            assert(err instanceof TypeError);
-            assertMatch(err.message, /\boptions\b/);
-          }
+        function(result) { throw new Error('expecting Error'); },
+        function(err) {
+          assert(err instanceof TypeError);
+          assertMatch(err.message, /\boptions\b/);
+        }
       );
     });
 
@@ -263,26 +263,26 @@ describe('gitBranchIs', function() {
 
     it('throws without a callback', function() {
       assert.throws(
-          function() {
-            gitBranchIs(BRANCH_CURRENT);
-          },
-          function(err) {
-            return err instanceof TypeError &&
+        function() {
+          gitBranchIs(BRANCH_CURRENT);
+        },
+        function(err) {
+          return err instanceof TypeError &&
                 /\bcallback\b/.test(err.message);
-          }
+        }
       );
     });
 
     describe('.getBranch()', function() {
       it('throws without a callback', function() {
         assert.throws(
-            function() {
-              gitBranchIs.getBranch();
-            },
-            function(err) {
-              return err instanceof TypeError &&
+          function() {
+            gitBranchIs.getBranch();
+          },
+          function(err) {
+            return err instanceof TypeError &&
                   /\bcallback\b/.test(err.message);
-            }
+          }
         );
       });
     });
