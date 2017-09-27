@@ -29,6 +29,9 @@ var origCWD;
 
 
 before('setup test repository', function() {
+  // Some git versions can run quite slowly on Windows (in AppVeyor)
+  this.timeout(/^win/i.test(process.platform) ? 8000 : 4000);
+
   return rimrafP(TEST_REPO_PATH)
     .then(function createTestRepo() {
       return git('init', '-q', TEST_REPO_PATH);
