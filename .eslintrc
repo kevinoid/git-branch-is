@@ -51,6 +51,10 @@ rules:
   block-spacing: [2, "always"]
   ## allow unnamed functions
   func-names: 0
+  ## enforce consistent line breaks inside function parentheses
+  # Would prefer multiline if it allowed line breaks for single argument
+  # Since it doesn't, use consistent
+  function-paren-newline: [2, "consistent"]
   ## enforce a maximum line length
   # reduce from 100 to 80 chars (conventional terminal width)
   # ignore lines which consist of a single string, URL, or RegExp literal,
