@@ -67,7 +67,7 @@ rules:
   # Note: Change // to /[/] to avoid getting mangled as a JS comment.
   #       https://github.com/eslint/eslint/pull/9226
   max-len: [2, 80, 2, {
-    ignorePattern: '^\s*((/?\*|/[/])\s*)?(''[^''\\]*(\\.[^''\\]*)*''|"[^"\\]*(\\.[^"\\]*)*"|/[^/\\]*(\\.[^/\\]*)*/|[^:/?#\s]+:/[/]\S+);?$'
+    ignorePattern: '^\s*((/?\*|/[/])\s*)?(''[^''\\]*(\\.[^''\\]*)*''|"[^"\\]*(\\.[^"\\]*)*"|/[^/\\]*(\\.[^/\\]*)*/[gimuy]*|[^:/?#\s]+:/[/]\S+);?$'
   }]
   ## require parens for Constructor
   new-parens: 2
