@@ -60,6 +60,9 @@ rules:
   # Would prefer multiline if it allowed line breaks for single argument
   # Since it doesn't, use consistent
   function-paren-newline: [2, "consistent"]
+  ## don't enforce consistent linebreak style
+  # Allow developers to develop with native EOL.  VCS manages committed style.
+  linebreak-style: 0
   ## enforce a maximum line length
   # reduce from 100 to 80 chars (conventional terminal width)
   # ignore lines which consist of a single string, URL, or RegExp literal,
