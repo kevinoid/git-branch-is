@@ -5,7 +5,8 @@
 environment:
   matrix:
     - nodejs_version: "4"
-    - nodejs_version: "8"
+      # Empty version installs most recent version available
+    - nodejs_version: ""
 
 # If the package has arch-dependent features, uncomment this.
 #platform:
