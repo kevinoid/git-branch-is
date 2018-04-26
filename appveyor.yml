@@ -5,8 +5,12 @@
 environment:
   matrix:
     - nodejs_version: "4"
+      # npm 6.0.0 fails on Node 4
+      # Note: Can't use carat version https://github.com/npm/npm/issues/17297
+      npm_version: ">=5 <6"
       # Empty version installs most recent version available
     - nodejs_version: ""
+      npm_version: "latest"
 
 # If the package has arch-dependent features, uncomment this.
 #platform:
@@ -15,7 +19,7 @@ environment:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm -g install npm
+  - npm -g install "npm@%npm_version%"
   - npm install
 
 test_script:
