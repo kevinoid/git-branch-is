@@ -21,6 +21,8 @@ Error: Current branch is "master", not "release".
 $ echo $?
 1
 ```
+The given branch name argument can use [minimatch](https://github.com/isaacs/minimatch) syntax
+to match branches in folders such as release/xxx
 
 This can be useful as part of a [`preversion`
 script](https://docs.npmjs.com/cli/version) in `package.json`:
@@ -30,7 +32,7 @@ script](https://docs.npmjs.com/cli/version) in `package.json`:
   "name": "super-cool-package",
   "version": "1.2.3",
   "scripts": {
-    "preversion": "git-branch-is release && echo Preversion checks passed."
+    "preversion": "git-branch-is release/* && echo Preversion checks passed."
   }
 }
 ```
