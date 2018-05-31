@@ -9,6 +9,7 @@
 var Command = require('commander').Command;
 var exit = require('exit');
 var gitBranchIs = require('..');
+var minimatch = require('minimatch');
 var packageJson = require('../package.json');
 
 function collect(arg, args) {
@@ -87,7 +88,7 @@ function gitBranchIsCmd(args, callback) {
       return;
     }
 
-    if (currentBranch !== expectedBranch) {
+    if (!minimatch(currentBranch, expectedBranch)) {
       callback(null, {
         code: 1,
         stderr: command.quiet ? '' :

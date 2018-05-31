@@ -42,7 +42,8 @@
     "version-deps": "npm install david depcheck travis-status"
   },
   "dependencies": {
-    "commander": "^2.9.0"
+    "commander": "^2.9.0",
+    "minimatch": "^3.0.4"
   },
   "devDependencies": {
     "bluebird": "^3.3.0",
