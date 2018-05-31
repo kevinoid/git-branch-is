@@ -79,7 +79,7 @@ function gitBranchIs(branchName, options, callback) {
   return undefined;
 }
 
-/** Checks that the current branch of a git repository has a given name.
+/** Gets the name of the current (i.e. checked out) branch of a git repository.
  *
  * @param {?GitBranchIsOptions=} options Options.
  * @param {?function(Error, string=)=} callback Callback function called
