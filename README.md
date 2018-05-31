@@ -55,6 +55,7 @@ the `--help` output:
 
       -h, --help         output usage information
       -C <path>          run as if started in <path>
+      --git-arg <arg>    additional argument to git (can be repeated)
       --git-dir <dir>    set the path to the repository
       --git-path <path>  set the path to the git binary
       -q, --quiet        suppress warning message if branch differs
