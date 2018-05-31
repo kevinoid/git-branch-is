@@ -48,6 +48,30 @@ describe('git-branch-is', function() {
     });
   });
 
+  it('exit code 1 with warning for different case branch name', function(done) {
+    var branchUpper = BRANCH_CURRENT.toUpperCase();
+    gitBranchIsCmd(ARGS.concat(branchUpper), function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 1);
+      assert(!result.stdout);
+      var branchUpperRE = new RegExp('\\b' + branchUpper + '\\b');
+      assertMatch(result.stderr, branchUpperRE);
+      assertMatch(result.stderr, BRANCH_CURRENT_RE);
+      done();
+    });
+  });
+
+  it('exit code 0 silently for case-insensitive branch name', function(done) {
+    var args = ARGS.concat('-i', BRANCH_CURRENT.toUpperCase());
+    gitBranchIsCmd(args, function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 0);
+      assert(!result.stdout);
+      assert(!result.stderr);
+      done();
+    });
+  });
+
   it('exit 0 silently for matching anchored regex branch name', function(done) {
     var args = ARGS.concat('-r', '^' + BRANCH_CURRENT + '$');
     gitBranchIsCmd(args, function(err, result) {
@@ -81,12 +105,37 @@ describe('git-branch-is', function() {
     });
   });
 
+  it('exit 0 silently for matching i regex branch name', function(done) {
+    var args =
+      ARGS.concat('-i', '-r', '^' + BRANCH_CURRENT.toUpperCase() + '$');
+    gitBranchIsCmd(args, function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 0);
+      assert(!result.stdout);
+      assert(!result.stderr);
+      done();
+    });
+  });
+
   it('exit 1 with warning for non-match regex branch name', function(done) {
     gitBranchIsCmd(ARGS.concat('-r', 'invalid'), function(err, result) {
       assert.ifError(err);
       assert.strictEqual(result.code, 1);
       assert(!result.stdout);
       assertMatch(result.stderr, /\binvalid\b/);
+      assertMatch(result.stderr, BRANCH_CURRENT_RE);
+      done();
+    });
+  });
+
+  it('exit 1 with warning for no-match case regex branch name', function(done) {
+    var branchUpper = BRANCH_CURRENT.toUpperCase();
+    gitBranchIsCmd(ARGS.concat('-r', branchUpper), function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 1);
+      assert(!result.stdout);
+      var branchUpperRE = new RegExp('\\b' + branchUpper + '\\b');
+      assertMatch(result.stderr, branchUpperRE);
       assertMatch(result.stderr, BRANCH_CURRENT_RE);
       done();
     });

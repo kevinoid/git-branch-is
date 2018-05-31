@@ -58,6 +58,7 @@ the `--help` output:
       --git-arg <arg>    additional argument to git (can be repeated)
       --git-dir <dir>    set the path to the repository
       --git-path <path>  set the path to the git binary
+      -i, --ignore-case  compare/match branch name case-insensitively
       -q, --quiet        suppress warning message if branch differs
       -r, --regex        match <branch name> as a regular expression
       -v, --verbose      print a message if the branch matches
@@ -79,6 +80,18 @@ $ echo $?
 
 Note:  Be careful to quote patterns to avoid shell expansion or special
 handling (e.g. POSIX shells expand `*` and `cmd.exe` treats `^` specially).
+
+### Case-Insensitive Matching
+
+To check that the current branch starts with `release/` case-insensitively
+using a regular expression:
+
+```
+$ git-branch-is -i -r "^release/"
+Error: Current branch "master" does not match "^release/".
+$ echo $?
+1
+```
 
 ## API Usage
 

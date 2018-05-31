@@ -63,6 +63,7 @@ function gitBranchIsCmd(args, callback) {
     )
     .option('--git-dir <dir>', 'set the path to the repository')
     .option('--git-path <path>', 'set the path to the git binary')
+    .option('-i, --ignore-case', 'compare/match branch name case-insensitively')
     .option('-q, --quiet', 'suppress warning message if branch differs')
     .option('-r, --regex', 'match <branch name> as a regular expression')
     .option('-v, --verbose', 'print a message if the branch matches')
@@ -86,7 +87,10 @@ function gitBranchIsCmd(args, callback) {
   var expectedBranchRegExp;
   if (command.regex) {
     try {
-      expectedBranchRegExp = new RegExp(expectedBranch);
+      expectedBranchRegExp = new RegExp(
+        expectedBranch,
+        command.ignoreCase ? 'i' : undefined
+      );
     } catch (errRegExp) {
       callback(null, {
         code: 2,
@@ -113,7 +117,9 @@ function gitBranchIsCmd(args, callback) {
         });
         return;
       }
-    } else if (currentBranch !== expectedBranch) {
+    } else if (currentBranch !== expectedBranch &&
+        (!command.ignoreCase ||
+         currentBranch.toUpperCase() !== expectedBranch.toUpperCase())) {
       callback(null, {
         code: 1,
         stderr: command.quiet ? '' :
