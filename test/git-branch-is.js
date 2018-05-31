@@ -55,6 +55,38 @@ describe('gitBranchIs', function() {
     });
   });
 
+  it('callback true for function comparing branch name', function(done) {
+    function checkBranchName(branchName) {
+      return branchName === BRANCH_CURRENT;
+    }
+    gitBranchIs(checkBranchName, function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result, true);
+      done();
+    });
+  });
+
+  it('callback false for function returning false', function(done) {
+    function returnsFalse(branchName) {
+      return false;
+    }
+    gitBranchIs(returnsFalse, function(err, result) {
+      assert.ifError(err);
+      assert.strictEqual(result, false);
+      done();
+    });
+  });
+
+  it('callback propagates error from function which throws', function(done) {
+    var errTest = new Error('test');
+    function throwsErr(branchName) { throw errTest; }
+    gitBranchIs(throwsErr, function(err, result) {
+      assert.strictEqual(err, errTest);
+      assert(result === undefined || result === null);
+      done();
+    });
+  });
+
   it('can specify additional git arguments', function(done) {
     var options = {
       cwd: '..',
@@ -212,6 +244,43 @@ describe('gitBranchIs', function() {
           assert(err instanceof TypeError);
           assertMatch(err.message, /\boptions\b/);
         }
+      );
+    });
+
+    it('Promise flattens for function returning Promise', function() {
+      function checkBranchName(branchName) {
+        return global.Promise.resolve(branchName === BRANCH_CURRENT);
+      }
+      var promise = gitBranchIs(checkBranchName);
+      assert(promise instanceof global.Promise);
+      return promise.then(function(result) {
+        assert.strictEqual(result, true);
+      });
+    });
+
+    it('Promise rejects for function returning Promise', function() {
+      // Note: reject with non-Error to ensure no special handling
+      function checkBranchName(branchName) {
+        return global.Promise.reject(branchName === BRANCH_CURRENT);
+      }
+      var promise = gitBranchIs(checkBranchName);
+      assert(promise instanceof global.Promise);
+      return promise.then(
+        function(result) { throw new Error('expecting rejection'); },
+        function(err) {
+          assert.strictEqual(err, true);
+        }
+      );
+    });
+
+    it('Promise rejects for function throwing Error', function() {
+      var errTest = new Error('test');
+      function checkBranchName(branchName) { throw errTest; }
+      var promise = gitBranchIs(checkBranchName);
+      assert(promise instanceof global.Promise);
+      return promise.then(
+        function(result) { throw new Error('expecting rejection'); },
+        function(err) { assert.strictEqual(err, errTest); }
       );
     });
 

@@ -32,17 +32,20 @@ var GitBranchIsOptions = {
 
 /** Checks that the current branch of a git repository has a given name.
  *
- * @param {string} branchName Expected name of current branch.
+ * @param {string|function(string)} branchNameOrTest Expected name of
+ * current branch or a test function to apply to the branch name.
  * @param {?GitBranchIsOptions=} options Options.
  * @param {?function(Error, boolean=)=} callback Callback function called
- * with <code>true</code> if the current branch is <code>branchName</code>,
- * <code>false</code> if not, <code>Error</code> if it could not be determined.
+ * with the return value of <code>branchNameOrTest</code> if it is a function,
+ * or the result of identity checking <code>branchNameOrTest</code> to the
+ * current branch name.
  * @return {Promise|undefined} If <code>callback</code> is not given and
  * <code>global.Promise</code> is defined, a <code>Promise</code> with
- * <code>true</code> if the current branch is <code>branchName</code>,
- * <code>false</code> if not, <code>Error</code> if it could not be determined.
+ * the return value of <code>branchNameOrTest</code> if it is a function,
+ * or the result of identity checking <code>branchNameOrTest</code> to the
+ * current branch name.
  */
-function gitBranchIs(branchName, options, callback) {
+function gitBranchIs(branchNameOrTest, options, callback) {
   if (!callback && typeof options === 'function') {
     callback = options;
     options = null;
@@ -51,7 +54,7 @@ function gitBranchIs(branchName, options, callback) {
   if (!callback && typeof Promise === 'function') {
     // eslint-disable-next-line no-undef
     return new Promise(function(resolve, reject) {
-      gitBranchIs(branchName, options, function(err, result) {
+      gitBranchIs(branchNameOrTest, options, function(err, result) {
         if (err) { reject(err); } else { resolve(result); }
       });
     });
@@ -74,7 +77,17 @@ function gitBranchIs(branchName, options, callback) {
       return;
     }
 
-    callback(null, branchName === currentBranch);
+    var result;
+    try {
+      result = currentBranch === branchNameOrTest ||
+        (typeof branchNameOrTest === 'function' &&
+         branchNameOrTest(currentBranch));
+    } catch (errTest) {
+      callback(errTest);
+      return;
+    }
+
+    callback(null, result);
   });
   return undefined;
 }

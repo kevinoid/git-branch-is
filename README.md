@@ -85,6 +85,17 @@ gitBranchIs('master').then(
 );
 ```
 
+Additionally, instead of a string, a checking function can be passed to
+perform arbitrary checking against the branch name:
+
+```js
+var gitBranchIs = require('git-branch-is');
+gitBranchIs(function(branchName) { /^master$/.test(branchName); }).then(
+  function(result) { console.log(result ? 'On master' : 'Not on master'); },
+  function(err) { console.error(err); }
+);
+```
+
 ## API Docs
 
 To use this module as a library, see the [API
