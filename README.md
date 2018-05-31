@@ -59,8 +59,26 @@ the `--help` output:
       --git-dir <dir>    set the path to the repository
       --git-path <path>  set the path to the git binary
       -q, --quiet        suppress warning message if branch differs
+      -r, --regex        match <branch name> as a regular expression
       -v, --verbose      print a message if the branch matches
       -V, --version      output the version number
+
+## Additional Command Examples
+
+### Regular Expression Matching
+
+To check that the current branch starts with `release/` using a regular
+expression:
+
+```
+$ git-branch-is -r "^release/"
+Error: Current branch "master" does not match "^release/".
+$ echo $?
+1
+```
+
+Note:  Be careful to quote patterns to avoid shell expansion or special
+handling (e.g. POSIX shells expand `*` and `cmd.exe` treats `^` specially).
 
 ## API Usage
 

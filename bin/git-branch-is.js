@@ -64,6 +64,7 @@ function gitBranchIsCmd(args, callback) {
     .option('--git-dir <dir>', 'set the path to the repository')
     .option('--git-path <path>', 'set the path to the git binary')
     .option('-q, --quiet', 'suppress warning message if branch differs')
+    .option('-r, --regex', 'match <branch name> as a regular expression')
     .option('-v, --verbose', 'print a message if the branch matches')
     .version(packageJson.version)
     .parse(args);
@@ -81,13 +82,38 @@ function gitBranchIsCmd(args, callback) {
   command.gitArgs = command.gitArg;
 
   var expectedBranch = command.args[0];
+
+  var expectedBranchRegExp;
+  if (command.regex) {
+    try {
+      expectedBranchRegExp = new RegExp(expectedBranch);
+    } catch (errRegExp) {
+      callback(null, {
+        code: 2,
+        stderr: 'Error: Invalid RegExp "' + expectedBranch + '": ' +
+          errRegExp + '\n'
+      });
+      return undefined;
+    }
+  }
+
   gitBranchIs.getBranch(command, function(err, currentBranch) {
     if (err) {
       callback(err);
       return;
     }
 
-    if (currentBranch !== expectedBranch) {
+    if (expectedBranchRegExp) {
+      if (!expectedBranchRegExp.test(currentBranch)) {
+        callback(null, {
+          code: 1,
+          stderr: command.quiet ? '' :
+            'Error: Current branch "' + currentBranch + '" does not match "' +
+            expectedBranch + '".\n'
+        });
+        return;
+      }
+    } else if (currentBranch !== expectedBranch) {
       callback(null, {
         code: 1,
         stderr: command.quiet ? '' :
