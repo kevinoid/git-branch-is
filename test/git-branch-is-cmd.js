@@ -21,6 +21,7 @@ var ARGS = [process.argv[0], 'git-branch-is'];
 
 // Local copy of shared constants
 var BRANCH_CURRENT = constants.BRANCH_CURRENT;
+var BRANCH_CURRENT_MINIMATCH = constants.BRANCH_CURRENT_MINIMATCH;
 var SUBDIR_NAME = constants.SUBDIR_NAME;
 var TEST_REPO_PATH = constants.TEST_REPO_PATH;
 
@@ -36,6 +37,18 @@ describe('git-branch-is', function() {
       done();
     });
   });
+
+  it('exit code 0 silently for same branch name using minimatch syntax',
+    function(done) {
+      gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT_MINIMATCH),
+        function(err, result) {
+          assert.ifError(err);
+          assert.strictEqual(result.code, 0);
+          assert(!result.stdout);
+          assert(!result.stderr);
+          done();
+        });
+    });
 
   it('exit code 1 with warning for different branch name', function(done) {
     gitBranchIsCmd(ARGS.concat('invalid'), function(err, result) {

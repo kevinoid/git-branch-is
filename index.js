@@ -6,6 +6,7 @@
 'use strict';
 
 var execFile = require('child_process').execFile;
+var minimatch = require('minimatch');
 
 /** Options for {@link gitBranchIs}.
  *
@@ -33,6 +34,7 @@ var GitBranchIsOptions = {
 /** Checks that the current branch of a git repository has a given name.
  *
  * @param {string} branchName Expected name of current branch.
+ * Minimatch syntax can be used
  * @param {?GitBranchIsOptions=} options Options.
  * @param {?function(Error, boolean=)=} callback Callback function called
  * with <code>true</code> if the current branch is <code>branchName</code>,
@@ -74,7 +76,7 @@ function gitBranchIs(branchName, options, callback) {
       return;
     }
 
-    callback(null, branchName === currentBranch);
+    callback(null, minimatch(currentBranch, branchName));
   });
   return undefined;
 }

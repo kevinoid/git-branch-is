@@ -17,6 +17,7 @@ var path = require('path');
 
 // Local copy of shared constants
 var BRANCH_CURRENT = constants.BRANCH_CURRENT;
+var BRANCH_CURRENT_MINIMATCH = constants.BRANCH_CURRENT_MINIMATCH;
 var BRANCH_NON_EXISTENT = constants.BRANCH_NON_EXISTENT;
 var BRANCH_SAME_COMMIT = constants.BRANCH_SAME_COMMIT;
 var SUBDIR_NAME = constants.SUBDIR_NAME;
@@ -30,6 +31,15 @@ describe('gitBranchIs', function() {
       done();
     });
   });
+
+  it('callback true for current branch name using minimatch syntax',
+    function(done) {
+      gitBranchIs(BRANCH_CURRENT_MINIMATCH, function(err, result) {
+        assert.ifError(err);
+        assert.strictEqual(result, true);
+        done();
+      });
+    });
 
   it('callback false for non-existent branch name', function(done) {
     gitBranchIs(BRANCH_NON_EXISTENT, function(err, result) {

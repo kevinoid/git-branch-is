@@ -13,6 +13,7 @@ module.exports = Object.freeze({
    * false-negatives in the tests.
    * Must not contain RegExp metachars. */
   BRANCH_CURRENT: 'test-branch',
+  BRANCH_CURRENT_MINIMATCH: 'test-*',
   /** Name of a branch which does not exist. */
   BRANCH_NON_EXISTENT: 'non-existent',
   /** Name of a branch on the same commit as the current branch. */
