@@ -6,10 +6,9 @@
 
 'use strict';
 
-var Command = require('commander').Command;
-var exit = require('exit');
-var gitBranchIs = require('..');
-var packageJson = require('../package.json');
+const Command = require('commander').Command;
+const gitBranchIs = require('..');
+const packageJson = require('../package.json');
 
 function collect(arg, args) {
   args.push(arg);
@@ -41,11 +40,11 @@ function collect(arg, args) {
 function gitBranchIsCmd(args, callback) {
   if (!callback && typeof Promise === 'function') {
     // eslint-disable-next-line no-undef
-    return new Promise(function(resolve, reject) {
-      gitBranchIsCmd(args, function(err, result) {
+    return new Promise(((resolve, reject) => {
+      gitBranchIsCmd(args, (err, result) => {
         if (err) { reject(err); } else { resolve(result); }
       });
-    });
+    }));
   }
 
   if (typeof callback !== 'function') {
@@ -53,7 +52,7 @@ function gitBranchIsCmd(args, callback) {
   }
 
   // TODO:  Proxy console.{error,log} and process.exit so we can return result
-  var command = new Command()
+  const command = new Command()
     // .arguments() splits on white space.  Call .parseExpectedArgs directly.
     .parseExpectedArgs(['<branch name>'])
     .option('-C <path>', 'run as if started in <path>')
@@ -71,8 +70,8 @@ function gitBranchIsCmd(args, callback) {
     .parse(args);
 
   if (command.args.length !== 1) {
-    callback(new Error('Exactly one argument is required.\n' +
-          command.helpInformation()));
+    callback(new Error(`Exactly one argument is required.\n${
+      command.helpInformation()}`));
     return undefined;
   }
 
@@ -82,9 +81,9 @@ function gitBranchIsCmd(args, callback) {
   // pluralize --git-arg to cover multiple uses
   command.gitArgs = command.gitArg;
 
-  var expectedBranch = command.args[0];
+  const expectedBranch = command.args[0];
 
-  var expectedBranchRegExp;
+  let expectedBranchRegExp;
   if (command.regex) {
     try {
       expectedBranchRegExp = new RegExp(
@@ -94,14 +93,14 @@ function gitBranchIsCmd(args, callback) {
     } catch (errRegExp) {
       callback(null, {
         code: 2,
-        stderr: 'Error: Invalid RegExp "' + expectedBranch + '": ' +
-          errRegExp + '\n'
+        stderr: `Error: Invalid RegExp "${expectedBranch}": ${
+          errRegExp}\n`
       });
       return undefined;
     }
   }
 
-  gitBranchIs.getBranch(command, function(err, currentBranch) {
+  gitBranchIs.getBranch(command, (err, currentBranch) => {
     if (err) {
       callback(err);
       return;
@@ -112,8 +111,8 @@ function gitBranchIsCmd(args, callback) {
         callback(null, {
           code: 1,
           stderr: command.quiet ? '' :
-            'Error: Current branch "' + currentBranch + '" does not match "' +
-            expectedBranch + '".\n'
+            `Error: Current branch "${currentBranch}" does not match "${
+              expectedBranch}".\n`
         });
         return;
       }
@@ -123,8 +122,8 @@ function gitBranchIsCmd(args, callback) {
       callback(null, {
         code: 1,
         stderr: command.quiet ? '' :
-          'Error: Current branch is "' + currentBranch + '", not "' +
-          expectedBranch + '".\n'
+          `Error: Current branch is "${currentBranch}", not "${
+            expectedBranch}".\n`
       });
       return;
     }
@@ -132,7 +131,7 @@ function gitBranchIsCmd(args, callback) {
     callback(null, {
       code: 0,
       stdout: !command.verbose ? '' :
-        'Current branch is "' + currentBranch + '".\n'
+        `Current branch is "${currentBranch}".\n`
     });
   });
   return undefined;
@@ -143,14 +142,14 @@ module.exports = gitBranchIsCmd;
 if (require.main === module) {
   // This file was invoked directly.
   /* eslint-disable no-process-exit */
-  gitBranchIsCmd(process.argv, function(err, result) {
-    var errOrResult = err || result;
+  gitBranchIsCmd(process.argv, (err, result) => {
+    const errOrResult = err || result;
     if (errOrResult.stdout) { process.stdout.write(errOrResult.stdout); }
     if (errOrResult.stderr) { process.stderr.write(errOrResult.stderr); }
-    if (err) { process.stderr.write(err.name + ': ' + err.message + '\n'); }
+    if (err) { process.stderr.write(`${err.name}: ${err.message}\n`); }
 
-    var code = typeof errOrResult.code === 'number' ? errOrResult.code :
+    const code = typeof errOrResult.code === 'number' ? errOrResult.code :
       err ? 1 : 0;
-    exit(code);
+    process.exit(code);
   });
 }

@@ -15,18 +15,18 @@
 /* eslint-disable no-console */
 
 if (typeof process !== 'undefined') {
-  process.on('unhandledRejection', function(reason) {
+  process.on('unhandledRejection', (reason) => {
     throw reason;
   });
 } else if (typeof window !== 'undefined') {
   // 2016-02-01: No browsers support this natively, however bluebird, when.js,
   // and probably other libraries do.
   if (typeof window.addEventListener === 'function') {
-    window.addEventListener('unhandledrejection', function(evt) {
+    window.addEventListener('unhandledrejection', (evt) => {
       throw evt.detail.reason;
     });
   } else {
-    var oldOHR = window.onunhandledrejection;
+    const oldOHR = window.onunhandledrejection;
     window.onunhandledrejection = function(evt) {
       if (typeof oldOHR === 'function') { oldOHR.apply(this, arguments); }
       throw evt.detail.reason;

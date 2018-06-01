@@ -5,7 +5,7 @@
 
 'use strict';
 
-var path = require('path');
+const path = require('path');
 
 module.exports = Object.freeze({
   /** Name of the current branch.

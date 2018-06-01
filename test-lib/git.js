@@ -5,13 +5,13 @@
 
 'use strict';
 
-var BBPromise = require('bluebird').Promise;
+const BBPromise = require('bluebird').Promise;
 // eslint-disable-next-line no-undef
-var PPromise = typeof Promise === 'function' ? Promise : BBPromise;
-var execFile = require('child_process').execFile;
-var pify = require('pify');
+const PPromise = typeof Promise === 'function' ? Promise : BBPromise;
+const execFile = require('child_process').execFile;
+const pify = require('pify');
 
-var execFileP = pify(execFile, PPromise, {multiArgs: true});
+const execFileP = pify(execFile, PPromise, {multiArgs: true});
 
 /**
  * Run git with given arguments and options.
@@ -20,9 +20,9 @@ var execFileP = pify(execFile, PPromise, {multiArgs: true});
 function git(/* [args...], [options] */) {
   // Default to redirecting stdin (to prevent unexpected prompts) and
   // including any output with test output
-  var defaultStdio = ['ignore', process.stdout, process.stderr];
+  const defaultStdio = ['ignore', process.stdout, process.stderr];
 
-  var args, options;
+  let args, options;
   if (typeof arguments[arguments.length - 1] === 'object') {
     args = Array.prototype.slice.call(arguments);
     options = args.pop();

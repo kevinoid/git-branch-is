@@ -5,7 +5,7 @@
 
 'use strict';
 
-var assert = require('assert').ok;
+const assert = require('assert').ok;
 
 /** Asserts that a value matches a regular expression.
  * @param {string} value String to be tested.
@@ -17,7 +17,7 @@ function assertMatch(value, regexp, message) {
   value = String(value);
   assert(
     regexp.test(value),
-    message || JSON.stringify(value) + ' does not match ' + regexp
+    message || `${JSON.stringify(value)} does not match ${regexp}`
   );
 }
 

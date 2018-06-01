@@ -5,7 +5,7 @@
 
 'use strict';
 
-var execFile = require('child_process').execFile;
+const execFile = require('child_process').execFile;
 
 /** Options for {@link gitBranchIs}.
  *
@@ -23,7 +23,7 @@ var execFile = require('child_process').execFile;
  * @property {string=} gitPath Git binary name or path to use (default:
  * <code>'git'</code>).
  */
-var GitBranchIsOptions = {
+const GitBranchIsOptions = {
   cwd: '',
   gitArgs: [],
   gitDir: '',
@@ -39,11 +39,10 @@ var GitBranchIsOptions = {
  * with the return value of <code>branchNameOrTest</code> if it is a function,
  * or the result of identity checking <code>branchNameOrTest</code> to the
  * current branch name.
- * @return {Promise|undefined} If <code>callback</code> is not given and
- * <code>global.Promise</code> is defined, a <code>Promise</code> with
- * the return value of <code>branchNameOrTest</code> if it is a function,
- * or the result of identity checking <code>branchNameOrTest</code> to the
- * current branch name.
+ * @return {Promise|undefined} If <code>callback</code> is not given, a
+ * <code>Promise</code> with the return value of <code>branchNameOrTest</code>
+ * if it is a function, or the result of identity checking
+ * <code>branchNameOrTest</code> to the current branch name.
  */
 function gitBranchIs(branchNameOrTest, options, callback) {
   if (!callback && typeof options === 'function') {
@@ -51,10 +50,9 @@ function gitBranchIs(branchNameOrTest, options, callback) {
     options = null;
   }
 
-  if (!callback && typeof Promise === 'function') {
-    // eslint-disable-next-line no-undef
-    return new Promise(function(resolve, reject) {
-      gitBranchIs(branchNameOrTest, options, function(err, result) {
+  if (!callback) {
+    return new Promise((resolve, reject) => {
+      gitBranchIs(branchNameOrTest, options, (err, result) => {
         if (err) { reject(err); } else { resolve(result); }
       });
     });
@@ -65,19 +63,17 @@ function gitBranchIs(branchNameOrTest, options, callback) {
   }
 
   if (options !== undefined && typeof options !== 'object') {
-    process.nextTick(function() {
-      callback(new TypeError('options must be an object'));
-    });
+    process.nextTick(callback, new TypeError('options must be an object'));
     return undefined;
   }
 
-  gitBranchIs.getBranch(options, function(err, currentBranch) {
+  gitBranchIs.getBranch(options, (err, currentBranch) => {
     if (err) {
       callback(err);
       return;
     }
 
-    var result;
+    let result;
     try {
       result = currentBranch === branchNameOrTest ||
         (typeof branchNameOrTest === 'function' &&
@@ -98,9 +94,9 @@ function gitBranchIs(branchNameOrTest, options, callback) {
  * @param {?function(Error, string=)=} callback Callback function called
  * with the current branch name, or <code>Error</code> if it could not be
  * determined.
- * @return {Promise|undefined} If <code>callback</code> is not given and
- * <code>global.Promise</code> is defined, a <code>Promise</code> with the
- * current branch name, or <code>Error</code> if it could not be determined.
+ * @return {Promise|undefined} If <code>callback</code> is not given, a
+ * <code>Promise</code> with the current branch name, or <code>Error</code> if
+ * it could not be determined.
  */
 gitBranchIs.getBranch = function getBranch(options, callback) {
   if (!callback && typeof options === 'function') {
@@ -108,13 +104,12 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
     options = null;
   }
 
-  if (!callback && typeof Promise === 'function') {
-    // eslint-disable-next-line no-undef
-    return new Promise(function(resolve, reject) {
-      getBranch(options, function(err, result) {
+  if (!callback) {
+    return new Promise(((resolve, reject) => {
+      getBranch(options, (err, result) => {
         if (err) { reject(err); } else { resolve(result); }
       });
-    });
+    }));
   }
 
   if (typeof callback !== 'function') {
@@ -122,25 +117,23 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
   }
 
   if (options && typeof options !== 'object') {
-    process.nextTick(function() {
-      callback(new TypeError('options must be an Object'));
-    });
+    process.nextTick(callback, new TypeError('options must be an Object'));
     return undefined;
   }
 
-  var combinedOpts = {};
-  Object.keys(GitBranchIsOptions).forEach(function(prop) {
+  const combinedOpts = {};
+  Object.keys(GitBranchIsOptions).forEach((prop) => {
     combinedOpts[prop] = GitBranchIsOptions[prop];
   });
-  Object.keys(Object(options)).forEach(function(prop) {
+  Object.keys(Object(options)).forEach((prop) => {
     combinedOpts[prop] = options[prop];
   });
 
-  var gitArgs = combinedOpts.gitArgs ?
+  const gitArgs = combinedOpts.gitArgs ?
     Array.prototype.slice.call(combinedOpts.gitArgs, 0) :
     [];
   if (combinedOpts.gitDir) {
-    gitArgs.unshift('--git-dir=' + combinedOpts.gitDir);
+    gitArgs.unshift(`--git-dir=${combinedOpts.gitDir}`);
   }
   gitArgs.push('symbolic-ref', '--short', 'HEAD');
 
@@ -149,7 +142,7 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
       combinedOpts.gitPath,
       gitArgs,
       {cwd: combinedOpts.cwd},
-      function(errExec, stdout, stderr) {
+      (errExec, stdout, stderr) => {
         if (errExec) {
           callback(errExec);
           return;
@@ -161,9 +154,7 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
       }
     );
   } catch (errExec) {
-    process.nextTick(function() {
-      callback(errExec);
-    });
+    process.nextTick(callback, errExec);
     return undefined;
   }
 
