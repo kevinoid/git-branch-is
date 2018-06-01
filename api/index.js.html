@@ -30,52 +30,57 @@
  * @copyright Copyright 2016 Kevin Locke &lt;kevin@kevinlocke.name>
  * @license MIT
  */
+
 'use strict';
 
-var execFile = require('child_process').execFile;
+const execFile = require('child_process').execFile;
 
 /** Options for {@link gitBranchIs}.
  *
  * @typedef {{
  *   cwd: (?string|undefined),
+ *   gitArgs: (Array|undefined),
  *   gitDir: (?string|undefined),
  *   gitPath: (string|undefined)
  * }}
  * @property {?string=} cwd Current working directory where the branch name is
  * tested.
+ * @property {Array=} gitArgs Extra arguments to pass to git.
  * @property {?string=} gitDir Path to the repository (i.e.
  * &lt;code>--git-dir=&lt;/code> option to &lt;code>git&lt;/code>).
- * @property {string=} git Git binary name or path to use (default:
+ * @property {string=} gitPath Git binary name or path to use (default:
  * &lt;code>'git'&lt;/code>).
  */
-var GitBranchIsOptions = {
+const GitBranchIsOptions = {
   cwd: '',
+  gitArgs: [],
   gitDir: '',
   gitPath: 'git'
 };
 
 /** Checks that the current branch of a git repository has a given name.
  *
- * @param {string} branchName Expected name of current branch.
+ * @param {string|function(string)} branchNameOrTest Expected name of
+ * current branch or a test function to apply to the branch name.
  * @param {?GitBranchIsOptions=} options Options.
  * @param {?function(Error, boolean=)=} callback Callback function called
- * with &lt;code>true&lt;/code> if the current branch is &lt;code>branchName&lt;/code>,
- * &lt;code>false&lt;/code> if not, &lt;code>Error&lt;/code> if it could not be determined.
- * @return {Promise|undefined} If &lt;code>callback&lt;/code> is not given and
- * &lt;code>global.Promise&lt;/code> is defined, a &lt;code>Promise&lt;/code> with
- * &lt;code>true&lt;/code> if the current branch is &lt;code>branchName&lt;/code>,
- * &lt;code>false&lt;/code> if not, &lt;code>Error&lt;/code> if it could not be determined.
+ * with the return value of &lt;code>branchNameOrTest&lt;/code> if it is a function,
+ * or the result of identity checking &lt;code>branchNameOrTest&lt;/code> to the
+ * current branch name.
+ * @return {Promise|undefined} If &lt;code>callback&lt;/code> is not given, a
+ * &lt;code>Promise&lt;/code> with the return value of &lt;code>branchNameOrTest&lt;/code>
+ * if it is a function, or the result of identity checking
+ * &lt;code>branchNameOrTest&lt;/code> to the current branch name.
  */
-function gitBranchIs(branchName, options, callback) {
+function gitBranchIs(branchNameOrTest, options, callback) {
   if (!callback &amp;&amp; typeof options === 'function') {
     callback = options;
     options = null;
   }
 
-  if (!callback &amp;&amp; typeof Promise === 'function') {
-    // eslint-disable-next-line no-undef
-    return new Promise(function(resolve, reject) {
-      gitBranchIs(branchName, options, function(err, result) {
+  if (!callback) {
+    return new Promise((resolve, reject) => {
+      gitBranchIs(branchNameOrTest, options, (err, result) => {
         if (err) { reject(err); } else { resolve(result); }
       });
     });
@@ -85,33 +90,41 @@ function gitBranchIs(branchName, options, callback) {
     throw new TypeError('callback must be a function');
   }
 
-  if (options &amp;&amp; typeof options !== 'object') {
-    process.nextTick(function() {
-      callback(new TypeError('options must be an object'));
-    });
+  if (options !== undefined &amp;&amp; typeof options !== 'object') {
+    process.nextTick(callback, new TypeError('options must be an object'));
     return undefined;
   }
 
-  gitBranchIs.getBranch(options, function(err, currentBranch) {
+  gitBranchIs.getBranch(options, (err, currentBranch) => {
     if (err) {
       callback(err);
       return;
     }
 
-    callback(null, branchName === currentBranch);
+    let result;
+    try {
+      result = currentBranch === branchNameOrTest ||
+        (typeof branchNameOrTest === 'function' &amp;&amp;
+         branchNameOrTest(currentBranch));
+    } catch (errTest) {
+      callback(errTest);
+      return;
+    }
+
+    callback(null, result);
   });
   return undefined;
 }
 
-/** Checks that the current branch of a git repository has a given name.
+/** Gets the name of the current (i.e. checked out) branch of a git repository.
  *
  * @param {?GitBranchIsOptions=} options Options.
  * @param {?function(Error, string=)=} callback Callback function called
  * with the current branch name, or &lt;code>Error&lt;/code> if it could not be
  * determined.
- * @return {Promise|undefined} If &lt;code>callback&lt;/code> is not given and
- * &lt;code>global.Promise&lt;/code> is defined, a &lt;code>Promise&lt;/code> with the
- * current branch name, or &lt;code>Error&lt;/code> if it could not be determined.
+ * @return {Promise|undefined} If &lt;code>callback&lt;/code> is not given, a
+ * &lt;code>Promise&lt;/code> with the current branch name, or &lt;code>Error&lt;/code> if
+ * it could not be determined.
  */
 gitBranchIs.getBranch = function getBranch(options, callback) {
   if (!callback &amp;&amp; typeof options === 'function') {
@@ -119,13 +132,12 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
     options = null;
   }
 
-  if (!callback &amp;&amp; typeof Promise === 'function') {
-    // eslint-disable-next-line no-undef
-    return new Promise(function(resolve, reject) {
-      getBranch(options, function(err, result) {
+  if (!callback) {
+    return new Promise(((resolve, reject) => {
+      getBranch(options, (err, result) => {
         if (err) { reject(err); } else { resolve(result); }
       });
-    });
+    }));
   }
 
   if (typeof callback !== 'function') {
@@ -133,45 +145,44 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
   }
 
   if (options &amp;&amp; typeof options !== 'object') {
-    process.nextTick(function() {
-      callback(new TypeError('options must be an Object'));
-    });
+    process.nextTick(callback, new TypeError('options must be an Object'));
     return undefined;
   }
 
-  var combinedOpts = {};
-  Object.keys(GitBranchIsOptions).forEach(function(prop) {
+  const combinedOpts = {};
+  Object.keys(GitBranchIsOptions).forEach((prop) => {
     combinedOpts[prop] = GitBranchIsOptions[prop];
   });
-  Object.keys(Object(options)).forEach(function(prop) {
+  Object.keys(Object(options)).forEach((prop) => {
     combinedOpts[prop] = options[prop];
   });
 
-  var gitArgs = ['symbolic-ref', '--short', 'HEAD'];
+  const gitArgs = combinedOpts.gitArgs ?
+    Array.prototype.slice.call(combinedOpts.gitArgs, 0) :
+    [];
   if (combinedOpts.gitDir) {
-    gitArgs.unshift('--git-dir=' + combinedOpts.gitDir);
+    gitArgs.unshift(`--git-dir=${combinedOpts.gitDir}`);
   }
+  gitArgs.push('symbolic-ref', '--short', 'HEAD');
 
   try {
     execFile(
-        combinedOpts.gitPath,
-        gitArgs,
-        {cwd: combinedOpts.cwd},
-        function(errExec, stdout, stderr) {
-          if (errExec) {
-            callback(errExec);
-            return;
-          }
-
-          // Note:  ASCII space and control characters are forbidden in names
-          // https://www.kernel.org/pub/software/scm/git/docs/git-check-ref-format.html
-          callback(null, stdout.trimRight());
+      combinedOpts.gitPath,
+      gitArgs,
+      {cwd: combinedOpts.cwd},
+      (errExec, stdout, stderr) => {
+        if (errExec) {
+          callback(errExec);
+          return;
         }
+
+        // Note:  ASCII space and control characters are forbidden in names
+        // https://www.kernel.org/pub/software/scm/git/docs/git-check-ref-format.html
+        callback(null, stdout.trimRight());
+      }
     );
   } catch (errExec) {
-    process.nextTick(function() {
-      callback(errExec);
-    });
+    process.nextTick(callback, errExec);
     return undefined;
   }
 
@@ -195,7 +206,7 @@ module.exports = gitBranchIs;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Fri Apr 01 2016 22:42:23 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jun 01 2018 09:55:55 GMT-0600 (MDT)
 </footer>
 
 <script> prettyPrint(); </script>

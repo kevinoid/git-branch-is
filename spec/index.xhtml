@@ -26,7 +26,7 @@ section section section section {
       <h1>git-branch-is</h1>
       <dl>
         <dt>exit code 0 silently for same branch name</dt>
-        <dd><pre><code>gitBranchIsCmd(ARGS.concat('master'), function(err, result) {
+        <dd><pre><code>gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT), (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 0);
   assert(!result.stdout);
@@ -34,17 +34,110 @@ section section section section {
   done();
 });</code></pre></dd>
         <dt>exit code 1 with warning for different branch name</dt>
-        <dd><pre><code>gitBranchIsCmd(ARGS.concat('invalid'), function(err, result) {
+        <dd><pre><code>gitBranchIsCmd(ARGS.concat(&#x27;invalid&#x27;), (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 1);
   assert(!result.stdout);
-  assert(/\binvalid\b/.test(result.stderr));
-  assert(/\bmaster\b/.test(result.stderr));
+  assertMatch(result.stderr, /\binvalid\b/);
+  assertMatch(result.stderr, BRANCH_CURRENT_RE);
+  done();
+});</code></pre></dd>
+        <dt>exit code 1 with warning for different case branch name</dt>
+        <dd><pre><code>const branchUpper = BRANCH_CURRENT.toUpperCase();
+gitBranchIsCmd(ARGS.concat(branchUpper), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  const branchUpperRE = new RegExp(&#x60;\\b${branchUpper}\\b&#x60;);
+  assertMatch(result.stderr, branchUpperRE);
+  assertMatch(result.stderr, BRANCH_CURRENT_RE);
+  done();
+});</code></pre></dd>
+        <dt>exit code 0 silently for case-insensitive branch name</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;-i&#x27;, BRANCH_CURRENT.toUpperCase());
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>exit 0 silently for matching anchored regex branch name</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;-r&#x27;, &#x60;^${BRANCH_CURRENT}$&#x60;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>exit 0 silently for matching substr regex branch name</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;-r&#x27;, BRANCH_CURRENT.slice(1, -1));
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>exit 0 silently for matching empty regex branch name</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;-r&#x27;, &#x27;&#x27;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>exit 0 silently for matching i regex branch name</dt>
+        <dd><pre><code>const args =
+  ARGS.concat(&#x27;-i&#x27;, &#x27;-r&#x27;, &#x60;^${BRANCH_CURRENT.toUpperCase()}$&#x60;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>exit 1 with warning for non-match regex branch name</dt>
+        <dd><pre><code>gitBranchIsCmd(ARGS.concat(&#x27;-r&#x27;, &#x27;invalid&#x27;), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  assertMatch(result.stderr, /\binvalid\b/);
+  assertMatch(result.stderr, BRANCH_CURRENT_RE);
+  done();
+});</code></pre></dd>
+        <dt>exit 1 with warning for no-match case regex branch name</dt>
+        <dd><pre><code>const branchUpper = BRANCH_CURRENT.toUpperCase();
+gitBranchIsCmd(ARGS.concat(&#x27;-r&#x27;, branchUpper), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  const branchUpperRE = new RegExp(&#x60;\\b${branchUpper}\\b&#x60;);
+  assertMatch(result.stderr, branchUpperRE);
+  assertMatch(result.stderr, BRANCH_CURRENT_RE);
+  done();
+});</code></pre></dd>
+        <dt>exit 2 with warning for invalid regex</dt>
+        <dd><pre><code>gitBranchIsCmd(ARGS.concat(&#x27;-r&#x27;, &#x27;b[ad&#x27;), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 2);
+  assert(!result.stdout);
+  assertMatch(result.stderr, /\bb\[ad\b/);
+  done();
+});</code></pre></dd>
+        <dt>exit 2 with warning for invalid regex with quiet</dt>
+        <dd><pre><code>gitBranchIsCmd(ARGS.concat(&#x27;-q&#x27;, &#x27;-r&#x27;, &#x27;b[ad&#x27;), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 2);
+  assert(!result.stdout);
+  assertMatch(result.stderr, /\bb\[ad\b/);
   done();
 });</code></pre></dd>
         <dt>exit code 1 silently with quiet option</dt>
-        <dd><pre><code>var args = ARGS.concat('-q', 'invalid');
-gitBranchIsCmd(args, function(err, result) {
+        <dd><pre><code>const args = ARGS.concat(&#x27;-q&#x27;, &#x27;invalid&#x27;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 1);
   assert(!result.stdout);
@@ -52,30 +145,92 @@ gitBranchIsCmd(args, function(err, result) {
   done();
 });</code></pre></dd>
         <dt>exit code 0 with message if verbose</dt>
-        <dd><pre><code>var args = ARGS.concat('-v', 'master');
-gitBranchIsCmd(args, function(err, result) {
+        <dd><pre><code>const args = ARGS.concat(&#x27;-v&#x27;, BRANCH_CURRENT);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 0);
-  assert(/\bmaster\b/.test(result.stdout));
+  assertMatch(result.stdout, BRANCH_CURRENT_RE);
   assert(!result.stderr);
   done();
 });</code></pre></dd>
         <dt>callback Error for multiple args</dt>
-        <dd><pre><code>gitBranchIsCmd(ARGS.concat('master', 'foo'), function(err, result) {
+        <dd><pre><code>gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT, &#x27;foo&#x27;), (err, result) =&#x3E; {
   assert(err instanceof Error);
-  assert(/\bargument/i.test(err.message));
-  assert(/\busage/i.test(err.message));
+  assertMatch(err.message, /\bargument/i);
+  assertMatch(err.message, /\busage/i);
   done();
 });</code></pre></dd>
-        <dt>can specify git executable</dt>
-        <dd><pre><code>var gitPath = path.join('..', '..', 'test-bin', 'echo-surprise.js');
-var args = ARGS.concat(
-    '-C',
-    SUBDIR_NAME,
-    '--git-path=' + gitPath,
-    'surprise'
+        <dt>can specify an additional git argument</dt>
+        <dd><pre><code>const args = ARGS.concat(
+  &#x27;-C&#x27;,
+  SUBDIR_NAME,
+  &#x27;--git-arg=--git-dir=../.git&#x27;,
+  BRANCH_CURRENT
 );
-gitBranchIsCmd(args, function(err, result) {
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>can specify multiple additional git arguments</dt>
+        <dd><pre><code>const args = ARGS.concat(
+  &#x27;-C&#x27;,
+  &#x27;..&#x27;,
+  &#x27;--git-arg=-C&#x27;,
+  &#x60;--git-arg=${TEST_REPO_PATH}&#x60;,
+  BRANCH_CURRENT
+);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>can specify an additional git arguments separately</dt>
+        <dd><pre><code>const args = ARGS.concat(
+  &#x27;--git-arg&#x27;,
+  &#x27;-C&#x27;,
+  &#x27;--git-arg&#x27;,
+  TEST_REPO_PATH,
+  &#x27;-C&#x27;,
+  &#x27;..&#x27;,
+  BRANCH_CURRENT
+);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>gitArgs takes precedence over gitDir</dt>
+        <dd><pre><code>const args = ARGS.concat(
+  &#x27;--git-arg&#x27;,
+  // Note:  Also tests that Commander interprets this as option argument
+  &#x27;--git-dir=.git&#x27;,
+  &#x27;--git-dir=invalid&#x27;,
+  BRANCH_CURRENT
+);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>can specify git executable and args</dt>
+        <dd><pre><code>const gitArg = path.join(&#x27;..&#x27;, &#x27;..&#x27;, &#x27;test-bin&#x27;, &#x27;echo-surprise.js&#x27;);
+const args = ARGS.concat(
+  &#x27;-C&#x27;,
+  SUBDIR_NAME,
+  &#x60;--git-arg=${gitArg}&#x60;,
+  &#x60;--git-path=${process.execPath}&#x60;,
+  &#x27;surprise&#x27;
+);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 0);
   assert(!result.stdout);
@@ -83,13 +238,13 @@ gitBranchIsCmd(args, function(err, result) {
   done();
 });</code></pre></dd>
         <dt>gitDir is relative to cwd</dt>
-        <dd><pre><code>var args = ARGS.concat(
-    '-C',
-    SUBDIR_NAME,
-    '--git-dir=' + path.join('..', '.git'),
-    'master'
+        <dd><pre><code>const args = ARGS.concat(
+  &#x27;-C&#x27;,
+  SUBDIR_NAME,
+  &#x60;--git-dir=${path.join(&#x27;..&#x27;, &#x27;.git&#x27;)}&#x60;,
+  BRANCH_CURRENT
 );
-gitBranchIsCmd(args, function(err, result) {
+gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 0);
   assert(!result.stdout);
@@ -99,23 +254,35 @@ gitBranchIsCmd(args, function(err, result) {
         <dt>exit code 0 works when executed</dt>
         <dd><pre><code>execFile(
   process.execPath,
-  ['../bin/git-branch-is', 'master'],
-  function(err, result) {
+  [path.join(&#x27;..&#x27;, &#x27;bin&#x27;, &#x27;git-branch-is.js&#x27;), &#x27;-v&#x27;, BRANCH_CURRENT],
+  (err, stdout, stderr) =&#x3E; {
     assert.ifError(err);
-    assert(!result.stdout);
-    assert(!result.stderr);
+    assertMatch(stdout, BRANCH_CURRENT_RE);
+    assert.strictEqual(stderr, &#x27;&#x27;);
     done();
   }
 );</code></pre></dd>
         <dt>exit code 1 works when executed</dt>
         <dd><pre><code>execFile(
   process.execPath,
-  ['../bin/git-branch-is', 'invalid'],
-  function(err, result) {
+  [path.join(&#x27;..&#x27;, &#x27;bin&#x27;, &#x27;git-branch-is.js&#x27;), &#x27;invalid&#x27;],
+  (err, stdout, stderr) =&#x3E; {
     assert(err instanceof Error);
     assert.strictEqual(err.code, 1);
-    assert(/\binvalid\b/.test(err.message));
-    assert(/\bmaster\b/.test(err.message));
+    assertMatch(stderr, /\binvalid\b/);
+    assertMatch(stderr, BRANCH_CURRENT_RE);
+    done();
+  }
+);</code></pre></dd>
+        <dt>exit code 1 with extra args works when executed</dt>
+        <dd><pre><code>execFile(
+  process.execPath,
+  [path.join(&#x27;..&#x27;, &#x27;bin&#x27;, &#x27;git-branch-is.js&#x27;), &#x27;invalid&#x27;, &#x27;extra arg&#x27;],
+  (err, stdout, stderr) =&#x3E; {
+    assert(err instanceof Error);
+    assert.strictEqual(err.code, 1);
+    assert.strictEqual(stdout, &#x27;&#x27;);
+    assertMatch(stderr, /\bargument/);
     done();
   }
 );</code></pre></dd>
@@ -123,19 +290,23 @@ gitBranchIsCmd(args, function(err, result) {
           <h1>with global Promise</h1>
           <dl>
             <dt>returns a Promise with the result</dt>
-            <dd><pre><code>var promise = gitBranchIsCmd(ARGS.concat('master'));
+            <dd><pre><code>const promise = gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
 assert(promise instanceof global.Promise);
-return promise.then(function(result) {
+return promise.then((result) =&#x3E; {
   assert.strictEqual(result.code, 0);
   assert(!result.stdout);
   assert(!result.stderr);
 });</code></pre></dd>
             <dt>rejects the Promise with an Error</dt>
-            <dd><pre><code>var promise = gitBranchIsCmd(ARGS.concat('-C', 'invalid', 'master'));
+            <dd><pre><code>const promise = gitBranchIsCmd(ARGS.concat(
+  &#x27;-C&#x27;,
+  &#x27;invalid&#x27;,
+  BRANCH_CURRENT
+));
 assert(promise instanceof global.Promise);
 return promise.then(
-  function(result) { throw new Error('expecting Error'); },
-  function(err) { assert(err instanceof Error); }
+  (result) =&#x3E; { throw new Error(&#x27;expecting Error&#x27;); },
+  (err) =&#x3E; { assert(err instanceof Error); }
 );</code></pre></dd>
           </dl>
         </section>
@@ -144,13 +315,11 @@ return promise.then(
           <dl>
             <dt>throws without a callback</dt>
             <dd><pre><code>assert.throws(
-    function() {
-      gitBranchIsCmd(ARGS.concat('master'));
-    },
-    function(err) {
-      return err instanceof TypeError &amp;&amp;
-          /\bcallback\b/.test(err.message);
-    }
+  () =&#x3E; {
+    gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
+  },
+  (err) =&#x3E; err instanceof TypeError &#x26;&#x26;
+          /\bcallback\b/.test(err.message)
 );</code></pre></dd>
           </dl>
         </section>
@@ -160,77 +329,133 @@ return promise.then(
       <h1>gitBranchIs</h1>
       <dl>
         <dt>callback true for current branch name</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, function(err, result) {
+        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
         <dt>callback false for non-existent branch name</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_NON_EXISTENT, function(err, result) {
+        <dd><pre><code>gitBranchIs(BRANCH_NON_EXISTENT, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, false);
   done();
 });</code></pre></dd>
         <dt>callback false for different branch, same commit</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_SAME_COMMIT, function(err, result) {
+        <dd><pre><code>gitBranchIs(BRANCH_SAME_COMMIT, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, false);
   done();
 });</code></pre></dd>
         <dt>callback true for same branch name in subdir</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {cwd: SUBDIR_NAME}, function(err, result) {
+        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {cwd: SUBDIR_NAME}, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
-        <dt>can specify git executable</dt>
-        <dd><pre><code>var altGitPath = path.join('..', 'test-bin', 'echo-surprise.js');
-gitBranchIs('surprise', {gitPath: altGitPath}, function(err, result) {
+        <dt>callback true for function comparing branch name</dt>
+        <dd><pre><code>function checkBranchName(branchName) {
+  return branchName === BRANCH_CURRENT;
+}
+gitBranchIs(checkBranchName, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result, true);
+  done();
+});</code></pre></dd>
+        <dt>callback false for function returning false</dt>
+        <dd><pre><code>function returnsFalse(branchName) {
+  return false;
+}
+gitBranchIs(returnsFalse, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result, false);
+  done();
+});</code></pre></dd>
+        <dt>callback propagates error from function which throws</dt>
+        <dd><pre><code>const errTest = new Error(&#x27;test&#x27;);
+function throwsErr(branchName) { throw errTest; }
+gitBranchIs(throwsErr, (err, result) =&#x3E; {
+  assert.strictEqual(err, errTest);
+  assert(result === undefined || result === null);
+  done();
+});</code></pre></dd>
+        <dt>can specify additional git arguments</dt>
+        <dd><pre><code>const options = {
+  cwd: &#x27;..&#x27;,
+  gitArgs: [&#x27;-C&#x27;, TEST_REPO_PATH]
+};
+gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result, true);
+  done();
+});</code></pre></dd>
+        <dt>null gitArgs is ignored</dt>
+        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {gitArgs: null}, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result, true);
+  done();
+});</code></pre></dd>
+        <dt>gitArgs takes precedence over gitDir</dt>
+        <dd><pre><code>const options = {
+  gitArgs: [&#x27;--git-dir=.git&#x27;],
+  gitDir: &#x27;invalid&#x27;
+};
+gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result, true);
+  done();
+});</code></pre></dd>
+        <dt>can specify git executable and args</dt>
+        <dd><pre><code>const options = {
+  gitArgs: [path.join(&#x27;..&#x27;, &#x27;test-bin&#x27;, &#x27;echo-surprise.js&#x27;)],
+  gitPath: process.execPath
+};
+gitBranchIs(&#x27;surprise&#x27;, options, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
         <dt>callback Error outside of git repo</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {cwd: '/'}, function(err, result) {
+        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {cwd: &#x27;/&#x27;}, (err, result) =&#x3E; {
   assert(err instanceof Error);
   assert(result === undefined || result === null);
   done();
 });</code></pre></dd>
-        <dt>callback Error if cwd doesn't exist</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {cwd: 'invalid'}, function(err, result) {
+        <dt>callback Error if cwd doesn&#x27;t exist</dt>
+        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {cwd: &#x27;invalid&#x27;}, (err, result) =&#x3E; {
   assert(err instanceof Error);
   assert(result === undefined || result === null);
   done();
 });</code></pre></dd>
         <dt>callback Error if git is not executable</dt>
-        <dd><pre><code>var badGitPath = path.join(__dirname, '..', 'package.json');
-gitBranchIs(BRANCH_CURRENT, {gitPath: badGitPath}, function(err, result) {
+        <dd><pre><code>const badGitPath = path.join(__dirname, &#x27;..&#x27;, &#x27;package.json&#x27;);
+gitBranchIs(BRANCH_CURRENT, {gitPath: badGitPath}, (err, result) =&#x3E; {
   assert(err instanceof Error);
   assert(result === undefined || result === null);
   done();
 });</code></pre></dd>
         <dt>callback Error if gitDir is not a git repo</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {gitDir: SUBDIR_NAME}, function(err, result) {
+        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {gitDir: SUBDIR_NAME}, (err, result) =&#x3E; {
   assert(err instanceof Error);
   assert(result === undefined || result === null);
   done();
 });</code></pre></dd>
         <dt>gitDir is relative to cwd</dt>
-        <dd><pre><code>var options = {
+        <dd><pre><code>const options = {
   cwd: SUBDIR_NAME,
-  gitDir: path.join('..', '.git')
+  gitDir: path.join(&#x27;..&#x27;, &#x27;.git&#x27;)
 };
-gitBranchIs(BRANCH_CURRENT, options, function(err, result) {
+gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
         <dt>gitPath is relative to cwd</dt>
-        <dd><pre><code>var options = {
+        <dd><pre><code>const options = {
   cwd: SUBDIR_NAME,
-  gitPath: path.join('..', '..', 'test-bin', 'echo-surprise.js')
+  gitArgs: [path.join(&#x27;..&#x27;, &#x27;..&#x27;, &#x27;test-bin&#x27;, &#x27;echo-surprise.js&#x27;)],
+  gitPath: path.relative(SUBDIR_NAME, process.execPath)
 };
-gitBranchIs('surprise', options, function(err, result) {
+gitBranchIs(&#x27;surprise&#x27;, options, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, true);
   done();
@@ -239,7 +464,7 @@ gitBranchIs('surprise', options, function(err, result) {
           <h1>.getBranch()</h1>
           <dl>
             <dt>gets the branch name</dt>
-            <dd><pre><code>gitBranchIs.getBranch(function(err, result) {
+            <dd><pre><code>gitBranchIs.getBranch((err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, BRANCH_CURRENT);
   done();
@@ -250,75 +475,76 @@ gitBranchIs('surprise', options, function(err, result) {
           <h1>with global Promise</h1>
           <dl>
             <dt>Promise resolves true for same branch name</dt>
-            <dd><pre><code>var promise = gitBranchIs(BRANCH_CURRENT);
+            <dd><pre><code>const promise = gitBranchIs(BRANCH_CURRENT);
 assert(promise instanceof global.Promise);
-return promise.then(function(result) {
+return promise.then((result) =&#x3E; {
   assert.strictEqual(result, true);
 });</code></pre></dd>
             <dt>Promise resolves false for different branch name</dt>
-            <dd><pre><code>var promise = gitBranchIs('invalid');
+            <dd><pre><code>const promise = gitBranchIs(&#x27;invalid&#x27;);
 assert(promise instanceof global.Promise);
-return promise.then(function(result) {
+return promise.then((result) =&#x3E; {
   assert.strictEqual(result, false);
 });</code></pre></dd>
             <dt>Promise rejects on Error</dt>
-            <dd><pre><code>var promise = gitBranchIs(BRANCH_CURRENT, 'opts');
+            <dd><pre><code>const promise = gitBranchIs(BRANCH_CURRENT, &#x27;opts&#x27;);
 assert(promise instanceof global.Promise);
 return promise.then(
-    function(result) { throw new Error('expecting Error'); },
-    function(err) {
-      assert(err instanceof TypeError);
-      assert(/\boptions\b/.test(err.message));
-    }
+  (result) =&#x3E; { throw new Error(&#x27;expecting Error&#x27;); },
+  (err) =&#x3E; {
+    assert(err instanceof TypeError);
+    assertMatch(err.message, /\boptions\b/);
+  }
+);</code></pre></dd>
+            <dt>Promise flattens for function returning Promise</dt>
+            <dd><pre><code>function checkBranchName(branchName) {
+  return global.Promise.resolve(branchName === BRANCH_CURRENT);
+}
+const promise = gitBranchIs(checkBranchName);
+assert(promise instanceof global.Promise);
+return promise.then((result) =&#x3E; {
+  assert.strictEqual(result, true);
+});</code></pre></dd>
+            <dt>Promise rejects for function returning Promise</dt>
+            <dd><pre><code>// Note: reject with non-Error to ensure no special handling
+function checkBranchName(branchName) {
+  return global.Promise.reject(branchName === BRANCH_CURRENT);
+}
+const promise = gitBranchIs(checkBranchName);
+assert(promise instanceof global.Promise);
+return promise.then(
+  (result) =&#x3E; { throw new Error(&#x27;expecting rejection&#x27;); },
+  (err) =&#x3E; {
+    assert.strictEqual(err, true);
+  }
+);</code></pre></dd>
+            <dt>Promise rejects for function throwing Error</dt>
+            <dd><pre><code>const errTest = new Error(&#x27;test&#x27;);
+function checkBranchName(branchName) { throw errTest; }
+const promise = gitBranchIs(checkBranchName);
+assert(promise instanceof global.Promise);
+return promise.then(
+  (result) =&#x3E; { throw new Error(&#x27;expecting rejection&#x27;); },
+  (err) =&#x3E; { assert.strictEqual(err, errTest); }
 );</code></pre></dd>
             <section class="suite">
               <h1>.getBranch()</h1>
               <dl>
                 <dt>resolves to the branch name</dt>
-                <dd><pre><code>var promise = gitBranchIs.getBranch();
+                <dd><pre><code>const promise = gitBranchIs.getBranch();
 assert(promise instanceof global.Promise);
-return promise.then(function(result) {
+return promise.then((result) =&#x3E; {
   assert.strictEqual(result, BRANCH_CURRENT);
 });</code></pre></dd>
                 <dt>rejects on Error</dt>
-                <dd><pre><code>var promise = gitBranchIs.getBranch(BRANCH_CURRENT);
+                <dd><pre><code>const promise = gitBranchIs.getBranch(BRANCH_CURRENT);
 assert(promise instanceof global.Promise);
 return promise.then(
-  function(result) { throw new Error('expecting Error'); },
-  function(err) {
+  (result) =&#x3E; { throw new Error(&#x27;expecting Error&#x27;); },
+  (err) =&#x3E; {
     assert(err instanceof TypeError);
-    assert(/\boptions\b/.test(err.message));
+    assertMatch(err.message, /\boptions\b/);
   }
-);</code></pre></dd>
-              </dl>
-            </section>
-          </dl>
-        </section>
-        <section class="suite">
-          <h1>without global Promise</h1>
-          <dl>
-            <dt>throws without a callback</dt>
-            <dd><pre><code>assert.throws(
-    function() {
-      gitBranchIs(BRANCH_CURRENT);
-    },
-    function(err) {
-      return err instanceof TypeError &amp;&amp;
-          /\bcallback\b/.test(err.message);
-    }
-);</code></pre></dd>
-            <section class="suite">
-              <h1>.getBranch()</h1>
-              <dl>
-                <dt>throws without a callback</dt>
-                <dd><pre><code>assert.throws(
-    function() {
-      gitBranchIs.getBranch();
-    },
-    function(err) {
-      return err instanceof TypeError &amp;&amp;
-          /\bcallback\b/.test(err.message);
-    }
 );</code></pre></dd>
               </dl>
             </section>
