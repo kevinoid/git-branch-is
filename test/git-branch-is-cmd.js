@@ -383,7 +383,7 @@ describe('git-branch-is', () => {
       (err, stdout, stderr) => {
         assert.ifError(err);
         assertMatch(stdout, BRANCH_CURRENT_RE);
-        assert(!stderr);
+        assert.strictEqual(stderr, '');
         done();
       }
     );
@@ -410,7 +410,7 @@ describe('git-branch-is', () => {
       (err, stdout, stderr) => {
         assert(err instanceof Error);
         assert.strictEqual(err.code, 1);
-        assert(!stdout);
+        assert.strictEqual(stdout, '');
         assertMatch(stderr, /\bargument/);
         done();
       }
