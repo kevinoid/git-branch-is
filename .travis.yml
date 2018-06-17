@@ -17,6 +17,13 @@ node_js:
 
 sudo: false
 
+install:
+  # Ignore package-lock.json.  This is done for a few reasons:
+  # - To test against current versions of dependencies.
+  # - To test installability for dependents (doesn't use package-lock.json).
+  - rm -f package-lock.json
+  - npm install
+
 script:
   - npm run test-cov
 

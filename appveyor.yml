@@ -20,6 +20,10 @@ environment:
 install:
   - ps: Install-Product node $env:nodejs_version
   - npm -g install "npm@%npm_version%"
+  # Ignore package-lock.json.  This is done for a few reasons:
+  # - To test against current versions of dependencies.
+  # - To test installability for dependents (doesn't use package-lock.json).
+  - if exist package-lock.json del package-lock.json
   - npm install
 
 test_script:
