@@ -32,7 +32,7 @@ if (typeof process !== 'undefined') {
       throw evt.detail.reason;
     };
   }
-} else if (typeof console !== 'undefined' &&
-    typeof (console.error || console.log) === 'function') {
+} else if (typeof console !== 'undefined'
+    && typeof (console.error || console.log) === 'function') {
   (console.error || console.log)('Unhandled rejections will be ignored!');
 }

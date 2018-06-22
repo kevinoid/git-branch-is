@@ -82,8 +82,8 @@ function modulenameCmd(args, options, callback) {
   try {
     if (args === undefined || args === null) {
       args = [];
-    } else if (typeof args !== 'object' ||
-               Math.floor(args.length) !== args.length) {
+    } else if (typeof args !== 'object'
+               || Math.floor(args.length) !== args.length) {
       throw new TypeError('args must be Array-like');
     } else if (args.length < 2) {
       throw new RangeError('args must have at least 2 elements');
