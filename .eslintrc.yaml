@@ -89,6 +89,9 @@ rules:
   one-var: 0
   ## require initialized variables to be declared on separate lines
   one-var-declaration-per-line: [2, "initializations"]
+  ## Requires operator at the beginning of the line in multiline statements
+  # Airbnb prevents breaks around =, suggesting ().  I don't see the advantage.
+  operator-linebreak: [2, "before"]
   ## allow use of spread operator, which is not supported in Node v4
   prefer-spread: 0
   ## no space before function, eg. 'function()'
