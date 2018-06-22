@@ -108,4 +108,8 @@ rules:
   # Disabled since unsupported on Node < 6
   prefer-rest-params: 0
 
+  # eslint-plugin-import
+  ## Allow requiring devDependencies in test, test-bin, and test-lib
+  import/no-extraneous-dependencies: [2, {"devDependencies": ["test/**", "test-bin/**", "test-lib/**"]}]
+
 # vi: set sts=2 sw=2 et ft=yaml:
