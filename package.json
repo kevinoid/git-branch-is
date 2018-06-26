@@ -45,7 +45,6 @@
     "commander": "^2.9.0"
   },
   "devDependencies": {
-    "bluebird": "^3.3.0",
     "codecov": "^3.0.0",
     "coveralls": "^3.0.0",
     "eslint": "^4.6.1",

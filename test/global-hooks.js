@@ -5,9 +5,6 @@
 
 'use strict';
 
-const BBPromise = require('bluebird').Promise;
-// eslint-disable-next-line no-undef
-const PPromise = typeof Promise === 'function' ? Promise : BBPromise;
 const fs = require('fs');
 const path = require('path');
 const pify = require('pify');
@@ -16,8 +13,8 @@ const rimraf = require('rimraf');
 const git = require('../test-lib/git');
 const constants = require('../test-lib/constants');
 
-const fsP = pify(fs, PPromise);
-const rimrafP = pify(rimraf, PPromise);
+const fsP = pify(fs);
+const rimrafP = pify(rimraf);
 
 // Local copy of shared constants
 const BRANCH_CURRENT = constants.BRANCH_CURRENT;

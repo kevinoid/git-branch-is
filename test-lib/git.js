@@ -5,13 +5,10 @@
 
 'use strict';
 
-const BBPromise = require('bluebird').Promise;
-// eslint-disable-next-line no-undef
-const PPromise = typeof Promise === 'function' ? Promise : BBPromise;
 const execFile = require('child_process').execFile;
 const pify = require('pify');
 
-const execFileP = pify(execFile, PPromise, {multiArgs: true});
+const execFileP = pify(execFile, {multiArgs: true});
 
 /**
  * Run git with given arguments and options.

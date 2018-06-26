@@ -6,9 +6,6 @@
 'use strict';
 
 
-const BBPromise = require('bluebird').Promise;
-// eslint-disable-next-line no-undef
-const PPromise = typeof Promise === 'function' ? Promise : BBPromise;
 const assert = require('assert');
 const execFile = require('child_process').execFile;
 const path = require('path');
@@ -300,60 +297,38 @@ describe('git-branch-is', () => {
     });
   });
 
-  describe('with global Promise', () => {
-    let hadPromise, oldPromise;
-
-    before('ensure global Promise', () => {
-      if (global.Promise !== PPromise) {
-        hadPromise = hasOwnProperty.call(global, 'Promise');
-        oldPromise = global.Promise;
-        global.Promise = PPromise;
-      }
+  it('returns a Promise with the result', () => {
+    const promise = gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
+    assert(promise instanceof global.Promise);
+    return promise.then((result) => {
+      assert.strictEqual(result.code, 0);
+      assert(!result.stdout);
+      assert(!result.stderr);
     });
+  });
 
-    after('restore global Promise', () => {
-      if (hadPromise === true) {
-        global.Promise = oldPromise;
-      } else if (hadPromise === false) {
-        delete global.Promise;
-      }
-    });
-
-    it('returns a Promise with the result', () => {
-      const promise = gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
-      assert(promise instanceof global.Promise);
-      return promise.then((result) => {
-        assert.strictEqual(result.code, 0);
-        assert(!result.stdout);
-        assert(!result.stderr);
-      });
-    });
-
-    it('rejects the Promise with an Error', () => {
-      const promise = gitBranchIsCmd(ARGS.concat(
-        '-C',
-        'invalid',
-        BRANCH_CURRENT
-      ));
-      assert(promise instanceof global.Promise);
-      return promise.then(
-        (result) => { throw new Error('expecting Error'); },
-        (err) => { assert(err instanceof Error); }
-      );
-    });
+  it('rejects the Promise with an Error', () => {
+    const promise = gitBranchIsCmd(ARGS.concat(
+      '-C',
+      'invalid',
+      BRANCH_CURRENT
+    ));
+    assert(promise instanceof global.Promise);
+    return promise.then(
+      (result) => { throw new Error('expecting Error'); },
+      (err) => { assert(err instanceof Error); }
+    );
   });
 
   describe('without global Promise', () => {
     let hadPromise, oldPromise;
 
     before('remove global Promise', () => {
-      if (global.Promise) {
-        hadPromise = hasOwnProperty.call(global, 'Promise');
-        oldPromise = global.Promise;
-        // Note:  Deleting triggers Mocha's global leak detection.
-        // Also wouldn't work if global scope had a prototype chain.
-        global.Promise = undefined;
-      }
+      hadPromise = hasOwnProperty.call(global, 'Promise');
+      oldPromise = global.Promise;
+      // Note:  Deleting triggers Mocha's global leak detection.
+      // Also wouldn't work if global scope had a prototype chain.
+      global.Promise = undefined;
     });
 
     after('restore global Promise', () => {
