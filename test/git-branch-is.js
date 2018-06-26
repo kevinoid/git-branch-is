@@ -11,9 +11,10 @@ const BBPromise = require('bluebird').Promise;
 // eslint-disable-next-line no-undef
 const PPromise = typeof Promise === 'function' ? Promise : BBPromise;
 const assert = require('assert');
+const path = require('path');
+
 const assertMatch = require('../test-lib/assert-match');
 const constants = require('../test-lib/constants');
-const path = require('path');
 
 // Local copy of shared constants
 const BRANCH_CURRENT = constants.BRANCH_CURRENT;

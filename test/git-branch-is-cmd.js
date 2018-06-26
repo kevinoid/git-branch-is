@@ -5,16 +5,17 @@
 
 'use strict';
 
-const gitBranchIsCmd = require('../bin/git-branch-is');
 
 const BBPromise = require('bluebird').Promise;
 // eslint-disable-next-line no-undef
 const PPromise = typeof Promise === 'function' ? Promise : BBPromise;
 const assert = require('assert');
-const assertMatch = require('../test-lib/assert-match');
-const constants = require('../test-lib/constants');
 const execFile = require('child_process').execFile;
 const path = require('path');
+
+const assertMatch = require('../test-lib/assert-match');
+const constants = require('../test-lib/constants');
+const gitBranchIsCmd = require('../bin/git-branch-is');
 
 /** Initial command arguments. */
 const ARGS = [process.argv[0], 'git-branch-is'];
@@ -106,8 +107,8 @@ describe('git-branch-is', () => {
   });
 
   it('exit 0 silently for matching i regex branch name', (done) => {
-    const args =
-      ARGS.concat('-i', '-r', `^${BRANCH_CURRENT.toUpperCase()}$`);
+    const args
+      = ARGS.concat('-i', '-r', `^${BRANCH_CURRENT.toUpperCase()}$`);
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -370,8 +371,8 @@ describe('git-branch-is', () => {
         () => {
           gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
         },
-        (err) => err instanceof TypeError &&
-                /\bcallback\b/.test(err.message)
+        (err) => err instanceof TypeError
+                && /\bcallback\b/.test(err.message)
       );
     });
   });

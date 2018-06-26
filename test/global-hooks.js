@@ -8,12 +8,13 @@
 const BBPromise = require('bluebird').Promise;
 // eslint-disable-next-line no-undef
 const PPromise = typeof Promise === 'function' ? Promise : BBPromise;
-const constants = require('../test-lib/constants');
 const fs = require('fs');
-const git = require('../test-lib/git');
 const path = require('path');
 const pify = require('pify');
 const rimraf = require('rimraf');
+
+const git = require('../test-lib/git');
+const constants = require('../test-lib/constants');
 
 const fsP = pify(fs, PPromise);
 const rimrafP = pify(rimraf, PPromise);

@@ -75,9 +75,9 @@ function gitBranchIs(branchNameOrTest, options, callback) {
 
     let result;
     try {
-      result = currentBranch === branchNameOrTest ||
-        (typeof branchNameOrTest === 'function' &&
-         branchNameOrTest(currentBranch));
+      result = currentBranch === branchNameOrTest
+        || (typeof branchNameOrTest === 'function'
+         && branchNameOrTest(currentBranch));
     } catch (errTest) {
       callback(errTest);
       return;
@@ -129,9 +129,9 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
     combinedOpts[prop] = options[prop];
   });
 
-  const gitArgs = combinedOpts.gitArgs ?
-    Array.prototype.slice.call(combinedOpts.gitArgs, 0) :
-    [];
+  const gitArgs = combinedOpts.gitArgs
+    ? Array.prototype.slice.call(combinedOpts.gitArgs, 0)
+    : [];
   if (combinedOpts.gitDir) {
     gitArgs.unshift(`--git-dir=${combinedOpts.gitDir}`);
   }

@@ -7,6 +7,7 @@
 'use strict';
 
 const Command = require('commander').Command;
+
 const gitBranchIs = require('..');
 const packageJson = require('../package.json');
 
@@ -110,19 +111,19 @@ function gitBranchIsCmd(args, callback) {
       if (!expectedBranchRegExp.test(currentBranch)) {
         callback(null, {
           code: 1,
-          stderr: command.quiet ? '' :
-            `Error: Current branch "${currentBranch}" does not match "${
+          stderr: command.quiet ? ''
+            : `Error: Current branch "${currentBranch}" does not match "${
               expectedBranch}".\n`
         });
         return;
       }
-    } else if (currentBranch !== expectedBranch &&
-        (!command.ignoreCase ||
-         currentBranch.toUpperCase() !== expectedBranch.toUpperCase())) {
+    } else if (currentBranch !== expectedBranch
+        && (!command.ignoreCase
+         || currentBranch.toUpperCase() !== expectedBranch.toUpperCase())) {
       callback(null, {
         code: 1,
-        stderr: command.quiet ? '' :
-          `Error: Current branch is "${currentBranch}", not "${
+        stderr: command.quiet ? ''
+          : `Error: Current branch is "${currentBranch}", not "${
             expectedBranch}".\n`
       });
       return;
@@ -130,8 +131,8 @@ function gitBranchIsCmd(args, callback) {
 
     callback(null, {
       code: 0,
-      stdout: !command.verbose ? '' :
-        `Current branch is "${currentBranch}".\n`
+      stdout: !command.verbose ? ''
+        : `Current branch is "${currentBranch}".\n`
     });
   });
   return undefined;
@@ -148,8 +149,8 @@ if (require.main === module) {
     if (errOrResult.stderr) { process.stderr.write(errOrResult.stderr); }
     if (err) { process.stderr.write(`${err.name}: ${err.message}\n`); }
 
-    const code = typeof errOrResult.code === 'number' ? errOrResult.code :
-      err ? 1 : 0;
+    const code = typeof errOrResult.code === 'number' ? errOrResult.code
+      : err ? 1 : 0;
     process.exit(code);
   });
 }
