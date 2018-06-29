@@ -90,8 +90,8 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   done();
 });</code></pre></dd>
         <dt>exit 0 silently for matching i regex branch name</dt>
-        <dd><pre><code>const args =
-  ARGS.concat(&#x27;-i&#x27;, &#x27;-r&#x27;, &#x60;^${BRANCH_CURRENT.toUpperCase()}$&#x60;);
+        <dd><pre><code>const args
+  = ARGS.concat(&#x27;-i&#x27;, &#x27;-r&#x27;, &#x60;^${BRANCH_CURRENT.toUpperCase()}$&#x60;);
 gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 0);
@@ -251,6 +251,25 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert(!result.stderr);
   done();
 });</code></pre></dd>
+        <dt>returns a Promise with the result</dt>
+        <dd><pre><code>const promise = gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
+assert(promise instanceof global.Promise);
+return promise.then((result) =&#x3E; {
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+});</code></pre></dd>
+        <dt>rejects the Promise with an Error</dt>
+        <dd><pre><code>const promise = gitBranchIsCmd(ARGS.concat(
+  &#x27;-C&#x27;,
+  &#x27;invalid&#x27;,
+  BRANCH_CURRENT
+));
+assert(promise instanceof global.Promise);
+return promise.then(
+  (result) =&#x3E; { throw new Error(&#x27;expecting Error&#x27;); },
+  (err) =&#x3E; { assert(err instanceof Error); }
+);</code></pre></dd>
         <dt>exit code 0 works when executed</dt>
         <dd><pre><code>execFile(
   process.execPath,
@@ -287,30 +306,6 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   }
 );</code></pre></dd>
         <section class="suite">
-          <h1>with global Promise</h1>
-          <dl>
-            <dt>returns a Promise with the result</dt>
-            <dd><pre><code>const promise = gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
-assert(promise instanceof global.Promise);
-return promise.then((result) =&#x3E; {
-  assert.strictEqual(result.code, 0);
-  assert(!result.stdout);
-  assert(!result.stderr);
-});</code></pre></dd>
-            <dt>rejects the Promise with an Error</dt>
-            <dd><pre><code>const promise = gitBranchIsCmd(ARGS.concat(
-  &#x27;-C&#x27;,
-  &#x27;invalid&#x27;,
-  BRANCH_CURRENT
-));
-assert(promise instanceof global.Promise);
-return promise.then(
-  (result) =&#x3E; { throw new Error(&#x27;expecting Error&#x27;); },
-  (err) =&#x3E; { assert(err instanceof Error); }
-);</code></pre></dd>
-          </dl>
-        </section>
-        <section class="suite">
           <h1>without global Promise</h1>
           <dl>
             <dt>throws without a callback</dt>
@@ -318,8 +313,8 @@ return promise.then(
   () =&#x3E; {
     gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
   },
-  (err) =&#x3E; err instanceof TypeError &#x26;&#x26;
-          /\bcallback\b/.test(err.message)
+  (err) =&#x3E; err instanceof TypeError
+          &#x26;&#x26; /\bcallback\b/.test(err.message)
 );</code></pre></dd>
           </dl>
         </section>
@@ -460,6 +455,59 @@ gitBranchIs(&#x27;surprise&#x27;, options, (err, result) =&#x3E; {
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
+        <dt>Promise resolves true for same branch name</dt>
+        <dd><pre><code>const promise = gitBranchIs(BRANCH_CURRENT);
+assert(promise instanceof global.Promise);
+return promise.then((result) =&#x3E; {
+  assert.strictEqual(result, true);
+});</code></pre></dd>
+        <dt>Promise resolves false for different branch name</dt>
+        <dd><pre><code>const promise = gitBranchIs(&#x27;invalid&#x27;);
+assert(promise instanceof global.Promise);
+return promise.then((result) =&#x3E; {
+  assert.strictEqual(result, false);
+});</code></pre></dd>
+        <dt>Promise rejects on Error</dt>
+        <dd><pre><code>const promise = gitBranchIs(BRANCH_CURRENT, &#x27;opts&#x27;);
+assert(promise instanceof global.Promise);
+return promise.then(
+  (result) =&#x3E; { throw new Error(&#x27;expecting Error&#x27;); },
+  (err) =&#x3E; {
+    assert(err instanceof TypeError);
+    assertMatch(err.message, /\boptions\b/);
+  }
+);</code></pre></dd>
+        <dt>Promise flattens for function returning Promise</dt>
+        <dd><pre><code>function checkBranchName(branchName) {
+  return global.Promise.resolve(branchName === BRANCH_CURRENT);
+}
+const promise = gitBranchIs(checkBranchName);
+assert(promise instanceof global.Promise);
+return promise.then((result) =&#x3E; {
+  assert.strictEqual(result, true);
+});</code></pre></dd>
+        <dt>Promise rejects for function returning Promise</dt>
+        <dd><pre><code>// Note: reject with non-Error to ensure no special handling
+function checkBranchName(branchName) {
+  return global.Promise.reject(branchName === BRANCH_CURRENT);
+}
+const promise = gitBranchIs(checkBranchName);
+assert(promise instanceof global.Promise);
+return promise.then(
+  (result) =&#x3E; { throw new Error(&#x27;expecting rejection&#x27;); },
+  (err) =&#x3E; {
+    assert.strictEqual(err, true);
+  }
+);</code></pre></dd>
+        <dt>Promise rejects for function throwing Error</dt>
+        <dd><pre><code>const errTest = new Error(&#x27;test&#x27;);
+function checkBranchName(branchName) { throw errTest; }
+const promise = gitBranchIs(checkBranchName);
+assert(promise instanceof global.Promise);
+return promise.then(
+  (result) =&#x3E; { throw new Error(&#x27;expecting rejection&#x27;); },
+  (err) =&#x3E; { assert.strictEqual(err, errTest); }
+);</code></pre></dd>
         <section class="suite">
           <h1>.getBranch()</h1>
           <dl>
@@ -472,72 +520,16 @@ gitBranchIs(&#x27;surprise&#x27;, options, (err, result) =&#x3E; {
           </dl>
         </section>
         <section class="suite">
-          <h1>with global Promise</h1>
+          <h1>.getBranch()</h1>
           <dl>
-            <dt>Promise resolves true for same branch name</dt>
-            <dd><pre><code>const promise = gitBranchIs(BRANCH_CURRENT);
-assert(promise instanceof global.Promise);
-return promise.then((result) =&#x3E; {
-  assert.strictEqual(result, true);
-});</code></pre></dd>
-            <dt>Promise resolves false for different branch name</dt>
-            <dd><pre><code>const promise = gitBranchIs(&#x27;invalid&#x27;);
-assert(promise instanceof global.Promise);
-return promise.then((result) =&#x3E; {
-  assert.strictEqual(result, false);
-});</code></pre></dd>
-            <dt>Promise rejects on Error</dt>
-            <dd><pre><code>const promise = gitBranchIs(BRANCH_CURRENT, &#x27;opts&#x27;);
-assert(promise instanceof global.Promise);
-return promise.then(
-  (result) =&#x3E; { throw new Error(&#x27;expecting Error&#x27;); },
-  (err) =&#x3E; {
-    assert(err instanceof TypeError);
-    assertMatch(err.message, /\boptions\b/);
-  }
-);</code></pre></dd>
-            <dt>Promise flattens for function returning Promise</dt>
-            <dd><pre><code>function checkBranchName(branchName) {
-  return global.Promise.resolve(branchName === BRANCH_CURRENT);
-}
-const promise = gitBranchIs(checkBranchName);
-assert(promise instanceof global.Promise);
-return promise.then((result) =&#x3E; {
-  assert.strictEqual(result, true);
-});</code></pre></dd>
-            <dt>Promise rejects for function returning Promise</dt>
-            <dd><pre><code>// Note: reject with non-Error to ensure no special handling
-function checkBranchName(branchName) {
-  return global.Promise.reject(branchName === BRANCH_CURRENT);
-}
-const promise = gitBranchIs(checkBranchName);
-assert(promise instanceof global.Promise);
-return promise.then(
-  (result) =&#x3E; { throw new Error(&#x27;expecting rejection&#x27;); },
-  (err) =&#x3E; {
-    assert.strictEqual(err, true);
-  }
-);</code></pre></dd>
-            <dt>Promise rejects for function throwing Error</dt>
-            <dd><pre><code>const errTest = new Error(&#x27;test&#x27;);
-function checkBranchName(branchName) { throw errTest; }
-const promise = gitBranchIs(checkBranchName);
-assert(promise instanceof global.Promise);
-return promise.then(
-  (result) =&#x3E; { throw new Error(&#x27;expecting rejection&#x27;); },
-  (err) =&#x3E; { assert.strictEqual(err, errTest); }
-);</code></pre></dd>
-            <section class="suite">
-              <h1>.getBranch()</h1>
-              <dl>
-                <dt>resolves to the branch name</dt>
-                <dd><pre><code>const promise = gitBranchIs.getBranch();
+            <dt>resolves to the branch name</dt>
+            <dd><pre><code>const promise = gitBranchIs.getBranch();
 assert(promise instanceof global.Promise);
 return promise.then((result) =&#x3E; {
   assert.strictEqual(result, BRANCH_CURRENT);
 });</code></pre></dd>
-                <dt>rejects on Error</dt>
-                <dd><pre><code>const promise = gitBranchIs.getBranch(BRANCH_CURRENT);
+            <dt>rejects on Error</dt>
+            <dd><pre><code>const promise = gitBranchIs.getBranch(BRANCH_CURRENT);
 assert(promise instanceof global.Promise);
 return promise.then(
   (result) =&#x3E; { throw new Error(&#x27;expecting Error&#x27;); },
@@ -546,8 +538,6 @@ return promise.then(
     assertMatch(err.message, /\boptions\b/);
   }
 );</code></pre></dd>
-              </dl>
-            </section>
           </dl>
         </section>
       </dl>
