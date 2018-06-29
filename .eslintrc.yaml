@@ -92,8 +92,6 @@ rules:
   ## Requires operator at the beginning of the line in multiline statements
   # Airbnb prevents breaks around =, suggesting ().  I don't see the advantage.
   operator-linebreak: [2, "before"]
-  ## allow use of spread operator, which is not supported in Node v4
-  prefer-spread: 0
   ## no space before function, eg. 'function()'
   space-before-function-paren: [2, "never"]
 
@@ -101,12 +99,6 @@ rules:
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#ecmascript-6
   ## require parentheses around arrow function arguments (as Node core does)
   arrow-parens: [2, "always"]
-  ## Prefer destructuring from arrays and objects
-  # Disabled since unsupported on Node < 6
-  prefer-destructuring: 0
-  ## Suggest using the rest parameters instead of arguments
-  # Disabled since unsupported on Node < 6
-  prefer-rest-params: 0
 
   # eslint-plugin-import
   ## Allow requiring devDependencies in test, test-bin, and test-lib

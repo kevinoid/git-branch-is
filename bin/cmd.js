@@ -22,9 +22,9 @@ function parseYargs(yargs, args, callback) {
   // are not caught and passed to a second invocation of callback.
   let called = false;
   try {
-    yargs.parse(args, function() {
+    yargs.parse(args, function(...cbargs) {
       called = true;
-      return callback.apply(this, arguments);
+      return callback.apply(this, cbargs);
     });
   } catch (err) {
     if (called) {

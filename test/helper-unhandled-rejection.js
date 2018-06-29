@@ -27,8 +27,8 @@ if (typeof process !== 'undefined') {
     });
   } else {
     const oldOHR = window.onunhandledrejection;
-    window.onunhandledrejection = function(evt) {
-      if (typeof oldOHR === 'function') { oldOHR.apply(this, arguments); }
+    window.onunhandledrejection = function(evt, ...args) {
+      if (typeof oldOHR === 'function') { oldOHR.apply(this, args); }
       throw evt.detail.reason;
     };
   }
