@@ -4,10 +4,8 @@
 # Update engines.node in package.json if removing old versions.
 environment:
   matrix:
-    - nodejs_version: "4"
-      # npm 6.0.0 fails on Node 4
-      # Note: Can't use carat version https://github.com/npm/npm/issues/17297
-      npm_version: ">=5 <6"
+    - nodejs_version: "6"
+      npm_version: "latest"
       # Empty version installs most recent version available
     - nodejs_version: ""
       npm_version: "latest"
