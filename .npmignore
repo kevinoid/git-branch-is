@@ -1,6 +1,6 @@
 .editorconfig
 .eslintignore
-.eslintrc
+.eslintrc*
 .npmignore
 .travis.yml
 /coverage/
@@ -8,6 +8,10 @@
 /doc/
 /scripts
 /test
+/test-bin
+/test-data
+/test-lib
+CHANGELOG.*
 TODO.*
 appveyor.yml
 jsdoc*.conf.json
