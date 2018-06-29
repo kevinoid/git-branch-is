@@ -17,10 +17,12 @@ const fsP = pify(fs);
 const rimrafP = pify(rimraf);
 
 // Local copy of shared constants
-const BRANCH_CURRENT = constants.BRANCH_CURRENT;
-const BRANCH_SAME_COMMIT = constants.BRANCH_SAME_COMMIT;
-const SUBDIR_NAME = constants.SUBDIR_NAME;
-const TEST_REPO_PATH = constants.TEST_REPO_PATH;
+const {
+  BRANCH_CURRENT,
+  BRANCH_SAME_COMMIT,
+  SUBDIR_NAME,
+  TEST_REPO_PATH
+} = constants;
 
 // Global variables
 let origCWD;

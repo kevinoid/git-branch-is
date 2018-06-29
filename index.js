@@ -5,7 +5,7 @@
 
 'use strict';
 
-const execFile = require('child_process').execFile;
+const {execFile} = require('child_process');
 
 /** Options for {@link gitBranchIs}.
  *

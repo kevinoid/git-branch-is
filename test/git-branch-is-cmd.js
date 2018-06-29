@@ -7,7 +7,7 @@
 
 
 const assert = require('assert');
-const execFile = require('child_process').execFile;
+const {execFile} = require('child_process');
 const path = require('path');
 
 const assertMatch = require('../test-lib/assert-match');
@@ -18,9 +18,7 @@ const gitBranchIsCmd = require('../bin/git-branch-is');
 const ARGS = [process.argv[0], 'git-branch-is'];
 
 // Local copy of shared constants
-const BRANCH_CURRENT = constants.BRANCH_CURRENT;
-const SUBDIR_NAME = constants.SUBDIR_NAME;
-const TEST_REPO_PATH = constants.TEST_REPO_PATH;
+const {BRANCH_CURRENT, SUBDIR_NAME, TEST_REPO_PATH} = constants;
 
 const BRANCH_CURRENT_RE = new RegExp(`\\b${constants.BRANCH_CURRENT}\\b`);
 

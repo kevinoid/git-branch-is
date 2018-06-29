@@ -6,7 +6,7 @@
 
 'use strict';
 
-const Command = require('commander').Command;
+const {Command} = require('commander');
 
 const gitBranchIs = require('..');
 const packageJson = require('../package.json');

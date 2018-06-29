@@ -14,11 +14,13 @@ const assertMatch = require('../test-lib/assert-match');
 const constants = require('../test-lib/constants');
 
 // Local copy of shared constants
-const BRANCH_CURRENT = constants.BRANCH_CURRENT;
-const BRANCH_NON_EXISTENT = constants.BRANCH_NON_EXISTENT;
-const BRANCH_SAME_COMMIT = constants.BRANCH_SAME_COMMIT;
-const SUBDIR_NAME = constants.SUBDIR_NAME;
-const TEST_REPO_PATH = constants.TEST_REPO_PATH;
+const {
+  BRANCH_CURRENT,
+  BRANCH_NON_EXISTENT,
+  BRANCH_SAME_COMMIT,
+  SUBDIR_NAME,
+  TEST_REPO_PATH
+} = constants;
 
 describe('gitBranchIs', () => {
   it('callback true for current branch name', (done) => {
