@@ -101,7 +101,14 @@ rules:
   arrow-parens: [2, "always"]
 
   # eslint-plugin-import
-  ## Allow requiring devDependencies in test, test-bin, and test-lib
-  import/no-extraneous-dependencies: [2, {"devDependencies": ["test/**", "test-bin/**", "test-lib/**"]}]
+  ## Allow requiring devDependencies for build and test
+  import/no-extraneous-dependencies: [2, {
+    "devDependencies": [
+      "gulpfile.js",
+      "test-bin/**",
+      "test-lib/**",
+      "test/**"
+    ]
+  }]
 
 # vi: set sts=2 sw=2 et ft=yaml:
