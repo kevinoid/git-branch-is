@@ -8,8 +8,11 @@ Project Template
 [![Supported Node Version](https://img.shields.io/node/v/@kevinoid/project-template.svg?style=flat)](https://www.npmjs.com/package/@kevinoid/project-template)
 [![Version on NPM](https://img.shields.io/npm/v/@kevinoid/project-template.svg?style=flat)](https://www.npmjs.com/package/@kevinoid/project-template)
 
-A Node.js/npm project template with codecov, coveralls, ESLint,
-github\_changelog\_generator, istanbul, JSDoc, and mocha.
+A Node.js/npm project template with [codecov](https://codecov.io/),
+[coveralls](https://coveralls.io/), [ESLint](https://eslint.org/),
+[github\_changelog\_generator](https://github.com/github-changelog-generator/github-changelog-generator),
+[istanbul](https://istanbul.js.org/), [JSDoc](http://usejsdoc.org/), and
+[mocha](https://mochajs.org/).
 
 It is the template that I am using for my own Node.js projects, which
 represents my current preferences.  I am not advocating for these choices nor
