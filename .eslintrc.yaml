@@ -8,12 +8,6 @@ extends: "airbnb-base"
 parserOptions:
   sourceType: "script"
 
-env:
-  node: true
-  ## disable unwanted browser env from airbnb/legacy
-  # Note: Only works for ESLint 2+: https://github.com/eslint/eslint/issues/3915
-  browser: false
-
 rules:
   # Possible Errors
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#possible-errors
