@@ -31,8 +31,6 @@ rules:
   no-param-reassign: 0
   ## disallow unnecessary use of Function.prototype.{apply,call}
   no-useless-call: 2
-  ## allow vars anywhere that satisfies other linting constraints
-  vars-on-top: 0
 
   # Strict Mode
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#strict-mode
