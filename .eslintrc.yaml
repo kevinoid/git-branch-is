@@ -83,7 +83,8 @@ rules:
   one-var-declaration-per-line: [2, "initializations"]
   ## Requires operator at the beginning of the line in multiline statements
   # Airbnb prevents breaks around =, suggesting ().  I don't see the advantage.
-  operator-linebreak: [2, "before"]
+  # Break after = looks better to me, so first assigned operand is farther left.
+  operator-linebreak: [2, "before", { "overrides": { "=": "after" } }]
   ## no space before function, eg. 'function()'
   space-before-function-paren: [2, "never"]
 
