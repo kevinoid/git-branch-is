@@ -65,6 +65,9 @@ function gitBranchIsCmd(args, callback) {
     .option('--git-path <path>', 'set the path to the git binary')
     .option('-i, --ignore-case', 'compare/match branch name case-insensitively')
     .option('-I, --invert-match', 'inverts/negates comparison')
+    // Note:  Commander.js only supports one long option per option call
+    // https://github.com/tj/commander.js/issues/430
+    .option('--not', 'inverts/negates comparison (same as --invert-match)')
     .option('-q, --quiet', 'suppress warning message if branch differs')
     .option('-r, --regex', 'match <branch name> as a regular expression')
     .option('-v, --verbose', 'print a message if the branch matches')
@@ -82,6 +85,9 @@ function gitBranchIsCmd(args, callback) {
 
   // pluralize --git-arg to cover multiple uses
   command.gitArgs = command.gitArg;
+
+  // treat --not as an alias for --invert-match
+  command.invertMatch = command.invertMatch || command.not;
 
   const expectedBranch = command.args[0];
 

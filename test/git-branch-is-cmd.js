@@ -340,9 +340,32 @@ describe('git-branch-is', () => {
   });
 
   // Unlike an commands with expression arguments (e.g. find, test), follow
-  // the typical argument convention that repeated flag arguments are ignored.
+  // the convention that repeated flag arguments are ignored.
   it('does not double-invert', (done) => {
     const args = ARGS.concat('-I', '-I', 'invalid');
+    gitBranchIsCmd(args, (err, result) => {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 0);
+      assert(!result.stdout);
+      assert(!result.stderr);
+      done();
+    });
+  });
+
+  it('support --not as alias for -I', (done) => {
+    const args = ARGS.concat('--not', 'invalid');
+    gitBranchIsCmd(args, (err, result) => {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 0);
+      assert(!result.stdout);
+      assert(!result.stderr);
+      done();
+    });
+  });
+
+  // Careful that alias isn't handled differently
+  it('does not double-invert with alias', (done) => {
+    const args = ARGS.concat('-I', '--not', 'invalid');
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
