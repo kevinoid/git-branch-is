@@ -8,12 +8,6 @@ extends: "airbnb-base"
 parserOptions:
   sourceType: "script"
 
-env:
-  node: true
-  ## disable unwanted browser env from airbnb/legacy
-  # Note: Only works for ESLint 2+: https://github.com/eslint/eslint/issues/3915
-  browser: false
-
 rules:
   # Possible Errors
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#possible-errors
@@ -31,8 +25,6 @@ rules:
   no-param-reassign: 0
   ## disallow unnecessary use of Function.prototype.{apply,call}
   no-useless-call: 2
-  ## allow vars anywhere that satisfies other linting constraints
-  vars-on-top: 0
 
   # Strict Mode
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#strict-mode
@@ -91,7 +83,8 @@ rules:
   one-var-declaration-per-line: [2, "initializations"]
   ## Requires operator at the beginning of the line in multiline statements
   # Airbnb prevents breaks around =, suggesting ().  I don't see the advantage.
-  operator-linebreak: [2, "before"]
+  # Break after = looks better to me, so first assigned operand is farther left.
+  operator-linebreak: [2, "before", { "overrides": { "=": "after" } }]
   ## no space before function, eg. 'function()'
   space-before-function-paren: [2, "never"]
 
