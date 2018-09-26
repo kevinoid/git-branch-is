@@ -68,6 +68,28 @@ describe('git-branch-is', () => {
     });
   });
 
+  it('exit code 0 silently for inverted different branch name', (done) => {
+    const args = ARGS.concat('-I', 'invalid');
+    gitBranchIsCmd(args, (err, result) => {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 0);
+      assert(!result.stdout);
+      assert(!result.stderr);
+      done();
+    });
+  });
+
+  it('exit code 1 with warning for inverted same branch name', (done) => {
+    const args = ARGS.concat('-I', BRANCH_CURRENT);
+    gitBranchIsCmd(args, (err, result) => {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 1);
+      assert(!result.stdout);
+      assertMatch(result.stderr, BRANCH_CURRENT_RE);
+      done();
+    });
+  });
+
   it('exit 0 silently for matching anchored regex branch name', (done) => {
     const args = ARGS.concat('-r', `^${BRANCH_CURRENT}$`);
     gitBranchIsCmd(args, (err, result) => {
@@ -132,6 +154,28 @@ describe('git-branch-is', () => {
       assert(!result.stdout);
       const branchUpperRE = new RegExp(`\\b${branchUpper}\\b`);
       assertMatch(result.stderr, branchUpperRE);
+      assertMatch(result.stderr, BRANCH_CURRENT_RE);
+      done();
+    });
+  });
+
+  it('exit 0 silently for inverted not matching regex branch name', (done) => {
+    const args = ARGS.concat('-I', '-r', 'invalid');
+    gitBranchIsCmd(args, (err, result) => {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 0);
+      assert(!result.stdout);
+      assert(!result.stderr);
+      done();
+    });
+  });
+
+  it('exit 1 with warning for inverted match regex branch name', (done) => {
+    const args = ARGS.concat('-I', '-r', `^${BRANCH_CURRENT}$`);
+    gitBranchIsCmd(args, (err, result) => {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 1);
+      assert(!result.stdout);
       assertMatch(result.stderr, BRANCH_CURRENT_RE);
       done();
     });
@@ -286,6 +330,19 @@ describe('git-branch-is', () => {
       `--git-dir=${path.join('..', '.git')}`,
       BRANCH_CURRENT
     );
+    gitBranchIsCmd(args, (err, result) => {
+      assert.ifError(err);
+      assert.strictEqual(result.code, 0);
+      assert(!result.stdout);
+      assert(!result.stderr);
+      done();
+    });
+  });
+
+  // Unlike an commands with expression arguments (e.g. find, test), follow
+  // the typical argument convention that repeated flag arguments are ignored.
+  it('does not double-invert', (done) => {
+    const args = ARGS.concat('-I', '-I', 'invalid');
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);

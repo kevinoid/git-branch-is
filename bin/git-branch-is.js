@@ -64,6 +64,7 @@ function gitBranchIsCmd(args, callback) {
     .option('--git-dir <dir>', 'set the path to the repository')
     .option('--git-path <path>', 'set the path to the git binary')
     .option('-i, --ignore-case', 'compare/match branch name case-insensitively')
+    .option('-I, --invert-match', 'inverts/negates comparison')
     .option('-q, --quiet', 'suppress warning message if branch differs')
     .option('-r, --regex', 'match <branch name> as a regular expression')
     .option('-v, --verbose', 'print a message if the branch matches')
@@ -107,32 +108,40 @@ function gitBranchIsCmd(args, callback) {
       return;
     }
 
+    let errMsg, isMatch;
     if (expectedBranchRegExp) {
-      if (!expectedBranchRegExp.test(currentBranch)) {
-        callback(null, {
-          code: 1,
-          stderr: command.quiet ? ''
-            : `Error: Current branch "${currentBranch}" does not match "${
-              expectedBranch}".\n`
-        });
-        return;
+      isMatch = expectedBranchRegExp.test(currentBranch);
+      if (command.invertMatch) {
+        isMatch = !isMatch;
       }
-    } else if (currentBranch !== expectedBranch
-        && (!command.ignoreCase
-         || currentBranch.toUpperCase() !== expectedBranch.toUpperCase())) {
-      callback(null, {
-        code: 1,
-        stderr: command.quiet ? ''
-          : `Error: Current branch is "${currentBranch}", not "${
-            expectedBranch}".\n`
-      });
-      return;
+
+      if (!isMatch && !command.quiet) {
+        errMsg = command.invertMatch
+          ? `Current branch "${currentBranch}" matches "${expectedBranch}".\n`
+          : `Current branch "${currentBranch}" does not match "${
+            expectedBranch}".\n`;
+      }
+    } else {
+      isMatch = currentBranch === expectedBranch
+        || (command.ignoreCase
+            && currentBranch.toUpperCase() === expectedBranch.toUpperCase());
+      if (command.invertMatch) {
+        isMatch = !isMatch;
+      }
+
+      if (!isMatch && !command.quiet) {
+        errMsg = command.invertMatch
+          ? `Current branch is "${currentBranch}".\n`
+          : `Current branch is "${currentBranch}", not "${expectedBranch}".\n`;
+      }
     }
 
     callback(null, {
-      code: 0,
-      stdout: !command.verbose ? ''
-        : `Current branch is "${currentBranch}".\n`
+      code: isMatch ? 0 : 1,
+      stderr: errMsg && `Error: ${errMsg}`,
+      stdout: isMatch && command.verbose
+        ? `Current branch is "${currentBranch}".\n`
+        : null
     });
   });
   return undefined;
