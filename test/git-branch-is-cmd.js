@@ -102,8 +102,8 @@ describe('git-branch-is', () => {
   });
 
   it('exit 0 silently for matching i regex branch name', (done) => {
-    const args
-      = ARGS.concat('-i', '-r', `^${BRANCH_CURRENT.toUpperCase()}$`);
+    const args =
+      ARGS.concat('-i', '-r', `^${BRANCH_CURRENT.toUpperCase()}$`);
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
