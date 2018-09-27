@@ -62,6 +62,24 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert(!result.stderr);
   done();
 });</code></pre></dd>
+        <dt>exit code 0 silently for inverted different branch name</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, &#x27;invalid&#x27;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>exit code 1 with warning for inverted same branch name</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, BRANCH_CURRENT);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  assertMatch(result.stderr, BRANCH_CURRENT_RE);
+  done();
+});</code></pre></dd>
         <dt>exit 0 silently for matching anchored regex branch name</dt>
         <dd><pre><code>const args = ARGS.concat(&#x27;-r&#x27;, &#x60;^${BRANCH_CURRENT}$&#x60;);
 gitBranchIsCmd(args, (err, result) =&#x3E; {
@@ -90,8 +108,8 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   done();
 });</code></pre></dd>
         <dt>exit 0 silently for matching i regex branch name</dt>
-        <dd><pre><code>const args
-  = ARGS.concat(&#x27;-i&#x27;, &#x27;-r&#x27;, &#x60;^${BRANCH_CURRENT.toUpperCase()}$&#x60;);
+        <dd><pre><code>const args =
+  ARGS.concat(&#x27;-i&#x27;, &#x27;-r&#x27;, &#x60;^${BRANCH_CURRENT.toUpperCase()}$&#x60;);
 gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 0);
@@ -116,6 +134,24 @@ gitBranchIsCmd(ARGS.concat(&#x27;-r&#x27;, branchUpper), (err, result) =&#x3E; {
   assert(!result.stdout);
   const branchUpperRE = new RegExp(&#x60;\\b${branchUpper}\\b&#x60;);
   assertMatch(result.stderr, branchUpperRE);
+  assertMatch(result.stderr, BRANCH_CURRENT_RE);
+  done();
+});</code></pre></dd>
+        <dt>exit 0 silently for inverted not matching regex branch name</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, &#x27;-r&#x27;, &#x27;invalid&#x27;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>exit 1 with warning for inverted match regex branch name</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, &#x27;-r&#x27;, &#x60;^${BRANCH_CURRENT}$&#x60;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
   assertMatch(result.stderr, BRANCH_CURRENT_RE);
   done();
 });</code></pre></dd>
@@ -244,6 +280,33 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   &#x60;--git-dir=${path.join(&#x27;..&#x27;, &#x27;.git&#x27;)}&#x60;,
   BRANCH_CURRENT
 );
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>does not double-invert</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, &#x27;-I&#x27;, &#x27;invalid&#x27;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>support --not as alias for -I</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;--not&#x27;, &#x27;invalid&#x27;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+        <dt>does not double-invert with alias</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, &#x27;--not&#x27;, &#x27;invalid&#x27;);
 gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 0);
