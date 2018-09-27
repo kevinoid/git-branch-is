@@ -1,5 +1,13 @@
 # Change Log
 
+## [v2.1.0](https://github.com/kevinoid/git-branch-is/tree/v2.1.0) (2018-09-27)
+[Full Changelog](https://github.com/kevinoid/git-branch-is/compare/v2.0.0...v2.1.0)
+
+- Add support for inverting/negating match with `-I`/`--invert-match`/`--not`
+  ([\#28](https://github.com/kevinoid/git-branch-is/issues/28)
+  [\#29](https://github.com/kevinoid/git-branch-is/pull/29))
+- Update dependency versions.
+
 ## [v2.0.0](https://github.com/kevinoid/git-branch-is/tree/v2.0.0) (2018-06-29)
 [Full Changelog](https://github.com/kevinoid/git-branch-is/compare/v1.0.0...v2.0.0)
 
