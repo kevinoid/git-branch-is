@@ -1,4 +1,5 @@
-# http://www.appveyor.com/docs/appveyor-yml
+# AppVeyor configuration file
+# https://www.appveyor.com/docs/appveyor-yml
 
 # Be aware of https://github.com/nodejs/LTS when choosing versions to test
 # Update engines.node in package.json if removing old versions.
