@@ -57,6 +57,10 @@
     "node": ">=6",
     "npm": ">=1.3.7"
   },
+  "mocha": {
+    "checkLeaks": true,
+    "exit": false
+  },
   "yargs": {
     "parse-numbers": false,
     "duplicate-arguments-array": false,
