@@ -1,3 +1,0 @@
---check-leaks
---globals Promise
---no-exit

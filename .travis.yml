@@ -15,8 +15,6 @@ node_js:
 # https://github.com/semantic-release/semantic-release/blob/v6.2.0/.travis.yml#L3
 # Since cache is stored in S3 and npm repository is a caching proxy, why bother?
 
-sudo: false
-
 install:
   # Ignore package-lock.json.  This is done for a few reasons:
   # - To test against current versions of dependencies.

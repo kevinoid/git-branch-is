@@ -4,6 +4,7 @@
 .npmignore
 .nyc_output/
 .travis.yml
+/.githooks/
 /coverage/
 /doc-src/
 /doc/
