@@ -120,7 +120,10 @@ function modulenameCmd(args, options, callback) {
     return undefined;
   }
 
-  const yargs = new Yargs()
+  // Workaround for https://github.com/yargs/yargs/issues/783
+  // Necessary because mocha package.json overrides .parserConfiguration()
+  require.main = module;
+  const yargs = new Yargs(null, null, require)
     .parserConfiguration({
       'parse-numbers': false,
       'duplicate-arguments-array': false,
