@@ -120,9 +120,12 @@ function modulenameCmd(args, options, callback) {
     return undefined;
   }
 
-  // Workaround for https://github.com/yargs/yargs/issues/783
-  require.main = module;
-  const yargs = new Yargs(null, null, require)
+  const yargs = new Yargs()
+    .parserConfiguration({
+      'parse-numbers': false,
+      'duplicate-arguments-array': false,
+      'flatten-duplicate-arrays': false
+    })
     .usage('Usage: $0 [options] [args...]')
     .help()
     .alias('help', 'h')

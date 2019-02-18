@@ -60,10 +60,5 @@
   "mocha": {
     "checkLeaks": true,
     "exit": false
-  },
-  "yargs": {
-    "parse-numbers": false,
-    "duplicate-arguments-array": false,
-    "flatten-duplicate-arrays": false
   }
 }
