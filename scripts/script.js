@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * An NPM script which will be run from scripts in package.json.
+ * An executable script which can be run from "scripts" in package.json.
  *
  * @copyright Copyright 2016-2019 Kevin Locke <kevin@kevinlocke.name>
  * @license MIT
