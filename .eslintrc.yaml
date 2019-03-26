@@ -9,11 +9,6 @@ parserOptions:
   sourceType: "script"
 
 rules:
-  # Possible Errors
-  # list: https://github.com/eslint/eslint/tree/master/docs/rules#possible-errors
-  ## disallow trailing commas in array and object literals
-  comma-dangle: [2, "never"]
-
   # Best Practices
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#best-practices
   ## require curly braces around all control statements
