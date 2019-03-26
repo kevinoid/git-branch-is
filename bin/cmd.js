@@ -39,85 +39,53 @@ function parseYargs(yargs, args, callback) {
 /** Options for command entry points.
  *
  * @typedef {{
- *   in: (stream.Readable|undefined),
- *   out: (stream.Writable|undefined),
- *   err: (stream.Writable|undefined)
+ *   stdin: !stream.Readable,
+ *   stdout: !stream.Writable,
+ *   stderr: !stream.Writable
  * }} CommandOptions
- * @property {stream.Readable=} in Stream from which input is read. (default:
- * <code>process.stdin</code>)
- * @property {stream.Writable=} out Stream to which output is written.
- * (default: <code>process.stdout</code>)
- * @property {stream.Writable=} err Stream to which errors (and non-output
- * status messages) are written. (default: <code>process.stderr</code>)
+ * @property {!stream.Readable} stdin Stream from which input is read.
+ * @property {!stream.Writable} stdout Stream to which output is written.
+ * @property {!stream.Writable} stderr Stream to which errors and non-output
+ * status messages are written.
  */
 // const CommandOptions;
 
 /** Entry point for this command.
  *
- * @param {!Array<string>} args Command-line arguments.
- * @param {CommandOptions=} options Options.
- * @param {?function(Error, number=)=} callback Optional callback for the exit
- * code or an <code>Error</code>.
- * @return {Promise<number>|undefined} If <code>callback</code> is not given,
- * a <code>Promise</code> with the exit code or <code>Error</code>.
+ * @param {Array<string>} args Command-line arguments.
+ * @param {!CommandOptions} options Options.
+ * @param {function(number)} callback Callback with exit code.
  */
 function modulenameCmd(args, options, callback) {
-  if (!callback && typeof options === 'function') {
-    callback = options;
-    options = null;
-  }
-
-  if (!callback) {
-    return new Promise((resolve, reject) => {
-      modulenameCmd(args, options, (err, result) => {
-        if (err) { reject(err); } else { resolve(result); }
-      });
-    });
-  }
-
   if (typeof callback !== 'function') {
     throw new TypeError('callback must be a function');
   }
 
-  try {
-    if (args === undefined || args === null) {
-      args = [];
-    } else if (typeof args !== 'object'
-               || Math.floor(args.length) !== args.length) {
-      throw new TypeError('args must be Array-like');
-    } else if (args.length < 2) {
-      throw new RangeError('args must have at least 2 elements');
-    } else {
-      args = Array.prototype.slice.call(args, 2).map(String);
-    }
+  if (args !== undefined
+      && args !== null
+      && Math.floor(args.length) !== args.length) {
+    throw new TypeError('args must be Array-like');
+  }
 
-    if (options !== undefined && typeof options !== 'object') {
-      throw new TypeError('options must be an object');
-    }
+  if (!options || typeof options !== 'object') {
+    throw new TypeError('options must be an object');
+  }
 
-    options = Object.assign(
-      {
-        in: process.stdin,
-        out: process.stdout,
-        err: process.stderr
-      },
-      options
-    );
+  if (!options.stdin || typeof options.stdin.on !== 'function') {
+    throw new TypeError('options.stdin must be a stream.Readable');
+  }
+  if (!options.stdout || typeof options.stdout.write !== 'function') {
+    throw new TypeError('options.stdout must be a stream.Writable');
+  }
+  if (!options.stderr || typeof options.stderr.write !== 'function') {
+    throw new TypeError('options.stderr must be a stream.Writable');
+  }
 
-    if (!options.in || typeof options.in.on !== 'function') {
-      throw new TypeError('options.in must be a stream.Readable');
-    }
-    if (!options.out || typeof options.out.write !== 'function') {
-      throw new TypeError('options.out must be a stream.Writable');
-    }
-    if (!options.err || typeof options.err.write !== 'function') {
-      throw new TypeError('options.err must be a stream.Writable');
-    }
-  } catch (err) {
-    process.nextTick(() => {
-      callback(err);
-    });
-    return undefined;
+  if (args.length >= 2) {
+    // Strip "node" and script name, ensure args are strings
+    args = Array.prototype.slice.call(args, 2).map(String);
+  } else {
+    args = [];
   }
 
   // Workaround for https://github.com/yargs/yargs/issues/783
@@ -149,26 +117,26 @@ function modulenameCmd(args, options, callback) {
   parseYargs(yargs, args, (err, argOpts, output) => {
     if (err) {
       if (output) {
-        options.err.write(`${output}\n`);
+        options.stderr.write(`${output}\n`);
       } else {
-        options.err.write(`${err.name}: ${err.message}\n`);
+        options.stderr.write(`${err.name}: ${err.message}\n`);
       }
       callback(null, 1);
       return;
     }
 
     if (output) {
-      options.out.write(`${output}\n`);
+      options.stdout.write(`${output}\n`);
     }
 
     if (argOpts.help || argOpts.version) {
-      callback(null, 0);
+      callback(0);
       return;
     }
 
     if (argOpts._.length !== 1) {
-      options.err.write('Error: Exactly one argument is required.\n');
-      callback(null, 1);
+      options.stderr.write('Error: Exactly one argument is required.\n');
+      callback(1);
       return;
     }
 
@@ -179,8 +147,6 @@ function modulenameCmd(args, options, callback) {
     };
     modulename(cmdOpts, callback);
   });
-
-  return undefined;
 }
 
 modulenameCmd.default = modulenameCmd;
@@ -188,21 +154,8 @@ module.exports = modulenameCmd;
 
 if (require.main === module) {
   // This file was invoked directly.
-  /* eslint-disable no-process-exit */
-  const mainOptions = {
-    in: process.stdin,
-    out: process.stdout,
-    err: process.stderr
-  };
-  modulenameCmd(process.argv, mainOptions, (err, exitCode) => {
-    if (err) {
-      if (err.stdout) { process.stdout.write(err.stdout); }
-      if (err.stderr) { process.stderr.write(err.stderr); }
-      process.stderr.write(`${err.name}: ${err.message}\n`);
-
-      exitCode = typeof err.exitCode === 'number' ? err.exitCode : 1;
-    }
-
-    process.exit(exitCode);
+  // Note:  Could pass process.exit as callback to force immediate exit.
+  modulenameCmd(process.argv, process, (exitCode) => {
+    process.exitCode = exitCode;
   });
 }
