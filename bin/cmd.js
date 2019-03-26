@@ -95,7 +95,7 @@ function modulenameCmd(args, options, callback) {
     .parserConfiguration({
       'parse-numbers': false,
       'duplicate-arguments-array': false,
-      'flatten-duplicate-arrays': false
+      'flatten-duplicate-arrays': false,
     })
     .usage('Usage: $0 [options] [args...]')
     .help()
@@ -104,12 +104,12 @@ function modulenameCmd(args, options, callback) {
     .option('quiet', {
       alias: 'q',
       describe: 'Print less output',
-      count: true
+      count: true,
     })
     .option('verbose', {
       alias: 'v',
       describe: 'Print more output',
-      count: true
+      count: true,
     })
     .version(`${packageJson.name} ${packageJson.version}`)
     .alias('version', 'V')
@@ -143,7 +143,7 @@ function modulenameCmd(args, options, callback) {
     // Parse arguments then call API function with parsed options
     const cmdOpts = {
       files: argOpts._,
-      verbosity: argOpts.verbose - argOpts.quiet
+      verbosity: argOpts.verbose - argOpts.quiet,
     };
     modulename(cmdOpts, callback);
   });

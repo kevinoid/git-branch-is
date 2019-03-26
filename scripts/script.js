@@ -46,7 +46,7 @@ if (require.main === module) {
   const mainOptions = {
     in: process.stdin,
     out: process.stdout,
-    err: process.stderr
+    err: process.stderr,
   };
   scriptname(process.argv, mainOptions, (err, code) => {
     if (err) {
