@@ -2,7 +2,7 @@
 /**
  * An NPM script which will be run from scripts in package.json.
  *
- * @copyright Copyright 2016 Kevin Locke <kevin@kevinlocke.name>
+ * @copyright Copyright 2016-2019 Kevin Locke <kevin@kevinlocke.name>
  * @license MIT
  */
 
