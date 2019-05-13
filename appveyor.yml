@@ -5,7 +5,7 @@
 # Update engines.node in package.json if removing old versions.
 environment:
   matrix:
-    - nodejs_version: "6"
+    - nodejs_version: "8"
       npm_version: "latest"
       # Empty version installs most recent version available
     - nodejs_version: ""
