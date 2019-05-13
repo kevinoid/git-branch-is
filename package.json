@@ -1,7 +1,7 @@
 {
   "name": "@kevinoid/project-template",
   "version": "0.0.1",
-  "description": "A Node.js/npm project template with codecov, coveralls, ESLint, github_changelog_generator, istanbul, JSDoc, and mocha.",
+  "description": "A Node.js/npm project template with codecov, coveralls, ESLint, github_changelog_generator, nyc, JSDoc, and mocha.",
   "keywords": [
     "project-template",
     "template"
@@ -29,12 +29,12 @@
     "lint-js": "eslint . && echo ESLint passed.",
     "postpublish": "git -C doc push && git push --follow-tags origin master gh-pages && echo Remember to update GitHub Releases from CHANGELOG.md && echo until skywinder/github-changelog-generator#56 is fixed.",
     "postversion": "rimraf doc && git clone -b gh-pages -l -q . doc && npm run doc && git -C doc add . && git -C doc commit -n -m \"Docs for v$npm_package_version\"",
-    "preversion": "check-audit && depcheck --ignores greenkeeper-lockfile --ignore-dirs doc && david && git-branch-is master && travis-status -b master -c -wx && appveyor-status -b master -c -w && istanbul check-coverage --statements 95 coverage/coverage.json",
+    "preversion": "check-audit && depcheck --ignores greenkeeper-lockfile --ignore-dirs doc && david && git-branch-is master && travis-status -b master -c -wx && appveyor-status -b master -c -w && nyc check-coverage --statements 95",
     "start": "supervisor --quiet --no-restart-on exit --extensions js,json --ignore test --poll-interval 2000 server.js",
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
     "test-unit": "mocha --recursive test",
-    "test-unit-cov": "istanbul cover _mocha -- --recursive test",
+    "test-unit-cov": "nyc mocha --recursive test",
     "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
     "version": "github_changelog_generator -t \"$npm_config_gcg_github_token\" --future-release \"$npm_package_version\" && echo && echo === Please edit CHANGELOG.md as desired, then exit === && echo && $npm_config_shell && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
     "version-deps": "npm install david depcheck git-branch-is npm-audit-resolver travis-status"
@@ -47,10 +47,10 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "greenkeeper-lockfile": "^1.15.1",
-    "istanbul": "^0.4.1",
     "jsdoc": "^3.6.0",
     "mocha": "^6.0.0",
     "nodecat": "^2.0.0",
+    "nyc": "^14.0.0",
     "rimraf": "^2.2.0"
   },
   "engines": {

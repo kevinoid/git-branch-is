@@ -2,6 +2,7 @@
 .eslintignore
 .eslintrc*
 .npmignore
+.nyc_output/
 .travis.yml
 /.githooks/
 /coverage/
