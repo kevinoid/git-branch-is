@@ -72,8 +72,12 @@ rules:
   # Airbnb prevents breaks around =, suggesting ().  I don't see the advantage.
   # Break after = looks better to me, so first assigned operand is farther left.
   operator-linebreak: [2, "before", { "overrides": { "=": "after" } }]
-  ## no space before function, eg. 'function()'
-  space-before-function-paren: [2, "never"]
+  ## space before function parens only for async arrow (as Node core does)
+  space-before-function-paren: [2, {
+    "anonymous": "never",
+    "named": "never",
+    "asyncArrow": "always"
+  }]
 
   # ECMAScript 6 Rules
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#ecmascript-6
