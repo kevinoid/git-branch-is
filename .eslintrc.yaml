@@ -39,8 +39,6 @@ rules:
 
   # Stylistic Issues
   # list: https://github.com/eslint/eslint/tree/master/docs/rules#stylistic-issues
-  ## require spaces around single-line blocks
-  block-spacing: [2, "always"]
   ## allow unnamed functions
   func-names: 0
   ## enforce consistent line breaks inside function parentheses
