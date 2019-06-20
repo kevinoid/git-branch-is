@@ -11,6 +11,13 @@
     //// Best Practices <https://eslint.org/docs/rules/#best-practices>
     // require curly braces around all control statements, not just multi-line.
     "curly": ["error", "all"],
+    // disallow unnecessary parentheses
+    "no-extra-parens": ["error", "all", {
+      "conditionalAssign": false,
+      "enforceForArrowConditionals": false,
+      "nestedBinaryExpressions": false,
+      "returnAssign": false
+    }],
     // allow multiple spaces only before EOL (for inline comment alignment)
     "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
     // allow reassignment of function parameters
