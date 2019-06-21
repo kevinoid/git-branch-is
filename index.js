@@ -105,11 +105,11 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
   }
 
   if (!callback) {
-    return new Promise(((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       getBranch(options, (err, result) => {
         if (err) { reject(err); } else { resolve(result); }
       });
-    }));
+    });
   }
 
   if (typeof callback !== 'function') {
