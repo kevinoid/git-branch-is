@@ -1,0 +1,8 @@
+// ESLint configuration for test directory
+{
+  "extends": "../.eslintrc.json",
+
+  "env": {
+    "mocha": true
+  }
+}
