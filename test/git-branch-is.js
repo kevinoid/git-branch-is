@@ -5,10 +5,10 @@
 
 'use strict';
 
-const gitBranchIs = require('..');
-
 const assert = require('assert');
 const path = require('path');
+
+const gitBranchIs = require('..');
 
 const assertMatch = require('../test-lib/assert-match');
 const constants = require('../test-lib/constants');
