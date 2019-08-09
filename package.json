@@ -32,7 +32,7 @@
     "lint-js": "eslint . && echo ESLint passed.",
     "postpublish": "git -C doc push && git push --follow-tags origin master gh-pages && echo Remember to update GitHub Releases from CHANGELOG.md && echo until skywinder/github-changelog-generator#56 is fixed.",
     "postversion": "rimraf doc && git clone -b gh-pages -l -q . doc && npm run doc && git -C doc add . && git -C doc commit -n -m \"Docs for v$npm_package_version\"",
-    "preversion": "check-audit && depcheck --ignores greenkeeper-lockfile --ignore-dirs doc && david && node ./bin/git-branch-is.js master && travis-status -b master -c -wx && appveyor-status -b master -c -w -p kevinoid/git-branch-is && nyc check-coverage --lines 95",
+    "preversion": "check-audit && depcheck --ignores greenkeeper-lockfile --ignore-dirs doc && david -i eslint && node ./bin/git-branch-is.js master && travis-status -b master -c -wx && appveyor-status -b master -c -w -p kevinoid/git-branch-is && nyc check-coverage --lines 95",
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
     "test-unit": "mocha --recursive test",
