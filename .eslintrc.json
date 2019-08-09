@@ -25,6 +25,8 @@
     "no-param-reassign": "off",
     // disallow unnecessary use of Function.prototype.{apply,call}
     "no-useless-call": "error",
+    // Disallow unnecessary catch clauses
+    "no-useless-catch": "error",
 
     //// Strict Mode <https://eslint.org/docs/rules/#strict-mode>
     // require 'use strict' in global scope
