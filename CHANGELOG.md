@@ -1,5 +1,12 @@
 # Change Log
 
+## [3.0.0](https://github.com/kevinoid/git-branch-is/tree/3.0.0) (2019-08-09)
+[Full Changelog](https://github.com/kevinoid/git-branch-is/compare/v2.1.0...3.0.0)
+
+- **BREAKING** Require Node 8 or later.
+- Dependency version updates.
+- Code style fixes.
+
 ## [v2.1.0](https://github.com/kevinoid/git-branch-is/tree/v2.1.0) (2018-09-27)
 [Full Changelog](https://github.com/kevinoid/git-branch-is/compare/v2.0.0...v2.1.0)
 
