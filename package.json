@@ -42,7 +42,7 @@
     "version-deps": "npm install david depcheck npm-audit-resolver travis-status"
   },
   "dependencies": {
-    "commander": "^2.9.0"
+    "commander": "^3.0.0"
   },
   "devDependencies": {
     "codecov": "^3.0.0",
