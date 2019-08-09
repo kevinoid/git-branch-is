@@ -43,6 +43,10 @@
     "no-use-before-define": ["error", "nofunc"],
 
     //// Stylistic Issues <https://eslint.org/docs/rules/#stylistic-issues>
+    // require camel case names (even for properties and destructuring)
+    "camelcase": ["error", {
+      "ignoreDestructuring": false
+    }],
     // allow unnamed functions
     "func-names": "off",
     // don't enforce consistent linebreak style
