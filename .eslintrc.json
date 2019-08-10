@@ -39,8 +39,10 @@
 
     //// Stylistic Issues <https://eslint.org/docs/rules/#stylistic-issues>
     // require camel case names (even for properties and destructuring)
+    // Note: options object needed to override airbnb, values set for clarity.
     "camelcase": ["error", {
-      "ignoreDestructuring": false
+      "ignoreDestructuring": false,
+      "properties": "always"
     }],
     // allow unnamed functions
     "func-names": "off",
