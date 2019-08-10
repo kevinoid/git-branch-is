@@ -83,9 +83,6 @@
     }],
 
     //// ECMAScript 6 Rules <https://eslint.org/docs/rules/#ecmascript-6>
-    // require parentheses around arrow function arguments (as Node core does)
-    "arrow-parens": ["error", "always"],
-
     // eslint-plugin-import
     // Allow requiring devDependencies for build and test
     "import/no-extraneous-dependencies": ["error", {
