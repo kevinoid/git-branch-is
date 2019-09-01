@@ -16,7 +16,7 @@
   },
   "main": "index.js",
   "bin": {
-    "index": "bin/index.js"
+    "project-template": "bin/cmd.js"
   },
   "//": "All scripts should run in POSIX sh and Windows cmd.exe",
   "scripts": {
