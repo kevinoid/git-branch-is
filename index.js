@@ -121,14 +121,10 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
     return undefined;
   }
 
-  const combinedOpts = {};
-  Object.keys(GitBranchIsOptions).forEach((prop) => {
-    combinedOpts[prop] = GitBranchIsOptions[prop];
-  });
-  Object.keys(new Object(options)).forEach((prop) => {
-    combinedOpts[prop] = options[prop];
-  });
-
+  const combinedOpts = {
+    ...GitBranchIsOptions,
+    ...options,
+  };
   const gitArgs = combinedOpts.gitArgs
     ? Array.prototype.slice.call(combinedOpts.gitArgs, 0)
     : [];
