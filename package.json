@@ -29,10 +29,10 @@
     "doc-spec": "rimraf doc/spec && mkdir doc/spec && mocha --reporter doc --recursive test | nodecat doc-src/spec/header.xhtml - doc-src/spec/footer.xhtml > doc/spec/index.xhtml",
     "lint": "npm run lint-js && npm run lint-doc",
     "lint-doc": "jsdoc -t templates/silent -c jsdoc-lint.conf.json . && echo JSDoc passed.",
-    "lint-js": "eslint . && echo ESLint passed.",
+    "lint-js": "eslint --report-unused-disable-directives . && echo ESLint passed.",
     "postpublish": "git -C doc push && git push --follow-tags origin master gh-pages && echo Remember to update GitHub Releases from CHANGELOG.md && echo until skywinder/github-changelog-generator#56 is fixed.",
     "postversion": "rimraf doc && git clone -b gh-pages -l -q . doc && npm run doc && git -C doc add . && git -C doc commit -n -m \"Docs for v$npm_package_version\"",
-    "preversion": "check-audit && depcheck --ignores greenkeeper-lockfile --ignore-dirs doc && david -i eslint && node ./bin/git-branch-is.js master && travis-status -b master -c -wx && appveyor-status -b master -c -w -p kevinoid/git-branch-is && nyc check-coverage --lines 95",
+    "preversion": "npm run test-cov && nyc check-coverage --statements 95 && check-audit && depcheck --ignores greenkeeper-lockfile --ignore-dirs doc && david && node ./bin/git-branch-is.js master && travis-status -b master -c -w -x && appveyor-status -b master -c -w -p kevinoid/git-branch-is",
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
     "test-unit": "mocha --recursive test",
@@ -45,11 +45,15 @@
     "commander": "^3.0.0"
   },
   "devDependencies": {
+    "@kevinoid/eslint-config": "^0.3.0",
     "codecov": "^3.0.0",
     "coveralls": "^3.0.0",
-    "eslint": "^5.0.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.2.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-unicorn": "^10.0.0",
     "greenkeeper-lockfile": "^1.15.1",
     "jsdoc": "^3.6.0",
     "mocha": "^6.0.0",
@@ -59,7 +63,7 @@
     "rimraf": "^3.0.0"
   },
   "engines": {
-    "node": ">=8",
+    "node": ">=8.3",
     "npm": ">=1.3.7"
   },
   "mocha": {
