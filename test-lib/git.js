@@ -5,10 +5,10 @@
 
 'use strict';
 
-const {execFile} = require('child_process');
+const { execFile } = require('child_process');
 const pify = require('pify');
 
-const execFileP = pify(execFile, {multiArgs: true});
+const execFileP = pify(execFile, { multiArgs: true });
 
 /**
  * Run git with given arguments and options.
@@ -27,7 +27,7 @@ function git(...args) {
     options.stdio = options.stdio || defaultStdio;
   } else {
     options = {
-      stdio: defaultStdio
+      stdio: defaultStdio,
     };
   }
 

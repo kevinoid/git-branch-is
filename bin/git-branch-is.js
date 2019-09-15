@@ -6,7 +6,7 @@
 
 'use strict';
 
-const {Command} = require('commander');
+const { Command } = require('commander');
 
 const gitBranchIs = require('..');
 const packageJson = require('../package.json');
@@ -59,7 +59,7 @@ function gitBranchIsCmd(args, callback) {
     .option('-C <path>', 'run as if started in <path>')
     .option(
       '--git-arg <arg>', 'additional argument to git (can be repeated)',
-      collect, []
+      collect, [],
     )
     .option('--git-dir <dir>', 'set the path to the repository')
     .option('--git-path <path>', 'set the path to the git binary')
@@ -96,13 +96,13 @@ function gitBranchIsCmd(args, callback) {
     try {
       expectedBranchRegExp = new RegExp(
         expectedBranch,
-        command.ignoreCase ? 'i' : undefined
+        command.ignoreCase ? 'i' : undefined,
       );
     } catch (errRegExp) {
       callback(null, {
         code: 2,
         stderr: `Error: Invalid RegExp "${expectedBranch}": ${
-          errRegExp}\n`
+          errRegExp}\n`,
       });
       return undefined;
     }
@@ -147,7 +147,7 @@ function gitBranchIsCmd(args, callback) {
       stderr: errMsg && `Error: ${errMsg}`,
       stdout: isMatch && command.verbose
         ? `Current branch is "${currentBranch}".\n`
-        : null
+        : null,
     });
   });
   return undefined;

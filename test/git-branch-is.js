@@ -19,7 +19,7 @@ const {
   BRANCH_NON_EXISTENT,
   BRANCH_SAME_COMMIT,
   SUBDIR_NAME,
-  TEST_REPO_PATH
+  TEST_REPO_PATH,
 } = constants;
 
 describe('gitBranchIs', () => {
@@ -48,7 +48,7 @@ describe('gitBranchIs', () => {
   });
 
   it('callback true for same branch name in subdir', (done) => {
-    gitBranchIs(BRANCH_CURRENT, {cwd: SUBDIR_NAME}, (err, result) => {
+    gitBranchIs(BRANCH_CURRENT, { cwd: SUBDIR_NAME }, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result, true);
       done();
@@ -90,7 +90,7 @@ describe('gitBranchIs', () => {
   it('can specify additional git arguments', (done) => {
     const options = {
       cwd: '..',
-      gitArgs: ['-C', TEST_REPO_PATH]
+      gitArgs: ['-C', TEST_REPO_PATH],
     };
     gitBranchIs(BRANCH_CURRENT, options, (err, result) => {
       assert.ifError(err);
@@ -100,7 +100,7 @@ describe('gitBranchIs', () => {
   });
 
   it('null gitArgs is ignored', (done) => {
-    gitBranchIs(BRANCH_CURRENT, {gitArgs: null}, (err, result) => {
+    gitBranchIs(BRANCH_CURRENT, { gitArgs: null }, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result, true);
       done();
@@ -110,7 +110,7 @@ describe('gitBranchIs', () => {
   it('gitArgs takes precedence over gitDir', (done) => {
     const options = {
       gitArgs: ['--git-dir=.git'],
-      gitDir: 'invalid'
+      gitDir: 'invalid',
     };
     gitBranchIs(BRANCH_CURRENT, options, (err, result) => {
       assert.ifError(err);
@@ -122,7 +122,7 @@ describe('gitBranchIs', () => {
   it('can specify git executable and args', (done) => {
     const options = {
       gitArgs: [path.join('..', 'test-bin', 'echo-surprise.js')],
-      gitPath: process.execPath
+      gitPath: process.execPath,
     };
     gitBranchIs('surprise', options, (err, result) => {
       assert.ifError(err);
@@ -132,7 +132,7 @@ describe('gitBranchIs', () => {
   });
 
   it('callback Error outside of git repo', (done) => {
-    gitBranchIs(BRANCH_CURRENT, {cwd: '/'}, (err, result) => {
+    gitBranchIs(BRANCH_CURRENT, { cwd: '/' }, (err, result) => {
       assert(err instanceof Error);
       assert(result === undefined || result === null);
       done();
@@ -140,7 +140,7 @@ describe('gitBranchIs', () => {
   });
 
   it('callback Error if cwd doesn\'t exist', (done) => {
-    gitBranchIs(BRANCH_CURRENT, {cwd: 'invalid'}, (err, result) => {
+    gitBranchIs(BRANCH_CURRENT, { cwd: 'invalid' }, (err, result) => {
       assert(err instanceof Error);
       assert(result === undefined || result === null);
       done();
@@ -149,7 +149,7 @@ describe('gitBranchIs', () => {
 
   it('callback Error if git is not executable', (done) => {
     const badGitPath = path.join(__dirname, '..', 'package.json');
-    gitBranchIs(BRANCH_CURRENT, {gitPath: badGitPath}, (err, result) => {
+    gitBranchIs(BRANCH_CURRENT, { gitPath: badGitPath }, (err, result) => {
       assert(err instanceof Error);
       assert(result === undefined || result === null);
       done();
@@ -157,7 +157,7 @@ describe('gitBranchIs', () => {
   });
 
   it('callback Error if gitDir is not a git repo', (done) => {
-    gitBranchIs(BRANCH_CURRENT, {gitDir: SUBDIR_NAME}, (err, result) => {
+    gitBranchIs(BRANCH_CURRENT, { gitDir: SUBDIR_NAME }, (err, result) => {
       assert(err instanceof Error);
       assert(result === undefined || result === null);
       done();
@@ -168,7 +168,7 @@ describe('gitBranchIs', () => {
   it('gitDir is relative to cwd', (done) => {
     const options = {
       cwd: SUBDIR_NAME,
-      gitDir: path.join('..', '.git')
+      gitDir: path.join('..', '.git'),
     };
     gitBranchIs(BRANCH_CURRENT, options, (err, result) => {
       assert.ifError(err);
@@ -181,7 +181,7 @@ describe('gitBranchIs', () => {
     const options = {
       cwd: SUBDIR_NAME,
       gitArgs: [path.join('..', '..', 'test-bin', 'echo-surprise.js')],
-      gitPath: path.relative(SUBDIR_NAME, process.execPath)
+      gitPath: path.relative(SUBDIR_NAME, process.execPath),
     };
     gitBranchIs('surprise', options, (err, result) => {
       assert.ifError(err);
@@ -224,7 +224,7 @@ describe('gitBranchIs', () => {
       (err) => {
         assert(err instanceof TypeError);
         assertMatch(err.message, /\boptions\b/);
-      }
+      },
     );
   });
 
@@ -250,7 +250,7 @@ describe('gitBranchIs', () => {
       (result) => { throw new Error('expecting rejection'); },
       (err) => {
         assert.strictEqual(err, true);
-      }
+      },
     );
   });
 
@@ -261,7 +261,7 @@ describe('gitBranchIs', () => {
     assert(promise instanceof global.Promise);
     return promise.then(
       (result) => { throw new Error('expecting rejection'); },
-      (err) => { assert.strictEqual(err, errTest); }
+      (err) => { assert.strictEqual(err, errTest); },
     );
   });
 
@@ -282,7 +282,7 @@ describe('gitBranchIs', () => {
         (err) => {
           assert(err instanceof TypeError);
           assertMatch(err.message, /\boptions\b/);
-        }
+        },
       );
     });
   });

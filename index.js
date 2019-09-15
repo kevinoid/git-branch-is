@@ -5,7 +5,7 @@
 
 'use strict';
 
-const {execFile} = require('child_process');
+const { execFile } = require('child_process');
 
 /** Options for {@link gitBranchIs}.
  *
@@ -27,7 +27,7 @@ const GitBranchIsOptions = {
   cwd: '',
   gitArgs: [],
   gitDir: '',
-  gitPath: 'git'
+  gitPath: 'git',
 };
 
 /** Checks that the current branch of a git repository has a given name.
@@ -125,7 +125,7 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
   Object.keys(GitBranchIsOptions).forEach((prop) => {
     combinedOpts[prop] = GitBranchIsOptions[prop];
   });
-  Object.keys(Object(options)).forEach((prop) => {
+  Object.keys(new Object(options)).forEach((prop) => {
     combinedOpts[prop] = options[prop];
   });
 
@@ -141,7 +141,7 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
     execFile(
       combinedOpts.gitPath,
       gitArgs,
-      {cwd: combinedOpts.cwd},
+      { cwd: combinedOpts.cwd },
       (errExec, stdout, stderr) => {
         if (errExec) {
           callback(errExec);
@@ -151,7 +151,7 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
         // Note:  ASCII space and control characters are forbidden in names
         // https://www.kernel.org/pub/software/scm/git/docs/git-check-ref-format.html
         callback(null, stdout.trimRight());
-      }
+      },
     );
   } catch (errExec) {
     process.nextTick(callback, errExec);

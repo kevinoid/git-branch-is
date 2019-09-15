@@ -20,5 +20,5 @@ module.exports = Object.freeze({
   /** Name of a subdirectory to create within the git repo. */
   SUBDIR_NAME: 'subdir',
   /** Path to repository in which tests are run. */
-  TEST_REPO_PATH: path.join(__dirname, '..', 'test-repo')
+  TEST_REPO_PATH: path.join(__dirname, '..', 'test-repo'),
 });

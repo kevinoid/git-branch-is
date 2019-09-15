@@ -7,7 +7,7 @@
 
 
 const assert = require('assert');
-const {execFile} = require('child_process');
+const { execFile } = require('child_process');
 const path = require('path');
 
 const assertMatch = require('../test-lib/assert-match');
@@ -18,7 +18,7 @@ const gitBranchIsCmd = require('../bin/git-branch-is');
 const ARGS = [process.argv[0], 'git-branch-is'];
 
 // Local copy of shared constants
-const {BRANCH_CURRENT, SUBDIR_NAME, TEST_REPO_PATH} = constants;
+const { BRANCH_CURRENT, SUBDIR_NAME, TEST_REPO_PATH } = constants;
 
 const BRANCH_CURRENT_RE = new RegExp(`\\b${constants.BRANCH_CURRENT}\\b`);
 
@@ -240,7 +240,7 @@ describe('git-branch-is', () => {
       '-C',
       SUBDIR_NAME,
       '--git-arg=--git-dir=../.git',
-      BRANCH_CURRENT
+      BRANCH_CURRENT,
     );
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
@@ -257,7 +257,7 @@ describe('git-branch-is', () => {
       '..',
       '--git-arg=-C',
       `--git-arg=${TEST_REPO_PATH}`,
-      BRANCH_CURRENT
+      BRANCH_CURRENT,
     );
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
@@ -276,7 +276,7 @@ describe('git-branch-is', () => {
       TEST_REPO_PATH,
       '-C',
       '..',
-      BRANCH_CURRENT
+      BRANCH_CURRENT,
     );
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
@@ -293,7 +293,7 @@ describe('git-branch-is', () => {
       // Note:  Also tests that Commander interprets this as option argument
       '--git-dir=.git',
       '--git-dir=invalid',
-      BRANCH_CURRENT
+      BRANCH_CURRENT,
     );
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
@@ -311,7 +311,7 @@ describe('git-branch-is', () => {
       SUBDIR_NAME,
       `--git-arg=${gitArg}`,
       `--git-path=${process.execPath}`,
-      'surprise'
+      'surprise',
     );
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
@@ -328,7 +328,7 @@ describe('git-branch-is', () => {
       '-C',
       SUBDIR_NAME,
       `--git-dir=${path.join('..', '.git')}`,
-      BRANCH_CURRENT
+      BRANCH_CURRENT,
     );
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
@@ -389,12 +389,12 @@ describe('git-branch-is', () => {
     const promise = gitBranchIsCmd(ARGS.concat(
       '-C',
       'invalid',
-      BRANCH_CURRENT
+      BRANCH_CURRENT,
     ));
     assert(promise instanceof global.Promise);
     return promise.then(
       (result) => { throw new Error('expecting Error'); },
-      (err) => { assert(err instanceof Error); }
+      (err) => { assert(err instanceof Error); },
     );
   });
 
@@ -425,7 +425,7 @@ describe('git-branch-is', () => {
           gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
         },
         (err) => err instanceof TypeError
-                && /\bcallback\b/.test(err.message)
+                && /\bcallback\b/.test(err.message),
       );
     });
   });
@@ -439,7 +439,7 @@ describe('git-branch-is', () => {
         assertMatch(stdout, BRANCH_CURRENT_RE);
         assert.strictEqual(stderr, '');
         done();
-      }
+      },
     );
   });
 
@@ -453,7 +453,7 @@ describe('git-branch-is', () => {
         assertMatch(stderr, /\binvalid\b/);
         assertMatch(stderr, BRANCH_CURRENT_RE);
         done();
-      }
+      },
     );
   });
 
@@ -467,7 +467,7 @@ describe('git-branch-is', () => {
         assert.strictEqual(stdout, '');
         assertMatch(stderr, /\bargument/);
         done();
-      }
+      },
     );
   });
 });

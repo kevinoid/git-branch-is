@@ -21,7 +21,7 @@ const {
   BRANCH_CURRENT,
   BRANCH_SAME_COMMIT,
   SUBDIR_NAME,
-  TEST_REPO_PATH
+  TEST_REPO_PATH,
 } = constants;
 
 // Global variables
@@ -38,15 +38,15 @@ before('setup test repository', function() {
     // to work.  On Travis CI (and probably others) there is no global config
     .then(() => git(
       '-C', TEST_REPO_PATH,
-      'config', 'user.name', 'Test User'
+      'config', 'user.name', 'Test User',
     ))
     .then(() => git(
       '-C', TEST_REPO_PATH,
-      'config', 'user.email', 'test@example.com'
+      'config', 'user.email', 'test@example.com',
     ))
     .then(() => git(
       '-C', TEST_REPO_PATH,
-      'commit', '-q', '-m', 'Initial Commit', '--allow-empty'
+      'commit', '-q', '-m', 'Initial Commit', '--allow-empty',
     ))
     .then(() => git('-C', TEST_REPO_PATH, 'branch', '-m', BRANCH_CURRENT))
     .then(() => git('-C', TEST_REPO_PATH, 'branch', BRANCH_SAME_COMMIT))

@@ -17,7 +17,7 @@ function assertMatch(value, regexp, message) {
   value = String(value);
   assert(
     regexp.test(value),
-    message || `${JSON.stringify(value)} does not match ${regexp}`
+    message || `${JSON.stringify(value)} does not match ${regexp}`,
   );
 }
 
