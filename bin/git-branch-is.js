@@ -40,7 +40,6 @@ function collect(arg, args) {
  */
 function gitBranchIsCmd(args, callback) {
   if (!callback && typeof Promise === 'function') {
-    // eslint-disable-next-line no-undef
     return new Promise((resolve, reject) => {
       gitBranchIsCmd(args, (err, result) => {
         if (err) { reject(err); } else { resolve(result); }
