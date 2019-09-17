@@ -7,14 +7,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const pify = require('pify');
 const rimraf = require('rimraf');
+const util = require('util');
 
 const git = require('../test-lib/git');
 const constants = require('../test-lib/constants');
 
-const fsP = pify(fs);
-const rimrafP = pify(rimraf);
+const mkdirP = util.promisify(fs.mkdir);
+const rimrafP = util.promisify(rimraf);
 
 // Local copy of shared constants
 const {
@@ -50,7 +50,7 @@ before('setup test repository', function() {
     ))
     .then(() => git('-C', TEST_REPO_PATH, 'branch', '-m', BRANCH_CURRENT))
     .then(() => git('-C', TEST_REPO_PATH, 'branch', BRANCH_SAME_COMMIT))
-    .then(() => fsP.mkdir(path.join(TEST_REPO_PATH, SUBDIR_NAME)));
+    .then(() => mkdirP(path.join(TEST_REPO_PATH, SUBDIR_NAME)));
 });
 
 before('run from test repository', () => {
