@@ -6,32 +6,21 @@
 'use strict';
 
 const { execFile } = require('child_process');
-const pify = require('pify');
+const util = require('util');
 
-const execFileP = pify(execFile, { multiArgs: true });
+const execFileP = util.promisify(execFile);
 
 /**
  * Run git with given arguments and options.
- * @param {...string} args Arguments to pass to git.  Last argument may be an
- * options object.
+ * @param {...string} args Arguments to pass to git.
  * @return {Promise} Promise with the process output or Error for non-0 exit.
  */
 function git(...args) {
-  // Default to redirecting stdin (to prevent unexpected prompts) and
-  // including any output with test output
-  const defaultStdio = ['ignore', process.stdout, process.stderr];
-
-  let options;
-  if (typeof args[args.length - 1] === 'object') {
-    options = args.pop();
-    options.stdio = options.stdio || defaultStdio;
-  } else {
-    options = {
-      stdio: defaultStdio,
-    };
-  }
-
-  return execFileP('git', args, options);
+  // Ignore stdin to prevent hanging on unexpected prompts.
+  // Inherit stdout/stderr to include any output with test output.
+  const stdio = ['ignore', 'inherit', 'inherit'];
+  // Note: To return stderr or ChildProcess, consider using get-exec-file
+  return execFileP('git', args, { stdio });
 }
 
 module.exports = git;
