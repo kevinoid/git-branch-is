@@ -42,7 +42,7 @@
     "version-deps": "npm install david depcheck npm-audit-resolver travis-status"
   },
   "dependencies": {
-    "commander": "^3.0.0"
+    "commander": "^4.0.0"
   },
   "devDependencies": {
     "@kevinoid/eslint-config": "^0.4.1",
