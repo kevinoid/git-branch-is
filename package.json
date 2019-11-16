@@ -41,7 +41,7 @@
     "version-deps": "npm install conventional-changelog-cli david depcheck git-branch-is npm-audit-resolver travis-status"
   },
   "dependencies": {
-    "yargs": "^14.0.0"
+    "yargs": "^15.0.0"
   },
   "devDependencies": {
     "@kevinoid/eslint-config": "^1.0.0",
