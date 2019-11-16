@@ -12,5 +12,17 @@
         "test/**"
       ]
     }]
-  }
+  },
+
+  "overrides": [
+    {
+      // Executable scripts should have a shebang
+      "files": [
+        "bin/*.js"
+      ],
+      "rules": {
+        "node/shebang": "off"
+      }
+    }
+  ]
 }
