@@ -201,7 +201,7 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   &#x27;-C&#x27;,
   SUBDIR_NAME,
   &#x27;--git-arg=--git-dir=../.git&#x27;,
-  BRANCH_CURRENT
+  BRANCH_CURRENT,
 );
 gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
@@ -216,7 +216,7 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   &#x27;..&#x27;,
   &#x27;--git-arg=-C&#x27;,
   &#x60;--git-arg=${TEST_REPO_PATH}&#x60;,
-  BRANCH_CURRENT
+  BRANCH_CURRENT,
 );
 gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
@@ -233,7 +233,7 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   TEST_REPO_PATH,
   &#x27;-C&#x27;,
   &#x27;..&#x27;,
-  BRANCH_CURRENT
+  BRANCH_CURRENT,
 );
 gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
@@ -248,7 +248,7 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   // Note:  Also tests that Commander interprets this as option argument
   &#x27;--git-dir=.git&#x27;,
   &#x27;--git-dir=invalid&#x27;,
-  BRANCH_CURRENT
+  BRANCH_CURRENT,
 );
 gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
@@ -264,7 +264,7 @@ const args = ARGS.concat(
   SUBDIR_NAME,
   &#x60;--git-arg=${gitArg}&#x60;,
   &#x60;--git-path=${process.execPath}&#x60;,
-  &#x27;surprise&#x27;
+  &#x27;surprise&#x27;,
 );
 gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
@@ -278,7 +278,7 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   &#x27;-C&#x27;,
   SUBDIR_NAME,
   &#x60;--git-dir=${path.join(&#x27;..&#x27;, &#x27;.git&#x27;)}&#x60;,
-  BRANCH_CURRENT
+  BRANCH_CURRENT,
 );
 gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
@@ -326,12 +326,12 @@ return promise.then((result) =&#x3E; {
         <dd><pre><code>const promise = gitBranchIsCmd(ARGS.concat(
   &#x27;-C&#x27;,
   &#x27;invalid&#x27;,
-  BRANCH_CURRENT
+  BRANCH_CURRENT,
 ));
 assert(promise instanceof global.Promise);
 return promise.then(
   (result) =&#x3E; { throw new Error(&#x27;expecting Error&#x27;); },
-  (err) =&#x3E; { assert(err instanceof Error); }
+  (err) =&#x3E; { assert(err instanceof Error); },
 );</code></pre></dd>
         <dt>exit code 0 works when executed</dt>
         <dd><pre><code>execFile(
@@ -342,7 +342,7 @@ return promise.then(
     assertMatch(stdout, BRANCH_CURRENT_RE);
     assert.strictEqual(stderr, &#x27;&#x27;);
     done();
-  }
+  },
 );</code></pre></dd>
         <dt>exit code 1 works when executed</dt>
         <dd><pre><code>execFile(
@@ -354,7 +354,7 @@ return promise.then(
     assertMatch(stderr, /\binvalid\b/);
     assertMatch(stderr, BRANCH_CURRENT_RE);
     done();
-  }
+  },
 );</code></pre></dd>
         <dt>exit code 1 with extra args works when executed</dt>
         <dd><pre><code>execFile(
@@ -366,7 +366,7 @@ return promise.then(
     assert.strictEqual(stdout, &#x27;&#x27;);
     assertMatch(stderr, /\bargument/);
     done();
-  }
+  },
 );</code></pre></dd>
         <section class="suite">
           <h1>without global Promise</h1>
@@ -377,7 +377,7 @@ return promise.then(
     gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
   },
   (err) =&#x3E; err instanceof TypeError
-          &#x26;&#x26; /\bcallback\b/.test(err.message)
+          &#x26;&#x26; /\bcallback\b/.test(err.message),
 );</code></pre></dd>
           </dl>
         </section>
@@ -405,13 +405,14 @@ return promise.then(
   done();
 });</code></pre></dd>
         <dt>callback true for same branch name in subdir</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {cwd: SUBDIR_NAME}, (err, result) =&#x3E; {
+        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, { cwd: SUBDIR_NAME }, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
         <dt>callback true for function comparing branch name</dt>
-        <dd><pre><code>function checkBranchName(branchName) {
+        <dd><pre><code>// eslint-disable-next-line unicorn/consistent-function-scoping
+function checkBranchName(branchName) {
   return branchName === BRANCH_CURRENT;
 }
 gitBranchIs(checkBranchName, (err, result) =&#x3E; {
@@ -420,7 +421,8 @@ gitBranchIs(checkBranchName, (err, result) =&#x3E; {
   done();
 });</code></pre></dd>
         <dt>callback false for function returning false</dt>
-        <dd><pre><code>function returnsFalse(branchName) {
+        <dd><pre><code>// eslint-disable-next-line unicorn/consistent-function-scoping
+function returnsFalse(branchName) {
   return false;
 }
 gitBranchIs(returnsFalse, (err, result) =&#x3E; {
@@ -439,7 +441,7 @@ gitBranchIs(throwsErr, (err, result) =&#x3E; {
         <dt>can specify additional git arguments</dt>
         <dd><pre><code>const options = {
   cwd: &#x27;..&#x27;,
-  gitArgs: [&#x27;-C&#x27;, TEST_REPO_PATH]
+  gitArgs: [&#x27;-C&#x27;, TEST_REPO_PATH],
 };
 gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
   assert.ifError(err);
@@ -447,7 +449,7 @@ gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
   done();
 });</code></pre></dd>
         <dt>null gitArgs is ignored</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {gitArgs: null}, (err, result) =&#x3E; {
+        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, { gitArgs: null }, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, true);
   done();
@@ -455,7 +457,7 @@ gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
         <dt>gitArgs takes precedence over gitDir</dt>
         <dd><pre><code>const options = {
   gitArgs: [&#x27;--git-dir=.git&#x27;],
-  gitDir: &#x27;invalid&#x27;
+  gitDir: &#x27;invalid&#x27;,
 };
 gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
   assert.ifError(err);
@@ -465,7 +467,7 @@ gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
         <dt>can specify git executable and args</dt>
         <dd><pre><code>const options = {
   gitArgs: [path.join(&#x27;..&#x27;, &#x27;test-bin&#x27;, &#x27;echo-surprise.js&#x27;)],
-  gitPath: process.execPath
+  gitPath: process.execPath,
 };
 gitBranchIs(&#x27;surprise&#x27;, options, (err, result) =&#x3E; {
   assert.ifError(err);
@@ -473,26 +475,26 @@ gitBranchIs(&#x27;surprise&#x27;, options, (err, result) =&#x3E; {
   done();
 });</code></pre></dd>
         <dt>callback Error outside of git repo</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {cwd: &#x27;/&#x27;}, (err, result) =&#x3E; {
+        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, { cwd: &#x27;/&#x27; }, (err, result) =&#x3E; {
   assert(err instanceof Error);
   assert(result === undefined || result === null);
   done();
 });</code></pre></dd>
         <dt>callback Error if cwd doesn&#x27;t exist</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {cwd: &#x27;invalid&#x27;}, (err, result) =&#x3E; {
+        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, { cwd: &#x27;invalid&#x27; }, (err, result) =&#x3E; {
   assert(err instanceof Error);
   assert(result === undefined || result === null);
   done();
 });</code></pre></dd>
         <dt>callback Error if git is not executable</dt>
         <dd><pre><code>const badGitPath = path.join(__dirname, &#x27;..&#x27;, &#x27;package.json&#x27;);
-gitBranchIs(BRANCH_CURRENT, {gitPath: badGitPath}, (err, result) =&#x3E; {
+gitBranchIs(BRANCH_CURRENT, { gitPath: badGitPath }, (err, result) =&#x3E; {
   assert(err instanceof Error);
   assert(result === undefined || result === null);
   done();
 });</code></pre></dd>
         <dt>callback Error if gitDir is not a git repo</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, {gitDir: SUBDIR_NAME}, (err, result) =&#x3E; {
+        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, { gitDir: SUBDIR_NAME }, (err, result) =&#x3E; {
   assert(err instanceof Error);
   assert(result === undefined || result === null);
   done();
@@ -500,7 +502,7 @@ gitBranchIs(BRANCH_CURRENT, {gitPath: badGitPath}, (err, result) =&#x3E; {
         <dt>gitDir is relative to cwd</dt>
         <dd><pre><code>const options = {
   cwd: SUBDIR_NAME,
-  gitDir: path.join(&#x27;..&#x27;, &#x27;.git&#x27;)
+  gitDir: path.join(&#x27;..&#x27;, &#x27;.git&#x27;),
 };
 gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
   assert.ifError(err);
@@ -511,7 +513,7 @@ gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
         <dd><pre><code>const options = {
   cwd: SUBDIR_NAME,
   gitArgs: [path.join(&#x27;..&#x27;, &#x27;..&#x27;, &#x27;test-bin&#x27;, &#x27;echo-surprise.js&#x27;)],
-  gitPath: path.relative(SUBDIR_NAME, process.execPath)
+  gitPath: path.relative(SUBDIR_NAME, process.execPath),
 };
 gitBranchIs(&#x27;surprise&#x27;, options, (err, result) =&#x3E; {
   assert.ifError(err);
@@ -538,7 +540,7 @@ return promise.then(
   (err) =&#x3E; {
     assert(err instanceof TypeError);
     assertMatch(err.message, /\boptions\b/);
-  }
+  },
 );</code></pre></dd>
         <dt>Promise flattens for function returning Promise</dt>
         <dd><pre><code>function checkBranchName(branchName) {
@@ -560,7 +562,7 @@ return promise.then(
   (result) =&#x3E; { throw new Error(&#x27;expecting rejection&#x27;); },
   (err) =&#x3E; {
     assert.strictEqual(err, true);
-  }
+  },
 );</code></pre></dd>
         <dt>Promise rejects for function throwing Error</dt>
         <dd><pre><code>const errTest = new Error(&#x27;test&#x27;);
@@ -569,7 +571,7 @@ const promise = gitBranchIs(checkBranchName);
 assert(promise instanceof global.Promise);
 return promise.then(
   (result) =&#x3E; { throw new Error(&#x27;expecting rejection&#x27;); },
-  (err) =&#x3E; { assert.strictEqual(err, errTest); }
+  (err) =&#x3E; { assert.strictEqual(err, errTest); },
 );</code></pre></dd>
         <section class="suite">
           <h1>.getBranch()</h1>
@@ -599,7 +601,7 @@ return promise.then(
   (err) =&#x3E; {
     assert(err instanceof TypeError);
     assertMatch(err.message, /\boptions\b/);
-  }
+  },
 );</code></pre></dd>
           </dl>
         </section>
