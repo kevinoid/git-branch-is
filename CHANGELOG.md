@@ -1,5 +1,12 @@
 # Change Log
 
+## [3.0.1](https://github.com/kevinoid/git-branch-is/tree/v3.0.1) (2019-11-16)
+[Full
+Changelog](https://github.com/kevinoid/git-branch-is/compare/v3.0.0...v3.0.1)
+
+- Dependency version updates.
+- Code style fixes.
+
 ## [3.0.0](https://github.com/kevinoid/git-branch-is/tree/3.0.0) (2019-08-09)
 [Full Changelog](https://github.com/kevinoid/git-branch-is/compare/v2.1.0...3.0.0)
 
