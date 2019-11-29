@@ -17,4 +17,5 @@ CHANGELOG.*
 TODO.*
 appveyor.yml
 audit-resolv.json
+audit-resolve.json
 jsdoc*.conf.json
