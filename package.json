@@ -66,6 +66,7 @@
   },
   "greenkeeper": {
     "ignore": [
+      "@kevinoid/eslint-config",
       "eslint",
       "eslint-config-airbnb-base",
       "eslint-plugin-import",
