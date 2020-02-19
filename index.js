@@ -146,7 +146,7 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
 
         // Note:  ASCII space and control characters are forbidden in names
         // https://www.kernel.org/pub/software/scm/git/docs/git-check-ref-format.html
-        callback(null, stdout.trimRight());
+        callback(null, stdout.trimEnd());
       },
     );
   } catch (errExec) {
