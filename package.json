@@ -46,15 +46,15 @@
     "commander": "^4.0.0"
   },
   "devDependencies": {
-    "@kevinoid/eslint-config": "^3.0.0",
+    "@kevinoid/eslint-config": "^4.0.0",
     "codecov": "^3.0.0",
     "coveralls": "^3.0.0",
-    "eslint": "^6.3.0",
+    "eslint": "^6.7.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-unicorn": "^15.0.0",
+    "eslint-plugin-unicorn": "^16.0.0",
     "greenkeeper-lockfile": "^1.15.1",
     "jsdoc": "^3.6.0",
     "mocha": "^7.0.0",
@@ -63,7 +63,7 @@
     "rimraf": "^3.0.0"
   },
   "engines": {
-    "node": ">=8.3",
+    "node": ">=10.13",
     "npm": ">=1.3.7"
   },
   "greenkeeper": {
