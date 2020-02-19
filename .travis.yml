@@ -4,7 +4,7 @@ language: node_js
 # Update engines.node in package.json if removing old versions.
 node_js:
   - node
-  - 8
+  - 10
 
 # If the package has OS-dependent features, uncomment this.
 #os:
