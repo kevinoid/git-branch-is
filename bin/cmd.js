@@ -72,6 +72,7 @@ function modulenameCmd(args, options, callback) {
       'parse-numbers': false,
       'duplicate-arguments-array': false,
       'flatten-duplicate-arrays': false,
+      'greedy-arrays': false,
     })
     .usage('Usage: $0 [options] [args...]')
     .help()
