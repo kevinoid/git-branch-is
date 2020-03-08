@@ -66,17 +66,6 @@
     "node": ">=10.13",
     "npm": ">=1.3.7"
   },
-  "greenkeeper": {
-    "ignore": [
-      "@kevinoid/eslint-config",
-      "eslint",
-      "eslint-config-airbnb-base",
-      "eslint-plugin-import",
-      "eslint-plugin-node",
-      "eslint-plugin-promise",
-      "eslint-plugin-unicorn"
-    ]
-  },
   "mocha": {
     "checkLeaks": true,
     "exit": false
