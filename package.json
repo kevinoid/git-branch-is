@@ -44,7 +44,7 @@
     "yargs": "^15.0.0"
   },
   "devDependencies": {
-    "@kevinoid/eslint-config": "^4.0.0",
+    "@kevinoid/eslint-config": "^5.0.0",
     "codecov": "^3.0.0",
     "coveralls": "^3.0.0",
     "eslint": "^6.7.1",
@@ -52,7 +52,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-unicorn": "^16.0.0",
+    "eslint-plugin-unicorn": "^17.0.0",
     "jsdoc": "^3.6.0",
     "mocha": "^7.0.0",
     "nodecat": "^2.0.0",
