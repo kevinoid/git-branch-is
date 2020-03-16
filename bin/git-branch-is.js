@@ -53,8 +53,7 @@ function gitBranchIsCmd(args, callback) {
 
   // TODO:  Proxy console.{error,log} and process.exit so we can return result
   const command = new Command()
-    // .arguments() splits on white space.  Call .parseExpectedArgs directly.
-    .parseExpectedArgs(['<branch name>'])
+    .arguments('<branch_name>')
     .option('-C <path>', 'run as if started in <path>')
     .option(
       '--git-arg <arg>', 'additional argument to git (can be repeated)',
@@ -62,13 +61,13 @@ function gitBranchIsCmd(args, callback) {
     )
     .option('--git-dir <dir>', 'set the path to the repository')
     .option('--git-path <path>', 'set the path to the git binary')
-    .option('-i, --ignore-case', 'compare/match branch name case-insensitively')
+    .option('-i, --ignore-case', 'compare/match branch_name case-insensitively')
     .option('-I, --invert-match', 'inverts/negates comparison')
     // Note:  Commander.js only supports one long option per option call
     // https://github.com/tj/commander.js/issues/430
     .option('--not', 'inverts/negates comparison (same as --invert-match)')
     .option('-q, --quiet', 'suppress warning message if branch differs')
-    .option('-r, --regex', 'match <branch name> as a regular expression')
+    .option('-r, --regex', 'match branch_name as a regular expression')
     .option('-v, --verbose', 'print a message if the branch matches')
     .version(packageJson.version)
     .parse(args);
