@@ -4,5 +4,10 @@
 
   "env": {
     "mocha": true
+  },
+
+  "rules": {
+    // Allow null use in tests
+    "no-null": "off"
   }
 }
