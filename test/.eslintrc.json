@@ -8,6 +8,6 @@
 
   "rules": {
     // Allow null use in tests
-    "no-null": "off"
+    "unicorn/no-null": "off"
   }
 }
