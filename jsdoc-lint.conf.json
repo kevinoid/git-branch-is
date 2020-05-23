@@ -16,8 +16,8 @@
   "tags": {
     "allowUnknownTags": false,
     "dictionaries": [
-      "closure",
-      "jsdoc"
+      "jsdoc",
+      "closure"
     ]
   }
 }
