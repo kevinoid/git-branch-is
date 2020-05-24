@@ -15,14 +15,15 @@ const modulename = require('..');
 /** Options for command entry points.
  *
  * @typedef {{
- *   stdin: !stream.Readable,
- *   stdout: !stream.Writable,
- *   stderr: !stream.Writable
+ *   stdin: !module:stream.Readable,
+ *   stdout: !module:stream.Writable,
+ *   stderr: !module:stream.Writable
  * }} CommandOptions
- * @property {!stream.Readable} stdin Stream from which input is read.
- * @property {!stream.Writable} stdout Stream to which output is written.
- * @property {!stream.Writable} stderr Stream to which errors and non-output
- * status messages are written.
+ * @property {!module:stream.Readable} stdin Stream from which input is read.
+ * @property {!module:stream.Writable} stdout Stream to which output is
+ * written.
+ * @property {!module:stream.Writable} stderr Stream to which errors and
+ * non-output status messages are written.
  */
 // const CommandOptions;
 
