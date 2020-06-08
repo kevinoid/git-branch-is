@@ -49,7 +49,7 @@
     "@kevinoid/eslint-config": "^4.0.0",
     "codecov": "^3.0.0",
     "coveralls": "^3.0.0",
-    "eslint": "^6.7.1",
+    "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^11.0.0",
