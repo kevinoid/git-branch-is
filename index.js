@@ -47,7 +47,7 @@ const GitBranchIsOptions = {
 function gitBranchIs(branchNameOrTest, options, callback) {
   if (!callback && typeof options === 'function') {
     callback = options;
-    options = null;
+    options = undefined;
   }
 
   if (!callback) {
