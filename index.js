@@ -39,7 +39,7 @@ const GitBranchIsOptions = {
  * with the return value of <code>branchNameOrTest</code> if it is a function,
  * or the result of identity checking <code>branchNameOrTest</code> to the
  * current branch name.
- * @return {Promise|undefined} If <code>callback</code> is not given, a
+ * @returns {Promise|undefined} If <code>callback</code> is not given, a
  * <code>Promise</code> with the return value of <code>branchNameOrTest</code>
  * if it is a function, or the result of identity checking
  * <code>branchNameOrTest</code> to the current branch name.
@@ -83,7 +83,7 @@ function gitBranchIs(branchNameOrTest, options, callback) {
       return;
     }
 
-    callback(null, result);
+    callback(null, result); // eslint-disable-line unicorn/no-null
   });
   return undefined;
 }
@@ -94,14 +94,14 @@ function gitBranchIs(branchNameOrTest, options, callback) {
  * @param {?function(Error, string=)=} callback Callback function called
  * with the current branch name, or <code>Error</code> if it could not be
  * determined.
- * @return {Promise|undefined} If <code>callback</code> is not given, a
+ * @returns {Promise|undefined} If <code>callback</code> is not given, a
  * <code>Promise</code> with the current branch name, or <code>Error</code> if
  * it could not be determined.
  */
 gitBranchIs.getBranch = function getBranch(options, callback) {
   if (!callback && typeof options === 'function') {
     callback = options;
-    options = null;
+    options = undefined;
   }
 
   if (!callback) {
@@ -146,7 +146,7 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
 
         // Note:  ASCII space and control characters are forbidden in names
         // https://www.kernel.org/pub/software/scm/git/docs/git-check-ref-format.html
-        callback(null, stdout.trimEnd());
+        callback(null, stdout.trimEnd()); // eslint-disable-line unicorn/no-null
       },
     );
   } catch (errExec) {

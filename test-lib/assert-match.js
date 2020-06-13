@@ -8,6 +8,7 @@
 const assert = require('assert').ok;
 
 /** Asserts that a value matches a regular expression.
+ *
  * @param {string} value String to be tested.
  * @param {!RegExp} regexp Regular expression to be matched.
  * @param {string=} message Message of <code>AssertionError</code> if thrown.

@@ -12,8 +12,9 @@ const execFileP = util.promisify(execFile);
 
 /**
  * Run git with given arguments and options.
+ *
  * @param {...string} args Arguments to pass to git.
- * @return {Promise} Promise with the process output or Error for non-0 exit.
+ * @returns {Promise} Promise with the process output or Error for non-0 exit.
  */
 function git(...args) {
   // Ignore stdin to prevent hanging on unexpected prompts.

@@ -28,13 +28,14 @@ function collect(arg, args) {
  * @property {?string=} stderr Content to write to stderr.
  */
 
-/** Entry point for this command.
+/**
+ * Entry point for this command.
  *
  * @param {!Array<string>} args Command-line arguments.
- * @param {?function(Error, ?CommandResult=)=}
- * callback Callback for the command result or error.  Required if
- * <code>global.Promise</code> is not defined.
- * @return {Promise|undefined} If <code>callback</code> is not given and
+ * @param {?function(Error, ?CommandResult=)=} callback Callback for the
+ * command result or error.  Required if <code>global.Promise</code> is not
+ * defined.
+ * @returns {Promise|undefined} If <code>callback</code> is not given and
  * <code>global.Promise</code> is defined, a <code>Promise</code> which will
  * resolve on completion.
  */
@@ -97,6 +98,8 @@ function gitBranchIsCmd(args, callback) {
         command.ignoreCase ? 'i' : undefined,
       );
     } catch (errRegExp) {
+      // Benefit of avoiding unnecessary API changes outweighs style concerns
+      // eslint-disable-next-line unicorn/no-null
       callback(null, {
         code: 2,
         stderr: `Error: Invalid RegExp "${expectedBranch}": ${
@@ -140,12 +143,14 @@ function gitBranchIsCmd(args, callback) {
       }
     }
 
+    // Benefit of avoiding unnecessary API changes outweighs style concerns
+    // eslint-disable-next-line unicorn/no-null
     callback(null, {
       code: isMatch ? 0 : 1,
       stderr: errMsg && `Error: ${errMsg}`,
       stdout: isMatch && command.verbose
         ? `Current branch is "${currentBranch}".\n`
-        : null,
+        : null, // eslint-disable-line unicorn/no-null
     });
   });
   return undefined;

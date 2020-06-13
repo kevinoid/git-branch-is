@@ -27,7 +27,6 @@ const {
 // Global variables
 let origCWD;
 
-
 before('setup test repository', function() {
   // Some git versions can run quite slowly on Windows (in AppVeyor)
   this.timeout(/^win/i.test(process.platform) ? 8000 : 4000);
