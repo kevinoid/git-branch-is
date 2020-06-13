@@ -37,7 +37,7 @@
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
     "pretest-unit": "node test-bin/set-up-test-repo.js",
-    "test-unit": "mocha --require mocha-ur2ue --recursive test",
+    "test-unit": "mocha --require mocha-ur2ue --require ./test-lib/root-hooks.js --recursive test",
     "posttest-unit": "rimraf test-repo",
     "test-unit-cov": "nyc npm run test-unit",
     "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
