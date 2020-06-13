@@ -36,8 +36,10 @@
     "preversion": "npm run test-cov && nyc check-coverage --statements 95 && check-audit && depcheck --ignore-dirs doc && david && node ./bin/git-branch-is.js master && travis-status -b master -c -w -x && appveyor-status -b master -c -w -p kevinoid/git-branch-is",
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
+    "pretest-unit": "node test-bin/set-up-test-repo.js",
     "test-unit": "mocha --require mocha-ur2ue --recursive test",
-    "test-unit-cov": "nyc mocha --require mocha-ur2ue --recursive test",
+    "posttest-unit": "rimraf test-repo",
+    "test-unit-cov": "nyc npm run test-unit",
     "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
     "version": "npm run changelog && echo && echo === Please edit CHANGELOG.md as desired, then exit === && echo && $npm_config_shell && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
     "version-deps": "npm install conventional-changelog-cli david depcheck git-branch-is travis-status"
