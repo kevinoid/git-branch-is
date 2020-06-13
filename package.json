@@ -34,8 +34,8 @@
     "start": "supervisor --quiet --no-restart-on exit --extensions js,json --ignore test --poll-interval 2000 server.js",
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
-    "test-unit": "mocha --require mocha-ur2ue --recursive test",
-    "test-unit-cov": "nyc mocha --require mocha-ur2ue --recursive test",
+    "test-unit": "mocha --parallel --require mocha-ur2ue --recursive test",
+    "test-unit-cov": "nyc mocha --parallel --require mocha-ur2ue --recursive test",
     "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
     "version": "npm run changelog && echo && echo === Please edit CHANGELOG.md as desired, then exit === && echo && $npm_config_shell && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
     "version-deps": "npm install conventional-changelog-cli david depcheck git-branch-is travis-status"
