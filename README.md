@@ -49,7 +49,7 @@ npm install git-branch-is
 The command options are intended to be similar to `git` and are documented in
 the `--help` output:
 
-```shell
+```
 Usage: git-branch-is [options] <branch name>
 
 Options:
