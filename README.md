@@ -96,6 +96,18 @@ $ echo $?
 1
 ```
 
+### Inverted/Negated Matching
+
+To check that the current branch is not `master`, use `-I`, `--invert-match`,
+or `--not` (all functionally equivalent, use whichever you prefer):
+
+```
+$ git-branch-is --not master
+Error: Current branch is "master".
+$ echo $?
+1
+```
+
 ## API Usage
 
 To use the API with a callback function:
