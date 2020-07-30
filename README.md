@@ -49,20 +49,23 @@ npm install git-branch-is
 The command options are intended to be similar to `git` and are documented in
 the `--help` output:
 
-    Usage: git-branch-is [options] <branch name>
+```shell
+Usage: git-branch-is [options] <branch name>
 
-    Options:
-
-      -h, --help         output usage information
-      -C <path>          run as if started in <path>
-      --git-arg <arg>    additional argument to git (can be repeated)
-      --git-dir <dir>    set the path to the repository
-      --git-path <path>  set the path to the git binary
-      -i, --ignore-case  compare/match branch name case-insensitively
-      -q, --quiet        suppress warning message if branch differs
-      -r, --regex        match <branch name> as a regular expression
-      -v, --verbose      print a message if the branch matches
-      -V, --version      output the version number
+Options:
+  -C <path>           run as if started in <path>
+  --git-arg <arg>     additional argument to git (can be repeated) (default: [])
+  --git-dir <dir>     set the path to the repository
+  --git-path <path>   set the path to the git binary
+  -i, --ignore-case   compare/match branch name case-insensitively
+  -I, --invert-match  inverts/negates comparison
+  --not               inverts/negates comparison (same as --invert-match)
+  -q, --quiet         suppress warning message if branch differs
+  -r, --regex         match <branch name> as a regular expression
+  -v, --verbose       print a message if the branch matches
+  -V, --version       output the version number
+  -h, --help          output usage information
+```
 
 ## Additional Command Examples
 
