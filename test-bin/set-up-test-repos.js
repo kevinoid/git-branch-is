@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Set up a git repository for testing.
+ * Set up git repositories for testing.
  *
  * @copyright Copyright 2016-2020 Kevin Locke <kevin@kevinlocke.name>
  * @license MIT
@@ -24,11 +24,44 @@ const {
   BRANCH_CURRENT,
   BRANCH_SAME_COMMIT,
   SUBDIR_NAME,
-  TEST_REPO_PATH,
+  TEST_REPO_BRANCH_PATH,
+  TEST_REPO_DETACHED_PATH,
 } = constants;
 
+function initRepo(repoPath) {
+  return rimrafP(repoPath)
+    .then(() => git('init', '-q', repoPath))
+    // The user name and email must be configured for the later git commands
+    // to work.  On Travis CI (and probably others) there is no global config
+    .then(() => git(
+      '-C', repoPath,
+      'config', 'user.name', 'Test User',
+    ))
+    .then(() => git(
+      '-C', repoPath,
+      'config', 'user.email', 'test@example.com',
+    ))
+    .then(() => git(
+      '-C', repoPath,
+      'commit', '-q', '-m', 'Initial Commit', '--allow-empty',
+    ));
+}
+
+function setUpBranchRepo(repoPath) {
+  return initRepo(repoPath)
+    .then(() => git('-C', repoPath, 'branch', '-m', BRANCH_CURRENT))
+    .then(() => git('-C', repoPath, 'branch', BRANCH_SAME_COMMIT))
+    .then(() => mkdirP(path.join(repoPath, SUBDIR_NAME)));
+}
+
+function setUpDetachedRepo(repoPath) {
+  return initRepo(repoPath)
+    .then(() => git('-C', repoPath, 'checkout', '--detach'))
+    .then(() => mkdirP(path.join(repoPath, SUBDIR_NAME)));
+}
+
 module.exports =
-function setUpTestRepo(args, options, callback) {
+function setUpTestRepos(args, options, callback) {
   if (args.length > 2) {
     options.stderr.write('Error: No arguments expected.\n');
     callback(1);
@@ -36,25 +69,10 @@ function setUpTestRepo(args, options, callback) {
   }
 
   // eslint-disable-next-line promise/catch-or-return
-  rimrafP(TEST_REPO_PATH)
-    .then(() => git('init', '-q', TEST_REPO_PATH))
-    // The user name and email must be configured for the later git commands
-    // to work.  On Travis CI (and probably others) there is no global config
-    .then(() => git(
-      '-C', TEST_REPO_PATH,
-      'config', 'user.name', 'Test User',
-    ))
-    .then(() => git(
-      '-C', TEST_REPO_PATH,
-      'config', 'user.email', 'test@example.com',
-    ))
-    .then(() => git(
-      '-C', TEST_REPO_PATH,
-      'commit', '-q', '-m', 'Initial Commit', '--allow-empty',
-    ))
-    .then(() => git('-C', TEST_REPO_PATH, 'branch', '-m', BRANCH_CURRENT))
-    .then(() => git('-C', TEST_REPO_PATH, 'branch', BRANCH_SAME_COMMIT))
-    .then(() => mkdirP(path.join(TEST_REPO_PATH, SUBDIR_NAME)))
+  Promise.all([
+    setUpBranchRepo(TEST_REPO_BRANCH_PATH),
+    setUpDetachedRepo(TEST_REPO_DETACHED_PATH),
+  ])
     /* eslint-disable promise/no-callback-in-promise */
     .then(
       () => callback(0),

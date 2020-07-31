@@ -19,7 +19,9 @@ const {
   BRANCH_NON_EXISTENT,
   BRANCH_SAME_COMMIT,
   SUBDIR_NAME,
-  TEST_REPO_PATH,
+  SURPRISE_BIN,
+  TEST_REPO_BRANCH_PATH,
+  TEST_REPO_DETACHED_PATH,
 } = constants;
 
 describe('gitBranchIs', () => {
@@ -51,6 +53,14 @@ describe('gitBranchIs', () => {
     gitBranchIs(BRANCH_CURRENT, { cwd: SUBDIR_NAME }, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result, true);
+      done();
+    });
+  });
+
+  it('callback false for empty branch name', (done) => {
+    gitBranchIs('', (err, result) => {
+      assert.ifError(err);
+      assert.strictEqual(result, false);
       done();
     });
   });
@@ -90,7 +100,7 @@ describe('gitBranchIs', () => {
   it('can specify additional git arguments', (done) => {
     const options = {
       cwd: '..',
-      gitArgs: ['-C', TEST_REPO_PATH],
+      gitArgs: ['-C', TEST_REPO_BRANCH_PATH],
     };
     gitBranchIs(BRANCH_CURRENT, options, (err, result) => {
       assert.ifError(err);
@@ -121,7 +131,7 @@ describe('gitBranchIs', () => {
 
   it('can specify git executable and args', (done) => {
     const options = {
-      gitArgs: [path.join('..', 'test-bin', 'echo-surprise.js')],
+      gitArgs: [path.relative('.', SURPRISE_BIN)],
       gitPath: process.execPath,
     };
     gitBranchIs('surprise', options, (err, result) => {
@@ -180,7 +190,7 @@ describe('gitBranchIs', () => {
   it('gitPath is relative to cwd', (done) => {
     const options = {
       cwd: SUBDIR_NAME,
-      gitArgs: [path.join('..', '..', 'test-bin', 'echo-surprise.js')],
+      gitArgs: [path.relative(SUBDIR_NAME, SURPRISE_BIN)],
       gitPath: path.relative(SUBDIR_NAME, process.execPath),
     };
     gitBranchIs('surprise', options, (err, result) => {
@@ -195,6 +205,15 @@ describe('gitBranchIs', () => {
       gitBranchIs.getBranch((err, result) => {
         assert.ifError(err);
         assert.strictEqual(result, BRANCH_CURRENT);
+        done();
+      });
+    });
+
+    it('gets empty string for detached HEAD', (done) => {
+      const options = { gitDir: `${TEST_REPO_DETACHED_PATH}/.git` };
+      gitBranchIs.getBranch(options, (err, result) => {
+        assert.ifError(err);
+        assert.strictEqual(result, '');
         done();
       });
     });

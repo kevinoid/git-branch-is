@@ -5,7 +5,7 @@
 
 'use strict';
 
-const { TEST_REPO_PATH } = require('./constants');
+const { TEST_REPO_BRANCH_PATH } = require('./constants');
 
 // Working directory before changing to TEST_REPO_PATH
 let origCWD;
@@ -13,7 +13,7 @@ let origCWD;
 exports.mochaHooks = {
   beforeAll() {
     origCWD = process.cwd();
-    process.chdir(TEST_REPO_PATH);
+    process.chdir(TEST_REPO_BRANCH_PATH);
   },
 
   afterAll() {
