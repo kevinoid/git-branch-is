@@ -1,4 +1,15 @@
-# Change Log
+# [4.0.0](https://github.com/kevinoid/git-branch-is/compare/v3.1.0...v4.0.0) (2020-07-31)
+
+### BREAKING CHANGES
+
+* Detached HEAD is now handled like an empty branch name
+  (which can be matched in the usual ways) rather than causing an error as it
+  did in previous versions.
+
+### Features
+
+* Update to `commander@5`.
+
 
 ## [3.1.0](https://github.com/kevinoid/git-branch-is/tree/v3.1.0) (2019-11-16)
 [Full
