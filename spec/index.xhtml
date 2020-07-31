@@ -25,137 +25,8 @@ section section section section {
     <section class="suite">
       <h1>git-branch-is</h1>
       <dl>
-        <dt>exit code 0 silently for same branch name</dt>
-        <dd><pre><code>gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT), (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 0);
-  assert(!result.stdout);
-  assert(!result.stderr);
-  done();
-});</code></pre></dd>
-        <dt>exit code 1 with warning for different branch name</dt>
-        <dd><pre><code>gitBranchIsCmd(ARGS.concat(&#x27;invalid&#x27;), (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 1);
-  assert(!result.stdout);
-  assertMatch(result.stderr, /\binvalid\b/);
-  assertMatch(result.stderr, BRANCH_CURRENT_RE);
-  done();
-});</code></pre></dd>
-        <dt>exit code 1 with warning for different case branch name</dt>
-        <dd><pre><code>const branchUpper = BRANCH_CURRENT.toUpperCase();
-gitBranchIsCmd(ARGS.concat(branchUpper), (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 1);
-  assert(!result.stdout);
-  const branchUpperRE = new RegExp(&#x60;\\b${branchUpper}\\b&#x60;);
-  assertMatch(result.stderr, branchUpperRE);
-  assertMatch(result.stderr, BRANCH_CURRENT_RE);
-  done();
-});</code></pre></dd>
-        <dt>exit code 0 silently for case-insensitive branch name</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;-i&#x27;, BRANCH_CURRENT.toUpperCase());
-gitBranchIsCmd(args, (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 0);
-  assert(!result.stdout);
-  assert(!result.stderr);
-  done();
-});</code></pre></dd>
-        <dt>exit code 0 silently for inverted different branch name</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, &#x27;invalid&#x27;);
-gitBranchIsCmd(args, (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 0);
-  assert(!result.stdout);
-  assert(!result.stderr);
-  done();
-});</code></pre></dd>
-        <dt>exit code 1 with warning for inverted same branch name</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, BRANCH_CURRENT);
-gitBranchIsCmd(args, (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 1);
-  assert(!result.stdout);
-  assertMatch(result.stderr, BRANCH_CURRENT_RE);
-  done();
-});</code></pre></dd>
-        <dt>exit 0 silently for matching anchored regex branch name</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;-r&#x27;, &#x60;^${BRANCH_CURRENT}$&#x60;);
-gitBranchIsCmd(args, (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 0);
-  assert(!result.stdout);
-  assert(!result.stderr);
-  done();
-});</code></pre></dd>
-        <dt>exit 0 silently for matching substr regex branch name</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;-r&#x27;, BRANCH_CURRENT.slice(1, -1));
-gitBranchIsCmd(args, (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 0);
-  assert(!result.stdout);
-  assert(!result.stderr);
-  done();
-});</code></pre></dd>
-        <dt>exit 0 silently for matching empty regex branch name</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;-r&#x27;, &#x27;&#x27;);
-gitBranchIsCmd(args, (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 0);
-  assert(!result.stdout);
-  assert(!result.stderr);
-  done();
-});</code></pre></dd>
-        <dt>exit 0 silently for matching i regex branch name</dt>
-        <dd><pre><code>const args =
-  ARGS.concat(&#x27;-i&#x27;, &#x27;-r&#x27;, &#x60;^${BRANCH_CURRENT.toUpperCase()}$&#x60;);
-gitBranchIsCmd(args, (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 0);
-  assert(!result.stdout);
-  assert(!result.stderr);
-  done();
-});</code></pre></dd>
-        <dt>exit 1 with warning for non-match regex branch name</dt>
-        <dd><pre><code>gitBranchIsCmd(ARGS.concat(&#x27;-r&#x27;, &#x27;invalid&#x27;), (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 1);
-  assert(!result.stdout);
-  assertMatch(result.stderr, /\binvalid\b/);
-  assertMatch(result.stderr, BRANCH_CURRENT_RE);
-  done();
-});</code></pre></dd>
-        <dt>exit 1 with warning for no-match case regex branch name</dt>
-        <dd><pre><code>const branchUpper = BRANCH_CURRENT.toUpperCase();
-gitBranchIsCmd(ARGS.concat(&#x27;-r&#x27;, branchUpper), (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 1);
-  assert(!result.stdout);
-  const branchUpperRE = new RegExp(&#x60;\\b${branchUpper}\\b&#x60;);
-  assertMatch(result.stderr, branchUpperRE);
-  assertMatch(result.stderr, BRANCH_CURRENT_RE);
-  done();
-});</code></pre></dd>
-        <dt>exit 0 silently for inverted not matching regex branch name</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, &#x27;-r&#x27;, &#x27;invalid&#x27;);
-gitBranchIsCmd(args, (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 0);
-  assert(!result.stdout);
-  assert(!result.stderr);
-  done();
-});</code></pre></dd>
-        <dt>exit 1 with warning for inverted match regex branch name</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, &#x27;-r&#x27;, &#x60;^${BRANCH_CURRENT}$&#x60;);
-gitBranchIsCmd(args, (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 1);
-  assert(!result.stdout);
-  assertMatch(result.stderr, BRANCH_CURRENT_RE);
-  done();
-});</code></pre></dd>
         <dt>exit 2 with warning for invalid regex</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
         <dd><pre><code>gitBranchIsCmd(ARGS.concat(&#x27;-r&#x27;, &#x27;b[ad&#x27;), (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 2);
@@ -164,6 +35,7 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   done();
 });</code></pre></dd>
         <dt>exit 2 with warning for invalid regex with quiet</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
         <dd><pre><code>gitBranchIsCmd(ARGS.concat(&#x27;-q&#x27;, &#x27;-r&#x27;, &#x27;b[ad&#x27;), (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 2);
@@ -171,33 +43,17 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   assertMatch(result.stderr, /\bb\[ad\b/);
   done();
 });</code></pre></dd>
-        <dt>exit code 1 silently with quiet option</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;-q&#x27;, &#x27;invalid&#x27;);
-gitBranchIsCmd(args, (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 1);
-  assert(!result.stdout);
-  assert(!result.stderr);
-  done();
-});</code></pre></dd>
-        <dt>exit code 0 with message if verbose</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;-v&#x27;, BRANCH_CURRENT);
-gitBranchIsCmd(args, (err, result) =&#x3E; {
-  assert.ifError(err);
-  assert.strictEqual(result.code, 0);
-  assertMatch(result.stdout, BRANCH_CURRENT_RE);
-  assert(!result.stderr);
-  done();
-});</code></pre></dd>
         <dt>callback Error for multiple args</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
         <dd><pre><code>gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT, &#x27;foo&#x27;), (err, result) =&#x3E; {
   assert(err instanceof Error);
   assertMatch(err.message, /\bargument/i);
   assertMatch(err.message, /\busage/i);
   done();
 });</code></pre></dd>
-        <dt>can specify an additional git argument</dt>
-        <dd><pre><code>const args = ARGS.concat(
+        <dt class="error">can specify an additional git argument</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+        <dd class="error"><pre><code>const args = ARGS.concat(
   &#x27;-C&#x27;,
   SUBDIR_NAME,
   &#x27;--git-arg=--git-dir=../.git&#x27;,
@@ -210,12 +66,14 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert(!result.stderr);
   done();
 });</code></pre></dd>
-        <dt>can specify multiple additional git arguments</dt>
-        <dd><pre><code>const args = ARGS.concat(
+        <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+        <dt class="error">can specify multiple additional git arguments</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+        <dd class="error"><pre><code>const args = ARGS.concat(
   &#x27;-C&#x27;,
   &#x27;..&#x27;,
   &#x27;--git-arg=-C&#x27;,
-  &#x60;--git-arg=${TEST_REPO_PATH}&#x60;,
+  &#x60;--git-arg=${TEST_REPO_BRANCH_PATH}&#x60;,
   BRANCH_CURRENT,
 );
 gitBranchIsCmd(args, (err, result) =&#x3E; {
@@ -225,12 +83,16 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert(!result.stderr);
   done();
 });</code></pre></dd>
-        <dt>can specify an additional git arguments separately</dt>
-        <dd><pre><code>const args = ARGS.concat(
+        <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: Command failed: git -C /home/kevin/src/node-projects/git-branch-is/test-repos/branch symbolic-ref --quiet --short HEAD
+fatal: cannot change to &#x27;/home/kevin/src/node-projects/git-branch-is/test-repos/branch&#x27;: No such file or directory
+</dd>
+        <dt class="error">can specify an additional git arguments separately</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+        <dd class="error"><pre><code>const args = ARGS.concat(
   &#x27;--git-arg&#x27;,
   &#x27;-C&#x27;,
   &#x27;--git-arg&#x27;,
-  TEST_REPO_PATH,
+  TEST_REPO_BRANCH_PATH,
   &#x27;-C&#x27;,
   &#x27;..&#x27;,
   BRANCH_CURRENT,
@@ -242,8 +104,12 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert(!result.stderr);
   done();
 });</code></pre></dd>
-        <dt>gitArgs takes precedence over gitDir</dt>
-        <dd><pre><code>const args = ARGS.concat(
+        <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: Command failed: git -C /home/kevin/src/node-projects/git-branch-is/test-repos/branch symbolic-ref --quiet --short HEAD
+fatal: cannot change to &#x27;/home/kevin/src/node-projects/git-branch-is/test-repos/branch&#x27;: No such file or directory
+</dd>
+        <dt class="error">gitArgs takes precedence over gitDir</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+        <dd class="error"><pre><code>const args = ARGS.concat(
   &#x27;--git-arg&#x27;,
   // Note:  Also tests that Commander interprets this as option argument
   &#x27;--git-dir=.git&#x27;,
@@ -257,8 +123,15 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert(!result.stderr);
   done();
 });</code></pre></dd>
-        <dt>can specify git executable and args</dt>
-        <dd><pre><code>const gitArg = path.join(&#x27;..&#x27;, &#x27;..&#x27;, &#x27;test-bin&#x27;, &#x27;echo-surprise.js&#x27;);
+        <dd class="error">AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- 1
++ 0</dd>
+        <dt class="error">can specify git executable and args</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+        <dd class="error"><pre><code>// Ensure git-path is treated as being relative to -C
+const gitArg = path.relative(SUBDIR_NAME, SURPRISE_BIN);
 const args = ARGS.concat(
   &#x27;-C&#x27;,
   SUBDIR_NAME,
@@ -273,8 +146,10 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert(!result.stderr);
   done();
 });</code></pre></dd>
-        <dt>gitDir is relative to cwd</dt>
-        <dd><pre><code>const args = ARGS.concat(
+        <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn /usr/bin/node ENOENT</dd>
+        <dt class="error">gitDir is relative to cwd</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+        <dd class="error"><pre><code>const args = ARGS.concat(
   &#x27;-C&#x27;,
   SUBDIR_NAME,
   &#x60;--git-dir=${path.join(&#x27;..&#x27;, &#x27;.git&#x27;)}&#x60;,
@@ -287,8 +162,10 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert(!result.stderr);
   done();
 });</code></pre></dd>
+        <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
         <dt>does not double-invert</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, &#x27;-I&#x27;, &#x27;invalid&#x27;);
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, &#x27;-I&#x27;, OTHER_BRANCH);
 gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 0);
@@ -297,7 +174,8 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   done();
 });</code></pre></dd>
         <dt>support --not as alias for -I</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;--not&#x27;, &#x27;invalid&#x27;);
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;--not&#x27;, OTHER_BRANCH);
 gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 0);
@@ -306,7 +184,8 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   done();
 });</code></pre></dd>
         <dt>does not double-invert with alias</dt>
-        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, &#x27;--not&#x27;, &#x27;invalid&#x27;);
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+        <dd><pre><code>const args = ARGS.concat(&#x27;-I&#x27;, &#x27;--not&#x27;, OTHER_BRANCH);
 gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result.code, 0);
@@ -314,18 +193,25 @@ gitBranchIsCmd(args, (err, result) =&#x3E; {
   assert(!result.stderr);
   done();
 });</code></pre></dd>
-        <dt>returns a Promise with the result</dt>
-        <dd><pre><code>const promise = gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
+        <dt class="error">returns a Promise with the result</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+        <dd class="error"><pre><code>const promise = gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
 assert(promise instanceof global.Promise);
 return promise.then((result) =&#x3E; {
   assert.strictEqual(result.code, 0);
   assert(!result.stdout);
   assert(!result.stderr);
 });</code></pre></dd>
+        <dd class="error">AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- 1
++ 0</dd>
         <dt>rejects the Promise with an Error</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
         <dd><pre><code>const promise = gitBranchIsCmd(ARGS.concat(
   &#x27;-C&#x27;,
-  &#x27;invalid&#x27;,
+  OTHER_BRANCH,
   BRANCH_CURRENT,
 ));
 assert(promise instanceof global.Promise);
@@ -333,10 +219,11 @@ return promise.then(
   (result) =&#x3E; { throw new Error(&#x27;expecting Error&#x27;); },
   (err) =&#x3E; { assert(err instanceof Error); },
 );</code></pre></dd>
-        <dt>exit code 0 works when executed</dt>
-        <dd><pre><code>execFile(
+        <dt class="error">exit code 0 works when executed</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+        <dd class="error"><pre><code>execFile(
   process.execPath,
-  [path.join(&#x27;..&#x27;, &#x27;bin&#x27;, &#x27;git-branch-is.js&#x27;), &#x27;-v&#x27;, BRANCH_CURRENT],
+  [GIT_BRANCH_IS, &#x27;-v&#x27;, BRANCH_CURRENT],
   (err, stdout, stderr) =&#x3E; {
     assert.ifError(err);
     assertMatch(stdout, BRANCH_CURRENT_RE);
@@ -344,22 +231,28 @@ return promise.then(
     done();
   },
 );</code></pre></dd>
-        <dt>exit code 1 works when executed</dt>
-        <dd><pre><code>execFile(
+        <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: Command failed: /usr/bin/node /home/kevin/src/node-projects/git-branch-is/bin/git-branch-is.js -v test-branch
+Error: Current branch is &#x22;master&#x22;, not &#x22;test-branch&#x22;.
+</dd>
+        <dt class="error">exit code 1 works when executed</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+        <dd class="error"><pre><code>execFile(
   process.execPath,
-  [path.join(&#x27;..&#x27;, &#x27;bin&#x27;, &#x27;git-branch-is.js&#x27;), &#x27;invalid&#x27;],
+  [GIT_BRANCH_IS, OTHER_BRANCH],
   (err, stdout, stderr) =&#x3E; {
     assert(err instanceof Error);
     assert.strictEqual(err.code, 1);
-    assertMatch(stderr, /\binvalid\b/);
+    assertMatch(stderr, OTHER_BRANCH_RE);
     assertMatch(stderr, BRANCH_CURRENT_RE);
     done();
   },
 );</code></pre></dd>
+        <dd class="error">AssertionError [ERR_ASSERTION]: &#x22;Error: Current branch is \&#x22;master\&#x22;, not \&#x22;otherbranch\&#x22;.\n&#x22; does not match /&#x22;test\x2dbranch&#x22;/</dd>
         <dt>exit code 1 with extra args works when executed</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
         <dd><pre><code>execFile(
   process.execPath,
-  [path.join(&#x27;..&#x27;, &#x27;bin&#x27;, &#x27;git-branch-is.js&#x27;), &#x27;invalid&#x27;, &#x27;extra arg&#x27;],
+  [GIT_BRANCH_IS, OTHER_BRANCH, &#x27;extra arg&#x27;],
   (err, stdout, stderr) =&#x3E; {
     assert(err instanceof Error);
     assert.strictEqual(err.code, 1);
@@ -369,9 +262,354 @@ return promise.then(
   },
 );</code></pre></dd>
         <section class="suite">
+          <h1>when on branch</h1>
+          <dl>
+            <dt class="error">exit code 0 silently for same branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>gitBranchIsCmd(repoArgs.concat(branchName), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 1 with warning for different branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>gitBranchIsCmd(repoArgs.concat(OTHER_BRANCH), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  assertMatch(result.stderr, OTHER_BRANCH_RE);
+  assertMatch(result.stderr, branchRE);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 1 with warning for different case branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const branchUpper = branchName.toUpperCase();
+gitBranchIsCmd(repoArgs.concat(branchUpper), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  const branchUpperRE = new RegExp(&#x60;\\b${branchUpper}\\b&#x60;);
+  assertMatch(result.stderr, branchUpperRE);
+  assertMatch(result.stderr, branchRE);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 0 silently for case-insensitive branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-i&#x27;, branchName.toUpperCase());
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 0 silently for inverted different branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-I&#x27;, OTHER_BRANCH);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 1 with warning for inverted same branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-I&#x27;, branchName);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  assertMatch(result.stderr, branchRE);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 0 silently for matching anchored regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-r&#x27;, &#x60;^${branchName}$&#x60;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 0 silently for matching substr regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-r&#x27;, branchName.slice(1, -1));
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 0 silently for matching empty regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-r&#x27;, &#x27;&#x27;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 0 silently for matching i regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args =
+  repoArgs.concat(&#x27;-i&#x27;, &#x27;-r&#x27;, &#x60;^${branchName.toUpperCase()}$&#x60;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 1 with warning for non-match regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>gitBranchIsCmd(repoArgs.concat(&#x27;-r&#x27;, OTHER_BRANCH), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  assertMatch(result.stderr, OTHER_BRANCH_RE);
+  assertMatch(result.stderr, branchRE);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 1 with warning for no-match case regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const branchUpper = branchName.toUpperCase();
+gitBranchIsCmd(repoArgs.concat(&#x27;-r&#x27;, branchUpper), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  const branchUpperRE = getBranchRE(branchUpper);
+  assertMatch(result.stderr, branchUpperRE);
+  assertMatch(result.stderr, branchRE);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 0 silently for inverted not matching regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-I&#x27;, &#x27;-r&#x27;, OTHER_BRANCH);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 1 with warning for inverted match regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-I&#x27;, &#x27;-r&#x27;, &#x60;^${branchName}$&#x60;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  assertMatch(result.stderr, branchRE);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 1 silently with quiet option</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-q&#x27;, OTHER_BRANCH);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 0 with message if verbose</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-v&#x27;, branchName);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assertMatch(result.stdout, branchRE);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+          </dl>
+        </section>
+        <section class="suite">
+          <h1>when detached</h1>
+          <dl>
+            <dt class="error">exit code 0 silently for same branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>gitBranchIsCmd(repoArgs.concat(branchName), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 1 with warning for different branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>gitBranchIsCmd(repoArgs.concat(OTHER_BRANCH), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  assertMatch(result.stderr, OTHER_BRANCH_RE);
+  assertMatch(result.stderr, branchRE);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 0 silently for case-insensitive branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-i&#x27;, branchName.toUpperCase());
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 0 silently for inverted different branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-I&#x27;, OTHER_BRANCH);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 1 with warning for inverted same branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-I&#x27;, branchName);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  assertMatch(result.stderr, branchRE);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 0 silently for matching anchored regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-r&#x27;, &#x60;^${branchName}$&#x60;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 0 silently for matching substr regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-r&#x27;, branchName.slice(1, -1));
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 0 silently for matching empty regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-r&#x27;, &#x27;&#x27;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 0 silently for matching i regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args =
+  repoArgs.concat(&#x27;-i&#x27;, &#x27;-r&#x27;, &#x60;^${branchName.toUpperCase()}$&#x60;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 1 with warning for non-match regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>gitBranchIsCmd(repoArgs.concat(&#x27;-r&#x27;, OTHER_BRANCH), (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  assertMatch(result.stderr, OTHER_BRANCH_RE);
+  assertMatch(result.stderr, branchRE);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 0 silently for inverted not matching regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-I&#x27;, &#x27;-r&#x27;, OTHER_BRANCH);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit 1 with warning for inverted match regex branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-I&#x27;, &#x27;-r&#x27;, &#x60;^${branchName}$&#x60;);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  assertMatch(result.stderr, branchRE);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 1 silently with quiet option</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-q&#x27;, OTHER_BRANCH);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 1);
+  assert(!result.stdout);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+            <dt class="error">exit code 0 with message if verbose</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
+            <dd class="error"><pre><code>const args = repoArgs.concat(&#x27;-v&#x27;, branchName);
+gitBranchIsCmd(args, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result.code, 0);
+  assertMatch(result.stdout, branchRE);
+  assert(!result.stderr);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+          </dl>
+        </section>
+        <section class="suite">
           <h1>without global Promise</h1>
           <dl>
             <dt>throws without a callback</dt>
+            <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is-cmd.js</dt>
             <dd><pre><code>assert.throws(
   () =&#x3E; {
     gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
@@ -386,32 +624,50 @@ return promise.then(
     <section class="suite">
       <h1>gitBranchIs</h1>
       <dl>
-        <dt>callback true for current branch name</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, (err, result) =&#x3E; {
+        <dt class="error">callback true for current branch name</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+        <dd class="error"><pre><code>gitBranchIs(BRANCH_CURRENT, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
+        <dd class="error">AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- false
++ true</dd>
         <dt>callback false for non-existent branch name</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
         <dd><pre><code>gitBranchIs(BRANCH_NON_EXISTENT, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, false);
   done();
 });</code></pre></dd>
         <dt>callback false for different branch, same commit</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
         <dd><pre><code>gitBranchIs(BRANCH_SAME_COMMIT, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, false);
   done();
 });</code></pre></dd>
-        <dt>callback true for same branch name in subdir</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, { cwd: SUBDIR_NAME }, (err, result) =&#x3E; {
+        <dt class="error">callback true for same branch name in subdir</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+        <dd class="error"><pre><code>gitBranchIs(BRANCH_CURRENT, { cwd: SUBDIR_NAME }, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
-        <dt>callback true for function comparing branch name</dt>
-        <dd><pre><code>// eslint-disable-next-line unicorn/consistent-function-scoping
+        <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+        <dt>callback false for empty branch name</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+        <dd><pre><code>gitBranchIs(&#x27;&#x27;, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result, false);
+  done();
+});</code></pre></dd>
+        <dt class="error">callback true for function comparing branch name</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+        <dd class="error"><pre><code>// eslint-disable-next-line unicorn/consistent-function-scoping
 function checkBranchName(branchName) {
   return branchName === BRANCH_CURRENT;
 }
@@ -420,7 +676,13 @@ gitBranchIs(checkBranchName, (err, result) =&#x3E; {
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
+        <dd class="error">AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- false
++ true</dd>
         <dt>callback false for function returning false</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
         <dd><pre><code>// eslint-disable-next-line unicorn/consistent-function-scoping
 function returnsFalse(branchName) {
   return false;
@@ -431,6 +693,7 @@ gitBranchIs(returnsFalse, (err, result) =&#x3E; {
   done();
 });</code></pre></dd>
         <dt>callback propagates error from function which throws</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
         <dd><pre><code>const errTest = new Error(&#x27;test&#x27;);
 function throwsErr(branchName) { throw errTest; }
 gitBranchIs(throwsErr, (err, result) =&#x3E; {
@@ -438,24 +701,35 @@ gitBranchIs(throwsErr, (err, result) =&#x3E; {
   assert(result === undefined || result === null);
   done();
 });</code></pre></dd>
-        <dt>can specify additional git arguments</dt>
-        <dd><pre><code>const options = {
+        <dt class="error">can specify additional git arguments</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+        <dd class="error"><pre><code>const options = {
   cwd: &#x27;..&#x27;,
-  gitArgs: [&#x27;-C&#x27;, TEST_REPO_PATH],
+  gitArgs: [&#x27;-C&#x27;, TEST_REPO_BRANCH_PATH],
 };
 gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
-        <dt>null gitArgs is ignored</dt>
-        <dd><pre><code>gitBranchIs(BRANCH_CURRENT, { gitArgs: null }, (err, result) =&#x3E; {
+        <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: Command failed: git -C /home/kevin/src/node-projects/git-branch-is/test-repos/branch symbolic-ref --quiet --short HEAD
+fatal: cannot change to &#x27;/home/kevin/src/node-projects/git-branch-is/test-repos/branch&#x27;: No such file or directory
+</dd>
+        <dt class="error">null gitArgs is ignored</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+        <dd class="error"><pre><code>gitBranchIs(BRANCH_CURRENT, { gitArgs: null }, (err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
-        <dt>gitArgs takes precedence over gitDir</dt>
-        <dd><pre><code>const options = {
+        <dd class="error">AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- false
++ true</dd>
+        <dt class="error">gitArgs takes precedence over gitDir</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+        <dd class="error"><pre><code>const options = {
   gitArgs: [&#x27;--git-dir=.git&#x27;],
   gitDir: &#x27;invalid&#x27;,
 };
@@ -464,9 +738,15 @@ gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
+        <dd class="error">AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- false
++ true</dd>
         <dt>can specify git executable and args</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
         <dd><pre><code>const options = {
-  gitArgs: [path.join(&#x27;..&#x27;, &#x27;test-bin&#x27;, &#x27;echo-surprise.js&#x27;)],
+  gitArgs: [path.relative(&#x27;.&#x27;, SURPRISE_BIN)],
   gitPath: process.execPath,
 };
 gitBranchIs(&#x27;surprise&#x27;, options, (err, result) =&#x3E; {
@@ -475,18 +755,21 @@ gitBranchIs(&#x27;surprise&#x27;, options, (err, result) =&#x3E; {
   done();
 });</code></pre></dd>
         <dt>callback Error outside of git repo</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
         <dd><pre><code>gitBranchIs(BRANCH_CURRENT, { cwd: &#x27;/&#x27; }, (err, result) =&#x3E; {
   assert(err instanceof Error);
   assert(result === undefined || result === null);
   done();
 });</code></pre></dd>
         <dt>callback Error if cwd doesn&#x27;t exist</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
         <dd><pre><code>gitBranchIs(BRANCH_CURRENT, { cwd: &#x27;invalid&#x27; }, (err, result) =&#x3E; {
   assert(err instanceof Error);
   assert(result === undefined || result === null);
   done();
 });</code></pre></dd>
         <dt>callback Error if git is not executable</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
         <dd><pre><code>const badGitPath = path.join(__dirname, &#x27;..&#x27;, &#x27;package.json&#x27;);
 gitBranchIs(BRANCH_CURRENT, { gitPath: badGitPath }, (err, result) =&#x3E; {
   assert(err instanceof Error);
@@ -494,13 +777,15 @@ gitBranchIs(BRANCH_CURRENT, { gitPath: badGitPath }, (err, result) =&#x3E; {
   done();
 });</code></pre></dd>
         <dt>callback Error if gitDir is not a git repo</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
         <dd><pre><code>gitBranchIs(BRANCH_CURRENT, { gitDir: SUBDIR_NAME }, (err, result) =&#x3E; {
   assert(err instanceof Error);
   assert(result === undefined || result === null);
   done();
 });</code></pre></dd>
-        <dt>gitDir is relative to cwd</dt>
-        <dd><pre><code>const options = {
+        <dt class="error">gitDir is relative to cwd</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+        <dd class="error"><pre><code>const options = {
   cwd: SUBDIR_NAME,
   gitDir: path.join(&#x27;..&#x27;, &#x27;.git&#x27;),
 };
@@ -509,10 +794,12 @@ gitBranchIs(BRANCH_CURRENT, options, (err, result) =&#x3E; {
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
-        <dt>gitPath is relative to cwd</dt>
-        <dd><pre><code>const options = {
+        <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn git ENOENT</dd>
+        <dt class="error">gitPath is relative to cwd</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+        <dd class="error"><pre><code>const options = {
   cwd: SUBDIR_NAME,
-  gitArgs: [path.join(&#x27;..&#x27;, &#x27;..&#x27;, &#x27;test-bin&#x27;, &#x27;echo-surprise.js&#x27;)],
+  gitArgs: [path.relative(SUBDIR_NAME, SURPRISE_BIN)],
   gitPath: path.relative(SUBDIR_NAME, process.execPath),
 };
 gitBranchIs(&#x27;surprise&#x27;, options, (err, result) =&#x3E; {
@@ -520,19 +807,28 @@ gitBranchIs(&#x27;surprise&#x27;, options, (err, result) =&#x3E; {
   assert.strictEqual(result, true);
   done();
 });</code></pre></dd>
-        <dt>Promise resolves true for same branch name</dt>
-        <dd><pre><code>const promise = gitBranchIs(BRANCH_CURRENT);
+        <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: spawn ../../../../../../usr/bin/node ENOENT</dd>
+        <dt class="error">Promise resolves true for same branch name</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+        <dd class="error"><pre><code>const promise = gitBranchIs(BRANCH_CURRENT);
 assert(promise instanceof global.Promise);
 return promise.then((result) =&#x3E; {
   assert.strictEqual(result, true);
 });</code></pre></dd>
+        <dd class="error">AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- false
++ true</dd>
         <dt>Promise resolves false for different branch name</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
         <dd><pre><code>const promise = gitBranchIs(&#x27;invalid&#x27;);
 assert(promise instanceof global.Promise);
 return promise.then((result) =&#x3E; {
   assert.strictEqual(result, false);
 });</code></pre></dd>
         <dt>Promise rejects on Error</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
         <dd><pre><code>const promise = gitBranchIs(BRANCH_CURRENT, &#x27;opts&#x27;);
 assert(promise instanceof global.Promise);
 return promise.then(
@@ -542,8 +838,9 @@ return promise.then(
     assertMatch(err.message, /\boptions\b/);
   },
 );</code></pre></dd>
-        <dt>Promise flattens for function returning Promise</dt>
-        <dd><pre><code>function checkBranchName(branchName) {
+        <dt class="error">Promise flattens for function returning Promise</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+        <dd class="error"><pre><code>function checkBranchName(branchName) {
   return global.Promise.resolve(branchName === BRANCH_CURRENT);
 }
 const promise = gitBranchIs(checkBranchName);
@@ -551,8 +848,14 @@ assert(promise instanceof global.Promise);
 return promise.then((result) =&#x3E; {
   assert.strictEqual(result, true);
 });</code></pre></dd>
-        <dt>Promise rejects for function returning Promise</dt>
-        <dd><pre><code>// Note: reject with non-Error to ensure no special handling
+        <dd class="error">AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- false
++ true</dd>
+        <dt class="error">Promise rejects for function returning Promise</dt>
+        <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+        <dd class="error"><pre><code>// Note: reject with non-Error to ensure no special handling
 function checkBranchName(branchName) {
   return global.Promise.reject(branchName === BRANCH_CURRENT);
 }
@@ -564,7 +867,13 @@ return promise.then(
     assert.strictEqual(err, true);
   },
 );</code></pre></dd>
+        <dd class="error">AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- false
++ true</dd>
         <dt>Promise rejects for function throwing Error</dt>
+        <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
         <dd><pre><code>const errTest = new Error(&#x27;test&#x27;);
 function checkBranchName(branchName) { throw errTest; }
 const promise = gitBranchIs(checkBranchName);
@@ -576,24 +885,48 @@ return promise.then(
         <section class="suite">
           <h1>.getBranch()</h1>
           <dl>
-            <dt>gets the branch name</dt>
-            <dd><pre><code>gitBranchIs.getBranch((err, result) =&#x3E; {
+            <dt class="error">gets the branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+            <dd class="error"><pre><code>gitBranchIs.getBranch((err, result) =&#x3E; {
   assert.ifError(err);
   assert.strictEqual(result, BRANCH_CURRENT);
   done();
 });</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- &#x27;master&#x27;
++ &#x27;test-branch&#x27;</dd>
+            <dt class="error">gets empty string for detached HEAD</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+            <dd class="error"><pre><code>const options = { gitDir: &#x60;${TEST_REPO_DETACHED_PATH}/.git&#x60; };
+gitBranchIs.getBranch(options, (err, result) =&#x3E; {
+  assert.ifError(err);
+  assert.strictEqual(result, &#x27;&#x27;);
+  done();
+});</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: ifError got unwanted exception: Command failed: git --git-dir=/home/kevin/src/node-projects/git-branch-is/test-repos/detached/.git symbolic-ref --quiet --short HEAD
+fatal: not a git repository: &#x27;/home/kevin/src/node-projects/git-branch-is/test-repos/detached/.git&#x27;
+</dd>
           </dl>
         </section>
         <section class="suite">
           <h1>.getBranch()</h1>
           <dl>
-            <dt>resolves to the branch name</dt>
-            <dd><pre><code>const promise = gitBranchIs.getBranch();
+            <dt class="error">resolves to the branch name</dt>
+            <dt class="error">/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
+            <dd class="error"><pre><code>const promise = gitBranchIs.getBranch();
 assert(promise instanceof global.Promise);
 return promise.then((result) =&#x3E; {
   assert.strictEqual(result, BRANCH_CURRENT);
 });</code></pre></dd>
+            <dd class="error">AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:
++ expected - actual
+
+- &#x27;master&#x27;
++ &#x27;test-branch&#x27;</dd>
             <dt>rejects on Error</dt>
+            <dt>/home/kevin/src/node-projects/git-branch-is/test/git-branch-is.js</dt>
             <dd><pre><code>const promise = gitBranchIs.getBranch(BRANCH_CURRENT);
 assert(promise instanceof global.Promise);
 return promise.then(
