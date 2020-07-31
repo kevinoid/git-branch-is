@@ -15,7 +15,8 @@ environment:
 #  - x64
 
 install:
-  - ps: Install-Product node $env:nodejs_version
+  - ps: echo "Install-Product node $env:nodejs_version $(if ($env:PROCESSOR_ARCHITECTURE -eq 'AMD64') {'x64'} else {$env:PROCESSOR_ARCHITECTURE})"
+  - ps: Install-Product node $env:nodejs_version $(if ($env:PROCESSOR_ARCHITECTURE -eq 'AMD64') {'x64'} else {$env:PROCESSOR_ARCHITECTURE})
   # Ignore package-lock.json.  This is done for a few reasons:
   # - To test against current versions of dependencies.
   # - To test installability for dependents (doesn't use package-lock.json).
