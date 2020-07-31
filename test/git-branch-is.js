@@ -66,6 +66,7 @@ describe('gitBranchIs', () => {
   });
 
   it('callback true for function comparing branch name', (done) => {
+    // eslint-disable-next-line unicorn/consistent-function-scoping
     function checkBranchName(branchName) {
       return branchName === BRANCH_CURRENT;
     }
@@ -77,6 +78,7 @@ describe('gitBranchIs', () => {
   });
 
   it('callback false for function returning false', (done) => {
+    // eslint-disable-next-line unicorn/consistent-function-scoping
     function returnsFalse(branchName) {
       return false;
     }

@@ -14,7 +14,7 @@ const { execFile } = require('child_process');
  *   gitArgs: (Array|undefined),
  *   gitDir: (?string|undefined),
  *   gitPath: (string|undefined)
- * }}
+ * }} GitBranchIsOptions
  * @property {?string=} cwd Current working directory where the branch name is
  * tested.
  * @property {Array=} gitArgs Extra arguments to pass to git.
