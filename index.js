@@ -92,11 +92,12 @@ function gitBranchIs(branchNameOrTest, options, callback) {
  *
  * @param {?GitBranchIsOptions=} options Options.
  * @param {?function(Error, string=)=} callback Callback function called
- * with the current branch name, or <code>Error</code> if it could not be
- * determined.
+ * with the current branch name, empty string if not on a branch, or
+ * <code>Error</code> if there was an error determining the branch name.
  * @returns {Promise|undefined} If <code>callback</code> is not given, a
- * <code>Promise</code> with the current branch name, or <code>Error</code> if
- * it could not be determined.
+ * <code>Promise</code> with the current branch name, empty string if not on a
+ * branch, or <code>Error</code> if there was an error determining the branch
+ * name.
  */
 gitBranchIs.getBranch = function getBranch(options, callback) {
   if (!callback && typeof options === 'function') {
@@ -131,7 +132,10 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
   if (combinedOpts.gitDir) {
     gitArgs.unshift(`--git-dir=${combinedOpts.gitDir}`);
   }
-  gitArgs.push('symbolic-ref', '--short', 'HEAD');
+  // Note: --quiet causes symbolic-ref to exit with code 1 and no error
+  // instead of code 128 and "ref %s is not a symbolic ref" when not on a
+  // branch.
+  gitArgs.push('symbolic-ref', '--quiet', '--short', 'HEAD');
 
   try {
     execFile(
@@ -140,7 +144,13 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
       { cwd: combinedOpts.cwd },
       (errExec, stdout, stderr) => {
         if (errExec) {
-          callback(errExec);
+          if (errExec.code === 1 && !stdout && !stderr) {
+            // Not on a branch
+            callback(null, ''); // eslint-disable-line unicorn/no-null
+          } else {
+            callback(errExec);
+          }
+
           return;
         }
 
