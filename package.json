@@ -44,7 +44,7 @@
     "yargs": "^15.0.0"
   },
   "devDependencies": {
-    "@kevinoid/eslint-config": "^10.0.0",
+    "@kevinoid/eslint-config": "^11.0.0",
     "codecov": "^3.0.0",
     "coveralls": "^3.0.0",
     "eslint": "^7.3.0",
