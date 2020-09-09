@@ -65,10 +65,7 @@ function modulenameCmd(args, options, callback) {
     args = [];
   }
 
-  // Workaround for https://github.com/yargs/yargs/issues/783
-  // Necessary because mocha package.json overrides .parserConfiguration()
-  require.main = module;
-  const yargs = new Yargs(undefined, undefined, require)
+  const yargs = new Yargs()
     .parserConfiguration({
       'parse-numbers': false,
       'duplicate-arguments-array': false,
