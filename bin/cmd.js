@@ -91,11 +91,7 @@ function modulenameCmd(args, options, callback) {
     .strict();
   yargs.parse(args, (err, argOpts, output) => {
     if (err) {
-      if (output) {
-        options.stderr.write(`${output}\n`);
-      } else {
-        options.stderr.write(`${err.name}: ${err.message}\n`);
-      }
+      options.stderr.write(`${output || err}\n`);
       callback(1);
       return;
     }
