@@ -5,9 +5,8 @@
 
 'use strict';
 
-const modulename = {};
-
-modulename.func = function func(options, callback) {
+exports.func =
+function func(options, callback) {
   if (!callback && typeof options === 'function') {
     callback = options;
     options = undefined;
@@ -35,5 +34,3 @@ modulename.func = function func(options, callback) {
   // Do stuff
   return undefined;
 };
-
-module.exports = modulename;
