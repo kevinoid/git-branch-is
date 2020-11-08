@@ -96,7 +96,7 @@ function modulenameCmd(args, options, callback) {
       } else {
         options.stderr.write(`${err.name}: ${err.message}\n`);
       }
-      callback(undefined, 1);
+      callback(1);
       return;
     }
 
