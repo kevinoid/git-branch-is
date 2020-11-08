@@ -6,31 +6,10 @@
 'use strict';
 
 exports.func =
-function func(options, callback) {
-  if (!callback && typeof options === 'function') {
-    callback = options;
-    options = undefined;
-  }
-
-  if (!callback) {
-    return new Promise((resolve, reject) => {
-      func(options, (err, result) => {
-        if (err) { reject(err); } else { resolve(result); }
-      });
-    });
-  }
-
-  if (typeof callback !== 'function') {
-    throw new TypeError('callback must be a function');
-  }
-
+async function func(options) {
   if (options !== undefined && typeof options !== 'object') {
-    process.nextTick(() => {
-      callback(new TypeError('options must be an object'));
-    });
-    return undefined;
+    throw new TypeError('options must be an object');
   }
 
   // Do stuff
-  return undefined;
 };
