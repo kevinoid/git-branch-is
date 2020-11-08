@@ -89,9 +89,9 @@ function modulenameCmd(args, options, callback) {
     .version(`${packageJson.name} ${packageJson.version}`)
     .alias('version', 'V')
     .strict();
-  yargs.parse(args, (err, argOpts, output) => {
-    if (err) {
-      options.stderr.write(`${output || err}\n`);
+  yargs.parse(args, (errYargs, argOpts, output) => {
+    if (errYargs) {
+      options.stderr.write(`${output || errYargs}\n`);
       callback(1);
       return;
     }
