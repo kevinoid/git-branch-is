@@ -120,7 +120,17 @@ function modulenameCmd(args, options, callback) {
       files: argOpts._,
       verbosity: argOpts.verbose - argOpts.quiet,
     };
-    modulename(cmdOpts, callback);
+    // eslint-disable-next-line promise/catch-or-return
+    modulename.func(cmdOpts)
+      .then(
+        () => 0,
+        (err) => {
+          options.stderr.write(`${err}\n`);
+          return 1;
+        },
+      )
+      // Note: nextTick for unhandledException (like util.callbackify)
+      .then((exitCode) => process.nextTick(callback, exitCode));
   });
 }
 
