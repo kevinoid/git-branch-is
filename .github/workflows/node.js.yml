@@ -84,8 +84,6 @@ jobs:
       run: npm install
     - name: Run tests
       run: npm run test-unit-cov
-    - shell: bash
-      run: cat coverage/lcov.info
     # Note: Not uploading to Codecov, due to poor support for matrix builds
     # https://github.com/codecov/codecov-action/issues/40
     - name: Upload coverage to Coveralls
