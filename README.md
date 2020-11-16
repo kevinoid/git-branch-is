@@ -1,8 +1,7 @@
 Project Template
 ================
 
-[![Build Status: Linux](https://img.shields.io/travis/kevinoid/project-template/master.svg?style=flat&label=build+on+linux)](https://travis-ci.org/kevinoid/project-template)
-[![Build Status: Windows](https://img.shields.io/appveyor/ci/kevinoid/project-template/master.svg?style=flat&label=build+on+windows)](https://ci.appveyor.com/project/kevinoid/project-template)
+[![Build Status](https://img.shields.io/github/workflow/status/kevinoid/node-project-template/Node.js%20CI/master.svg?style=flat&label=build)](https://github.com/kevinoid/node-project-template/actions?query=branch%3Amaster)
 [![Coverage](https://img.shields.io/codecov/c/github/kevinoid/project-template.svg?style=flat)](https://codecov.io/github/kevinoid/project-template?branch=master)
 [![Dependency Status](https://img.shields.io/david/kevinoid/project-template.svg?style=flat)](https://david-dm.org/kevinoid/project-template)
 [![Supported Node Version](https://img.shields.io/node/v/@kevinoid/project-template.svg?style=flat)](https://www.npmjs.com/package/@kevinoid/project-template)
