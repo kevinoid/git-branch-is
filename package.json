@@ -16,6 +16,9 @@
   },
   "type": "commonjs",
   "main": "index.js",
+  "exports": {
+    ".": "index.js"
+  },
   "bin": {
     "project-template": "bin/cmd.js"
   },
