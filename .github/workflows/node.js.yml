@@ -8,8 +8,13 @@ name: Node.js CI
 # https://github.com/adrienverge/yamllint/issues/158#issuecomment-454313233
 # However, GitHub Actions documentation is consistent in using it unquoted.
 on:   # yamllint disable-line rule:truthy
-- push
-- pull_request
+  pull_request: {}
+  push: {}
+  schedule:
+  # Run once a day (at 8:40 AM UTC) to check for exogenous breakage.
+  # TODO: Run when dependencies are updated.  (Like Dependabot, but on
+  # in-range updates and without sending a PR.)
+  - cron: '40 8 * * *'
 
 jobs:
   test-primary:
