@@ -4,6 +4,7 @@
 .eslintignore
 .eslintrc*
 .gitattributes
+.github/
 .npmignore
 .nyc_output/
 .prettierrc*
