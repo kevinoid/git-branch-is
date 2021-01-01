@@ -15,6 +15,12 @@
     "url": "https://github.com/kevinoid/node-project-template.git"
   },
   "type": "commonjs",
+  "files": [
+    "*.js",
+    "bin/",
+    "lib/",
+    "!**/.*"
+  ],
   "main": "index.js",
   "exports": {
     ".": "./index.js"
