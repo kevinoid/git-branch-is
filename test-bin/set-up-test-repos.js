@@ -10,6 +10,7 @@
 
 const fs = require('fs');
 const path = require('path');
+// TODO [engine:node@>=12.10]: Use fs.rmdir({recursive: true})
 const rimraf = require('rimraf');
 const util = require('util');
 
