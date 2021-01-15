@@ -79,23 +79,25 @@ function gitBranchIsCmd(args, callback) {
     return undefined;
   }
 
+  const cmdOpts = command.opts();
+
   // -C option is cmd in options Object
-  command.cwd = command.C;
+  cmdOpts.cwd = cmdOpts.C;
 
   // pluralize --git-arg to cover multiple uses
-  command.gitArgs = command.gitArg;
+  cmdOpts.gitArgs = cmdOpts.gitArg;
 
   // treat --not as an alias for --invert-match
-  command.invertMatch = command.invertMatch || command.not;
+  cmdOpts.invertMatch = cmdOpts.invertMatch || cmdOpts.not;
 
   const expectedBranch = command.args[0];
 
   let expectedBranchRegExp;
-  if (command.regex) {
+  if (cmdOpts.regex) {
     try {
       expectedBranchRegExp = new RegExp(
         expectedBranch,
-        command.ignoreCase ? 'i' : undefined,
+        cmdOpts.ignoreCase ? 'i' : undefined,
       );
     } catch (errRegExp) {
       // Benefit of avoiding unnecessary API changes outweighs style concerns
@@ -109,7 +111,7 @@ function gitBranchIsCmd(args, callback) {
     }
   }
 
-  gitBranchIs.getBranch(command, (err, currentBranch) => {
+  gitBranchIs.getBranch(cmdOpts, (err, currentBranch) => {
     if (err) {
       callback(err);
       return;
@@ -118,26 +120,26 @@ function gitBranchIsCmd(args, callback) {
     let errMsg, isMatch;
     if (expectedBranchRegExp) {
       isMatch = expectedBranchRegExp.test(currentBranch);
-      if (command.invertMatch) {
+      if (cmdOpts.invertMatch) {
         isMatch = !isMatch;
       }
 
-      if (!isMatch && !command.quiet) {
-        errMsg = command.invertMatch
+      if (!isMatch && !cmdOpts.quiet) {
+        errMsg = cmdOpts.invertMatch
           ? `Current branch "${currentBranch}" matches "${expectedBranch}".\n`
           : `Current branch "${currentBranch}" does not match "${
             expectedBranch}".\n`;
       }
     } else {
       isMatch = currentBranch === expectedBranch
-        || (command.ignoreCase
+        || (cmdOpts.ignoreCase
             && currentBranch.toUpperCase() === expectedBranch.toUpperCase());
-      if (command.invertMatch) {
+      if (cmdOpts.invertMatch) {
         isMatch = !isMatch;
       }
 
-      if (!isMatch && !command.quiet) {
-        errMsg = command.invertMatch
+      if (!isMatch && !cmdOpts.quiet) {
+        errMsg = cmdOpts.invertMatch
           ? `Current branch is "${currentBranch}".\n`
           : `Current branch is "${currentBranch}", not "${expectedBranch}".\n`;
       }
@@ -148,7 +150,7 @@ function gitBranchIsCmd(args, callback) {
     callback(null, {
       code: isMatch ? 0 : 1,
       stderr: errMsg && `Error: ${errMsg}`,
-      stdout: isMatch && command.verbose
+      stdout: isMatch && cmdOpts.verbose
         ? `Current branch is "${currentBranch}".\n`
         : null, // eslint-disable-line unicorn/no-null
     });
