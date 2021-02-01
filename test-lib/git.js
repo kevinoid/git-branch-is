@@ -6,9 +6,9 @@
 'use strict';
 
 const { execFile } = require('child_process');
-const util = require('util');
+const { promisify } = require('util');
 
-const execFileP = util.promisify(execFile);
+const execFileP = promisify(execFile);
 
 /**
  * Run git with given arguments and options.

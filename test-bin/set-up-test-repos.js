@@ -8,17 +8,18 @@
 
 'use strict';
 
-const fs = require('fs');
+// https://github.com/mysticatea/eslint-plugin-node/issues/174
+// eslint-disable-next-line node/no-unsupported-features/node-builtins
+const { promises: { mkdir: mkdirP } } = require('fs');
 const path = require('path');
 // TODO [engine:node@>=12.10]: Use fs.rmdir({recursive: true})
 const rimraf = require('rimraf');
-const util = require('util');
+const { promisify } = require('util');
 
 const git = require('../test-lib/git');
 const constants = require('../test-lib/constants');
 
-const mkdirP = util.promisify(fs.mkdir);
-const rimrafP = util.promisify(rimraf);
+const rimrafP = promisify(rimraf);
 
 // Local copy of shared constants
 const {

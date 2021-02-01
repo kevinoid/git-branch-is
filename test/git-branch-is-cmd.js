@@ -41,10 +41,10 @@ const OTHER_BRANCH_RE = getBranchRE(OTHER_BRANCH);
 
 function describeWithBranch(branchName, repoDir) {
   const branchRE = getBranchRE(branchName);
-  const repoArgs = ARGS.concat('-C', repoDir);
+  const repoArgs = [...ARGS, '-C', repoDir];
 
   it('exit code 0 silently for same branch name', (done) => {
-    gitBranchIsCmd(repoArgs.concat(branchName), (err, result) => {
+    gitBranchIsCmd([...repoArgs, branchName], (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
       assert(!result.stdout);
@@ -54,7 +54,7 @@ function describeWithBranch(branchName, repoDir) {
   });
 
   it('exit code 1 with warning for different branch name', (done) => {
-    gitBranchIsCmd(repoArgs.concat(OTHER_BRANCH), (err, result) => {
+    gitBranchIsCmd([...repoArgs, OTHER_BRANCH], (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 1);
       assert(!result.stdout);
@@ -67,7 +67,7 @@ function describeWithBranch(branchName, repoDir) {
   if (branchName) {
     it('exit code 1 with warning for different case branch name', (done) => {
       const branchUpper = branchName.toUpperCase();
-      gitBranchIsCmd(repoArgs.concat(branchUpper), (err, result) => {
+      gitBranchIsCmd([...repoArgs, branchUpper], (err, result) => {
         assert.ifError(err);
         assert.strictEqual(result.code, 1);
         assert(!result.stdout);
@@ -80,7 +80,7 @@ function describeWithBranch(branchName, repoDir) {
   }
 
   it('exit code 0 silently for case-insensitive branch name', (done) => {
-    const args = repoArgs.concat('-i', branchName.toUpperCase());
+    const args = [...repoArgs, '-i', branchName.toUpperCase()];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -91,7 +91,7 @@ function describeWithBranch(branchName, repoDir) {
   });
 
   it('exit code 0 silently for inverted different branch name', (done) => {
-    const args = repoArgs.concat('-I', OTHER_BRANCH);
+    const args = [...repoArgs, '-I', OTHER_BRANCH];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -102,7 +102,7 @@ function describeWithBranch(branchName, repoDir) {
   });
 
   it('exit code 1 with warning for inverted same branch name', (done) => {
-    const args = repoArgs.concat('-I', branchName);
+    const args = [...repoArgs, '-I', branchName];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 1);
@@ -113,7 +113,7 @@ function describeWithBranch(branchName, repoDir) {
   });
 
   it('exit 0 silently for matching anchored regex branch name', (done) => {
-    const args = repoArgs.concat('-r', `^${branchName}$`);
+    const args = [...repoArgs, '-r', `^${branchName}$`];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -124,7 +124,7 @@ function describeWithBranch(branchName, repoDir) {
   });
 
   it('exit 0 silently for matching substr regex branch name', (done) => {
-    const args = repoArgs.concat('-r', branchName.slice(1, -1));
+    const args = [...repoArgs, '-r', branchName.slice(1, -1)];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -135,7 +135,7 @@ function describeWithBranch(branchName, repoDir) {
   });
 
   it('exit 0 silently for matching empty regex branch name', (done) => {
-    const args = repoArgs.concat('-r', '');
+    const args = [...repoArgs, '-r', ''];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -147,7 +147,7 @@ function describeWithBranch(branchName, repoDir) {
 
   it('exit 0 silently for matching i regex branch name', (done) => {
     const args =
-      repoArgs.concat('-i', '-r', `^${branchName.toUpperCase()}$`);
+      [...repoArgs, '-i', '-r', `^${branchName.toUpperCase()}$`];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -158,7 +158,7 @@ function describeWithBranch(branchName, repoDir) {
   });
 
   it('exit 1 with warning for non-match regex branch name', (done) => {
-    gitBranchIsCmd(repoArgs.concat('-r', OTHER_BRANCH), (err, result) => {
+    gitBranchIsCmd([...repoArgs, '-r', OTHER_BRANCH], (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 1);
       assert(!result.stdout);
@@ -171,7 +171,7 @@ function describeWithBranch(branchName, repoDir) {
   if (branchName) {
     it('exit 1 with warning for no-match case regex branch name', (done) => {
       const branchUpper = branchName.toUpperCase();
-      gitBranchIsCmd(repoArgs.concat('-r', branchUpper), (err, result) => {
+      gitBranchIsCmd([...repoArgs, '-r', branchUpper], (err, result) => {
         assert.ifError(err);
         assert.strictEqual(result.code, 1);
         assert(!result.stdout);
@@ -184,7 +184,7 @@ function describeWithBranch(branchName, repoDir) {
   }
 
   it('exit 0 silently for inverted not matching regex branch name', (done) => {
-    const args = repoArgs.concat('-I', '-r', OTHER_BRANCH);
+    const args = [...repoArgs, '-I', '-r', OTHER_BRANCH];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -195,7 +195,7 @@ function describeWithBranch(branchName, repoDir) {
   });
 
   it('exit 1 with warning for inverted match regex branch name', (done) => {
-    const args = repoArgs.concat('-I', '-r', `^${branchName}$`);
+    const args = [...repoArgs, '-I', '-r', `^${branchName}$`];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 1);
@@ -206,7 +206,7 @@ function describeWithBranch(branchName, repoDir) {
   });
 
   it('exit code 1 silently with quiet option', (done) => {
-    const args = repoArgs.concat('-q', OTHER_BRANCH);
+    const args = [...repoArgs, '-q', OTHER_BRANCH];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 1);
@@ -217,7 +217,7 @@ function describeWithBranch(branchName, repoDir) {
   });
 
   it('exit code 0 with message if verbose', (done) => {
-    const args = repoArgs.concat('-v', branchName);
+    const args = [...repoArgs, '-v', branchName];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -238,7 +238,7 @@ describe('git-branch-is', () => {
   });
 
   it('exit 2 with warning for invalid regex', (done) => {
-    gitBranchIsCmd(ARGS.concat('-r', 'b[ad'), (err, result) => {
+    gitBranchIsCmd([...ARGS, '-r', 'b[ad'], (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 2);
       assert(!result.stdout);
@@ -250,7 +250,7 @@ describe('git-branch-is', () => {
   // --quiet does not suppress notification of caller errors
   // If this behavior is desired, consider using repeated -q option.
   it('exit 2 with warning for invalid regex with quiet', (done) => {
-    gitBranchIsCmd(ARGS.concat('-q', '-r', 'b[ad'), (err, result) => {
+    gitBranchIsCmd([...ARGS, '-q', '-r', 'b[ad'], (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 2);
       assert(!result.stdout);
@@ -261,7 +261,7 @@ describe('git-branch-is', () => {
 
   // Note:  This is one of the few errors that doesn't call process.exit
   it('callback Error for multiple args', (done) => {
-    gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT, 'foo'), (err, result) => {
+    gitBranchIsCmd([...ARGS, BRANCH_CURRENT, 'foo'], (err, result) => {
       assert(err instanceof Error);
       assertMatch(err.message, /\bargument/i);
       assertMatch(err.message, /\busage/i);
@@ -270,12 +270,13 @@ describe('git-branch-is', () => {
   });
 
   it('can specify an additional git argument', (done) => {
-    const args = ARGS.concat(
+    const args = [
+      ...ARGS,
       '-C',
       SUBDIR_NAME,
       '--git-arg=--git-dir=../.git',
       BRANCH_CURRENT,
-    );
+    ];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -286,13 +287,14 @@ describe('git-branch-is', () => {
   });
 
   it('can specify multiple additional git arguments', (done) => {
-    const args = ARGS.concat(
+    const args = [
+      ...ARGS,
       '-C',
       '..',
       '--git-arg=-C',
       `--git-arg=${TEST_REPO_BRANCH_PATH}`,
       BRANCH_CURRENT,
-    );
+    ];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -303,7 +305,8 @@ describe('git-branch-is', () => {
   });
 
   it('can specify an additional git arguments separately', (done) => {
-    const args = ARGS.concat(
+    const args = [
+      ...ARGS,
       '--git-arg',
       '-C',
       '--git-arg',
@@ -311,7 +314,7 @@ describe('git-branch-is', () => {
       '-C',
       '..',
       BRANCH_CURRENT,
-    );
+    ];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -322,13 +325,13 @@ describe('git-branch-is', () => {
   });
 
   it('gitArgs takes precedence over gitDir', (done) => {
-    const args = ARGS.concat(
+    const args = [
+      ...ARGS,
       '--git-arg',
-      // Note:  Also tests that Commander interprets this as option argument
       '--git-dir=.git',
       '--git-dir=invalid',
       BRANCH_CURRENT,
-    );
+    ];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -341,13 +344,14 @@ describe('git-branch-is', () => {
   it('can specify git executable and args', (done) => {
     // Ensure git-path is treated as being relative to -C
     const gitArg = path.relative(SUBDIR_NAME, SURPRISE_BIN);
-    const args = ARGS.concat(
+    const args = [
+      ...ARGS,
       '-C',
       SUBDIR_NAME,
       `--git-arg=${gitArg}`,
       `--git-path=${process.execPath}`,
       'surprise',
-    );
+    ];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -359,12 +363,13 @@ describe('git-branch-is', () => {
 
   // Just like git -C and --git-dir
   it('gitDir is relative to cwd', (done) => {
-    const args = ARGS.concat(
+    const args = [
+      ...ARGS,
       '-C',
       SUBDIR_NAME,
       `--git-dir=${path.join('..', '.git')}`,
       BRANCH_CURRENT,
-    );
+    ];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -377,7 +382,7 @@ describe('git-branch-is', () => {
   // Unlike an commands with expression arguments (e.g. find, test), follow
   // the convention that repeated flag arguments are ignored.
   it('does not double-invert', (done) => {
-    const args = ARGS.concat('-I', '-I', OTHER_BRANCH);
+    const args = [...ARGS, '-I', '-I', OTHER_BRANCH];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -388,7 +393,7 @@ describe('git-branch-is', () => {
   });
 
   it('support --not as alias for -I', (done) => {
-    const args = ARGS.concat('--not', OTHER_BRANCH);
+    const args = [...ARGS, '--not', OTHER_BRANCH];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -400,7 +405,7 @@ describe('git-branch-is', () => {
 
   // Careful that alias isn't handled differently
   it('does not double-invert with alias', (done) => {
-    const args = ARGS.concat('-I', '--not', OTHER_BRANCH);
+    const args = [...ARGS, '-I', '--not', OTHER_BRANCH];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
@@ -411,7 +416,7 @@ describe('git-branch-is', () => {
   });
 
   it('returns a Promise with the result', () => {
-    const promise = gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
+    const promise = gitBranchIsCmd([...ARGS, BRANCH_CURRENT]);
     assert(promise instanceof global.Promise);
     return promise.then((result) => {
       assert.strictEqual(result.code, 0);
@@ -421,11 +426,9 @@ describe('git-branch-is', () => {
   });
 
   it('rejects the Promise with an Error', () => {
-    const promise = gitBranchIsCmd(ARGS.concat(
-      '-C',
-      OTHER_BRANCH,
-      BRANCH_CURRENT,
-    ));
+    const promise = gitBranchIsCmd(
+      [...ARGS, '-C', OTHER_BRANCH, BRANCH_CURRENT],
+    );
     assert(promise instanceof global.Promise);
     return promise.then(
       (result) => { throw new Error('expecting Error'); },
@@ -456,9 +459,7 @@ describe('git-branch-is', () => {
 
     it('throws without a callback', () => {
       assert.throws(
-        () => {
-          gitBranchIsCmd(ARGS.concat(BRANCH_CURRENT));
-        },
+        () => gitBranchIsCmd([...ARGS, BRANCH_CURRENT]),
         (err) => err instanceof TypeError
                 && /\bcallback\b/.test(err.message),
       );
