@@ -40,7 +40,7 @@
     "lint-js": "eslint --report-unused-disable-directives . && echo ESLint passed.",
     "postpublish": "git -C doc push && git push --follow-tags origin master gh-pages && echo Remember to update GitHub Releases from CHANGELOG.md",
     "postversion": "rimraf doc && git clone -b gh-pages -l -q . doc && npm run doc && git -C doc add . && git -C doc commit -n -m \"Docs for v$npm_package_version\"",
-    "preversion": "npm run test-cov && nyc check-coverage --statements 95 && depcheck --ignore-dirs doc && david && git-branch-is master && travis-status -b master -c -w -x && appveyor-status -b master -c -w -p kevinoid/node-project-template",
+    "preversion": "npm run test-cov && nyc check-coverage --statements 95 && depcheck --ignore-dirs doc && david && git-branch-is master && appveyor-status -b master -c -w -p kevinoid/node-project-template",
     "start": "supervisor --quiet --no-restart-on exit --extensions js,json --ignore test --poll-interval 2000 server.js",
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
@@ -49,7 +49,7 @@
     "test-unit-cov": "nyc --reporter=lcov --reporter=text node --throw-deprecation --unhandled-rejections=strict node_modules/mocha/bin/mocha --recursive test",
     "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
     "version": "npm run changelog && echo && echo === Please edit CHANGELOG.md as desired, then exit === && echo && $npm_config_shell && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
-    "version-deps": "npm install conventional-changelog-cli david depcheck git-branch-is travis-status"
+    "version-deps": "npm install conventional-changelog-cli david depcheck git-branch-is"
   },
   "dependencies": {
     "yargs": "^16.0.3"
