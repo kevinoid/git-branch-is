@@ -52,14 +52,14 @@
     "posttest-unit": "rimraf test-repos",
     "test-unit-cov": "nyc --reporter=lcov --reporter=text npm run test-unit",
     "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
-    "version": "npm run changelog && echo && echo === Please edit CHANGELOG.md as desired, then exit === && echo && $npm_config_shell && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
+    "version": "npm run changelog && echo && echo === Please edit CHANGELOG.md as desired, then exit === && echo && \"${npm_config_shell:-${SHELL:-bash}}\" && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
     "version-deps": "npm install conventional-changelog-cli david depcheck git-branch-is hub-ci-status"
   },
   "dependencies": {
     "commander": "^7.0.0"
   },
   "devDependencies": {
-    "@kevinoid/eslint-config": "^14.0.0",
+    "@kevinoid/eslint-config": "^15.0.0",
     "codecov": "^3.0.0",
     "coveralls": "^3.0.0",
     "escape-string-regexp": "^4.0.0",
@@ -69,7 +69,7 @@
     "eslint-plugin-jsdoc": "^31.0.7",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-unicorn": "^27.0.0",
+    "eslint-plugin-unicorn": "^28.0.0",
     "jsdoc": "^3.6.0",
     "mocha": "^8.0.1",
     "nodecat": "^2.0.0",
