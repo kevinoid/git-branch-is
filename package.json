@@ -48,7 +48,7 @@
     "//": "Note: nyc incompatible with --parallel.  See https://github.com/istanbuljs/nyc/issues/1328 and https://github.com/mochajs/mocha/issues/4372",
     "test-unit-cov": "nyc --reporter=lcov --reporter=text node --throw-deprecation --unhandled-rejections=strict node_modules/mocha/bin/mocha --recursive test",
     "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
-    "version": "npm run changelog && echo && echo === Please edit CHANGELOG.md as desired, then exit === && echo && $npm_config_shell && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
+    "version": "npm run changelog && echo && echo === Please edit CHANGELOG.md as desired, then exit === && echo && \"${npm_config_shell-:${SHELL-:bash}}\" && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
     "version-deps": "npm install conventional-changelog-cli david depcheck git-branch-is hub-ci-status"
   },
   "dependencies": {
