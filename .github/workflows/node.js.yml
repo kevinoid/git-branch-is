@@ -34,7 +34,7 @@ jobs:
     - name: Display Node.js version
       run: node --version
     - name: Install dependencies
-      run: npm install
+      run: npm install --strict-peer-deps
     - name: Lint
       run: npm run lint
     - name: Run tests
@@ -86,7 +86,7 @@ jobs:
     - name: Display Node.js version
       run: node --version
     - name: Install dependencies
-      run: npm install
+      run: npm install --strict-peer-deps
     - name: Run tests
       run: npm run test-unit-cov
     # Note: Not uploading to Codecov, due to poor support for matrix builds
