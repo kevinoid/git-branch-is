@@ -72,6 +72,7 @@ function modulenameCmd(args, options, callback) {
     .parserConfiguration({
       'parse-numbers': false,
       'parse-positional-numbers': false,
+      'dot-notation': false,
       'duplicate-arguments-array': false,
       'flatten-duplicate-arrays': false,
       'greedy-arrays': false,
