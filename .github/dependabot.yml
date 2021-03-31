@@ -1,10 +1,12 @@
-# Dependabot Configuration <https://dependabot.com/docs/config-file/>
-version: 1
-update_configs:
-- package_manager: "javascript"
+# Dependabot Configuration
+# https://docs.github.com/code-security/supply-chain-security/configuration-options-for-dependency-updates
+version: 2
+updates:
+- package-ecosystem: "npm"
   directory: "/"
-  update_schedule: "live"
-  ignored_updates:
+  schedule:
+    interval: "daily"
+  ignore:
   # eslint packages must be updated together due to peerDependencies.
   # Ignore all but @kevinoid/eslint-config, which declares peerDependencies.
   #
@@ -12,5 +14,4 @@ update_configs:
   # If using package-lock.json, want minor/patch.
   # Can't currently configure update_type for ignored_updates.
   # https://github.com/dependabot/feedback/issues/340#issuecomment-586450312
-  - match:
-      dependency_name: "eslint*"
+  - dependency-name: "eslint*"
