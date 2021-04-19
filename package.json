@@ -45,8 +45,7 @@
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
     "test-unit": "node --throw-deprecation --unhandled-rejections=strict node_modules/mocha/bin/mocha --parallel --recursive test",
-    "//": "Note: nyc incompatible with --parallel.  See https://github.com/istanbuljs/nyc/issues/1328 and https://github.com/mochajs/mocha/issues/4372",
-    "test-unit-cov": "nyc --reporter=lcov --reporter=text node --throw-deprecation --unhandled-rejections=strict node_modules/mocha/bin/mocha --recursive test",
+    "test-unit-cov": "nyc --reporter=lcov --reporter=text npm run test-unit",
     "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
     "version": "npm run changelog && echo && echo === Please edit CHANGELOG.md as desired, then exit === && echo && \"${npm_config_shell:-${SHELL:-bash}}\" && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
     "version-deps": "npm install conventional-changelog-cli david depcheck git-branch-is hub-ci-status"
@@ -66,7 +65,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-unicorn": "^29.0.0",
     "jsdoc": "^3.6.0",
-    "mocha": "^8.0.1",
+    "mocha": "^8.3.0",
     "nodecat": "^2.0.0",
     "nyc": "^15.0.0",
     "rimraf": "^3.0.0"
