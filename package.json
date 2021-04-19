@@ -90,10 +90,5 @@
   "mocha": {
     "checkLeaks": true,
     "exit": false
-  },
-  "nyc": {
-    "exclude": [
-      "test"
-    ]
   }
 }
