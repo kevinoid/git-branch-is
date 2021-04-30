@@ -9,7 +9,7 @@ const assert = require('node:assert');
 const { execFile } = require('node:child_process');
 const path = require('node:path');
 
-const escapeStringRegexp = require('escape-string-regexp');
+const { default: escapeStringRegexp } = require('escape-string-regexp');
 
 const gitBranchIsCmd = require('../bin/git-branch-is.js');
 const assertMatch = require('../test-lib/assert-match.js');
