@@ -90,5 +90,10 @@
   "mocha": {
     "checkLeaks": true,
     "exit": false
+  },
+  "c8": {
+    "exclude": [
+      "test"
+    ]
   }
 }
