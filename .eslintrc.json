@@ -11,7 +11,10 @@
         "test-lib/**",
         "test/**"
       ]
-    }]
+    }],
+
+    // Allow CommonJS modules
+    "unicorn/prefer-module": "off"
   },
 
   "overrides": [
