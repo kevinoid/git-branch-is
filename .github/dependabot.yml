@@ -1,0 +1,28 @@
+# Dependabot Configuration
+# https://docs.github.com/code-security/supply-chain-security/configuration-options-for-dependency-updates
+#
+# FIXME: v2 doesn't support auto-merge.  See:
+# https://github.com/dependabot/dependabot-core/issues/1823#issuecomment-641594279
+# https://github.com/dependabot/dependabot-core/issues/1973#issuecomment-640918321
+# https://github.com/dependabot/dependabot-core/issues/2268
+# Consider bot:
+# https://kodiakhq.com/docs/prior-art-and-alternatives
+# Consider GH action:
+# https://github.com/dependabot/dependabot-core/issues/2268#issuecomment-654608325
+# Must use on: workflow_run or on: pull_request_target to work around
+# https://github.com/dependabot/dependabot-core/issues/2268#issuecomment-794745837
+version: 2
+updates:
+- package-ecosystem: "npm"
+  directory: "/"
+  schedule:
+    interval: "daily"
+  ignore:
+  # eslint packages must be updated together due to peerDependencies.
+  # Ignore all but @kevinoid/eslint-config, which declares peerDependencies.
+  #
+  # FIXME: Want to ignore updates outside of peerDependencies (usually major).
+  # If using package-lock.json, want minor/patch.
+  # Can't currently configure update_type for ignored_updates.
+  # https://github.com/dependabot/feedback/issues/340#issuecomment-586450312
+  - dependency-name: "eslint*"

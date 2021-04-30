@@ -26,7 +26,8 @@
   ],
   "main": "index.js",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./package.json": "./package.json"
   },
   "bin": {
     "git-branch-is": "bin/git-branch-is.js"
@@ -41,16 +42,15 @@
     "lint": "npm run lint-js && npm run lint-doc",
     "lint-doc": "jsdoc -t templates/silent -c jsdoc-lint.conf.json . && echo JSDoc passed.",
     "lint-js": "eslint --report-unused-disable-directives . && echo ESLint passed.",
-    "postpublish": "git -C doc push && git push --follow-tags origin master gh-pages && echo Remember to update GitHub Releases from CHANGELOG.md",
+    "postpublish": "git -C doc push && git push --follow-tags origin main gh-pages && echo Remember to update GitHub Releases from CHANGELOG.md",
     "postversion": "rimraf doc && git clone -b gh-pages -l -q . doc && npm run doc && git -C doc add . && git -C doc commit -n -m \"Docs for v$npm_package_version\"",
-    "preversion": "npm run test-cov && nyc check-coverage --statements 95 && depcheck --ignore-dirs doc && david && node ./bin/git-branch-is.js master && hub-ci-status -vv --wait",
+    "preversion": "npm run test-cov && c8 check-coverage --statements 95 && depcheck --ignore-dirs doc && david && node ./bin/git-branch-is.js main && hub-ci-status -vv --wait",
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
     "pretest-unit": "node test-bin/set-up-test-repos.js",
-    "//": "Note: nyc incompatible with --parallel.  See https://github.com/istanbuljs/nyc/issues/1328 and https://github.com/mochajs/mocha/issues/4372",
-    "test-unit": "node --throw-deprecation --unhandled-rejections=strict node_modules/mocha/bin/mocha --require ./test-lib/root-hooks.js --recursive test",
+    "test-unit": "node --throw-deprecation --unhandled-rejections=strict node_modules/mocha/bin/mocha --require ./test-lib/root-hooks.js --parallel --recursive test",
     "posttest-unit": "rimraf test-repos",
-    "test-unit-cov": "nyc --reporter=lcov --reporter=text npm run test-unit",
+    "test-unit-cov": "c8 --reporter=lcov --reporter=text npm run test-unit",
     "upload-cov": "codecov < ./coverage/lcov.info && coveralls < ./coverage/lcov.info",
     "version": "npm run changelog && echo && echo === Please edit CHANGELOG.md as desired, then exit === && echo && \"${npm_config_shell:-${SHELL:-bash}}\" && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
     "version-deps": "npm install conventional-changelog-cli david depcheck git-branch-is hub-ci-status"
@@ -59,21 +59,21 @@
     "commander": "^7.0.0"
   },
   "devDependencies": {
-    "@kevinoid/eslint-config": "^15.0.0",
+    "@kevinoid/eslint-config": "^16.0.0",
+    "c8": "^7.0.0",
     "codecov": "^3.0.0",
     "coveralls": "^3.0.0",
     "escape-string-regexp": "^4.0.0",
     "eslint": "^7.3.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jsdoc": "^31.0.7",
+    "eslint-plugin-jsdoc": "^32.0.0",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-unicorn": "^28.0.0",
+    "eslint-plugin-unicorn": "^29.0.0",
     "jsdoc": "^3.6.0",
-    "mocha": "^8.0.1",
+    "mocha": "^8.3.0",
     "nodecat": "^2.0.0",
-    "nyc": "^15.0.0",
     "rimraf": "^3.0.0"
   },
   "engines": {
@@ -96,7 +96,7 @@
     "checkLeaks": true,
     "exit": false
   },
-  "nyc": {
+  "c8": {
     "exclude": [
       "test",
       "test-bin",
