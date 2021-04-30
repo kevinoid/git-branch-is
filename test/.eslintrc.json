@@ -7,6 +7,10 @@
   },
 
   "rules": {
+    // Allow, but don't require, braces around function body
+    // Braces around body of it() function is more consistent/readable
+    "arrow-body-style": "off",
+
     // Allow null use in tests
     "unicorn/no-null": "off"
   }
