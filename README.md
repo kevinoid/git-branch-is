@@ -16,7 +16,7 @@ run the following command:
 
 ```
 $ git-branch-is release
-Error: Current branch is "master", not "release".
+Error: Current branch is "main", not "release".
 $ echo $?
 1
 ```
@@ -75,7 +75,7 @@ expression:
 
 ```
 $ git-branch-is -r "^release/"
-Error: Current branch "master" does not match "^release/".
+Error: Current branch "main" does not match "^release/".
 $ echo $?
 1
 ```
@@ -90,19 +90,19 @@ using a regular expression:
 
 ```
 $ git-branch-is -i -r "^release/"
-Error: Current branch "master" does not match "^release/".
+Error: Current branch "main" does not match "^release/".
 $ echo $?
 1
 ```
 
 ### Inverted/Negated Matching
 
-To check that the current branch is not `master`, use `-I`, `--invert-match`,
+To check that the current branch is not `main`, use `-I`, `--invert-match`,
 or `--not` (all functionally equivalent, use whichever you prefer):
 
 ```
-$ git-branch-is --not master
-Error: Current branch is "master".
+$ git-branch-is --not main
+Error: Current branch is "main".
 $ echo $?
 1
 ```
@@ -113,9 +113,9 @@ To use the API with a callback function:
 
 ```js
 var gitBranchIs = require('git-branch-is');
-gitBranchIs('master', function(err, result) {
+gitBranchIs('main', function(err, result) {
   if (err) console.error(err);
-  else console.log(result ? 'On master' : 'Not on master');
+  else console.log(result ? 'On main' : 'Not on main');
 });
 ```
 
@@ -124,8 +124,8 @@ Alternatively, if a callback is not provided, `gitBranchIs` will return a
 
 ```js
 var gitBranchIs = require('git-branch-is');
-gitBranchIs('master').then(
-  function(result) { console.log(result ? 'On master' : 'Not on master'); },
+gitBranchIs('main').then(
+  function(result) { console.log(result ? 'On main' : 'Not on main'); },
   function(err) { console.error(err); }
 );
 ```
@@ -135,8 +135,8 @@ perform arbitrary checking against the branch name:
 
 ```js
 var gitBranchIs = require('git-branch-is');
-gitBranchIs(function(branchName) { /^master$/.test(branchName); }).then(
-  function(result) { console.log(result ? 'On master' : 'Not on master'); },
+gitBranchIs(function(branchName) { /^main$/.test(branchName); }).then(
+  function(result) { console.log(result ? 'On main' : 'Not on main'); },
   function(err) { console.error(err); }
 );
 ```
