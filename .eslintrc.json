@@ -19,12 +19,12 @@
 
   "overrides": [
     {
-      // Executable scripts should have a shebang
       "files": [
         "bin/*.js",
         "test-bin/*"
       ],
       "rules": {
+        // Executable scripts should have a shebang
         "node/shebang": "off"
       }
     }
