@@ -19,6 +19,7 @@ on:   # yamllint disable-line rule:truthy
   # TODO: Run when dependencies are updated.  (Like Dependabot, but on
   # in-range updates and without sending a PR.)
   - cron: '40 8 * * *'
+  workflow_dispatch: {}
 
 jobs:
   test-primary:
