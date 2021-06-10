@@ -5,7 +5,7 @@
 
 'use strict';
 
-const { TEST_REPO_BRANCH_PATH } = require('./constants');
+const { TEST_REPO_BRANCH_PATH } = require('./constants.js');
 
 // Working directory before changing to TEST_REPO_PATH
 let origCWD;

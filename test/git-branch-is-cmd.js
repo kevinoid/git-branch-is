@@ -10,9 +10,9 @@ const { execFile } = require('child_process');
 const escapeStringRegexp = require('escape-string-regexp');
 const path = require('path');
 
-const assertMatch = require('../test-lib/assert-match');
-const constants = require('../test-lib/constants');
-const gitBranchIsCmd = require('../bin/git-branch-is');
+const assertMatch = require('../test-lib/assert-match.js');
+const constants = require('../test-lib/constants.js');
+const gitBranchIsCmd = require('../bin/git-branch-is.js');
 
 /** Gets a RegExp which matches a given branch name in git-branch-is output.
  *

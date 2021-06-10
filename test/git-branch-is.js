@@ -10,8 +10,8 @@ const path = require('path');
 
 const gitBranchIs = require('..');
 
-const assertMatch = require('../test-lib/assert-match');
-const constants = require('../test-lib/constants');
+const assertMatch = require('../test-lib/assert-match.js');
+const constants = require('../test-lib/constants.js');
 
 // Local copy of shared constants
 const {
