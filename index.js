@@ -64,7 +64,9 @@ function gitBranchIs(branchNameOrTest, options, callback) {
   }
 
   if (options !== undefined && typeof options !== 'object') {
-    process.nextTick(callback, new TypeError('options must be an object'));
+    queueMicrotask(() => {
+      callback(new TypeError('options must be an object'));
+    });
     return undefined;
   }
 
@@ -119,7 +121,9 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
   }
 
   if (options && typeof options !== 'object') {
-    process.nextTick(callback, new TypeError('options must be an Object'));
+    queueMicrotask(() => {
+      callback(new TypeError('options must be an Object'));
+    });
     return undefined;
   }
 
@@ -161,7 +165,9 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
       },
     );
   } catch (errExec) {
-    process.nextTick(callback, errExec);
+    queueMicrotask(() => {
+      callback(errExec);
+    });
     return undefined;
   }
 
