@@ -25,12 +25,13 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        # '*' is "latest":
+        # '*' is "latest" (without check-latest, it is "latest in local cache")
         # https://github.com/actions/setup-node/issues/61#issuecomment-577548687
         # https://github.com/actions/setup-node/issues/164#issuecomment-648999618
         # https://github.com/actions/setup-node/pull/104
         node-version: '*'
         architecture: x64
+        check-latest: true
     - name: Display Node.js version
       run: node --version
     - name: Install dependencies
@@ -83,6 +84,7 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
         architecture: ${{ matrix.arch }}
+        check-latest: ${{ matrix.node == '*' }}
     - name: Display Node.js version
       run: node --version
     - name: Install dependencies
