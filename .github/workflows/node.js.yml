@@ -41,7 +41,7 @@ jobs:
     - name: Run tests
       run: npm run test-unit-cov
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v2
     - name: Upload coverage to Coveralls
       # Note: @master is currently the only version
       # https://github.com/coverallsapp/github-action/issues/11
