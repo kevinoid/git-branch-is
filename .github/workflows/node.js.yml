@@ -46,6 +46,10 @@ jobs:
       # Note: @master is currently the only version
       # https://github.com/coverallsapp/github-action/issues/11
       uses: coverallsapp/github-action@master
+      # Ignore intermittent server errors (which are out of our control).
+      # https://github.com/coverallsapp/github-action/issues/9
+      # https://github.com/coverallsapp/github-action/issues/79
+      continue-on-error: true
       with:
         flag-name: 'ubuntu-latest_x64_*'
         github-token: ${{ secrets.GITHUB_TOKEN }}
