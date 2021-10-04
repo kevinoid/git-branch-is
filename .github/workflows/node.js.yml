@@ -53,6 +53,7 @@ jobs:
       # Ignore intermittent server errors (which are out of our control).
       # https://github.com/coverallsapp/github-action/issues/9
       # https://github.com/coverallsapp/github-action/issues/79
+      # https://github.com/coverallsapp/github-action/issues/93
       continue-on-error: true
       with:
         flag-name: 'ubuntu-latest_x64_*'
