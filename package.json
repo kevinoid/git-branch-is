@@ -59,7 +59,7 @@
     "commander": "^8.0.0"
   },
   "devDependencies": {
-    "@kevinoid/eslint-config": "^22.0.0",
+    "@kevinoid/eslint-config": "^23.0.0",
     "c8": "^7.0.0",
     "codecov": "^3.0.0",
     "coveralls": "^3.0.0",
@@ -70,7 +70,7 @@
     "eslint-plugin-jsdoc": "^36.0.2",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-unicorn": "^35.0.0",
+    "eslint-plugin-unicorn": "^36.0.0",
     "jsdoc": "^3.6.0",
     "mocha": "^9.0.0",
     "nodecat": "^2.0.0",
