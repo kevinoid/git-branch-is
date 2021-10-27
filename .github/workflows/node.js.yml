@@ -39,7 +39,9 @@ jobs:
     - name: Display Node.js version
       run: node --version
     - name: Install dependencies
-      run: npm install --strict-peer-deps
+      # Note: Not using --strict-peer-deps until npm@8.1.1 ships with Node.js
+      # due to https://github.com/npm/cli/issues/3868
+      run: npm install
     - name: Lint
       run: npm run lint
     - name: Run tests
@@ -97,7 +99,9 @@ jobs:
     - name: Display Node.js version
       run: node --version
     - name: Install dependencies
-      run: npm install --strict-peer-deps
+      # Note: Not using --strict-peer-deps until npm@8.1.1 ships with Node.js
+      # due to https://github.com/npm/cli/issues/3868
+      run: npm install
     - name: Run tests
       run: npm run test-unit-cov
     # Note: Not uploading to Codecov, due to poor support for matrix builds
