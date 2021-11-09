@@ -33,7 +33,15 @@ jobs:
         # https://github.com/actions/setup-node/issues/61#issuecomment-577548687
         # https://github.com/actions/setup-node/issues/164#issuecomment-648999618
         # https://github.com/actions/setup-node/pull/104
-        node-version: '*'
+        #
+        # If node-version matches an LTS version from
+        # https://github.com/actions/node-versions/releases it will use that.
+        # If not, it will try matching https://nodejs.org/dist/index.json
+        # Therefore, currently * would match 16, so 17 must be explicit.
+        #
+        # TODO: Use 'latest' for most recent (LTS or not) when implemented?
+        # https://github.com/actions/setup-node/issues/257
+        node-version: '17'
         architecture: x64
         check-latest: true
     - name: Display Node.js version
