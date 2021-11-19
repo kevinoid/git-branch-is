@@ -41,15 +41,16 @@ jobs:
         #
         # TODO: Use 'latest' for most recent (LTS or not) when implemented?
         # https://github.com/actions/setup-node/issues/257
-        node-version: '17'
+        #
+        # Require 17.1 or later for npm@>=8.1.1 which fixes --strict-peer-deps
+        # https://github.com/npm/cli/issues/3868
+        node-version: '>=17.1'
         architecture: x64
         check-latest: true
     - name: Display Node.js version
       run: node --version
     - name: Install dependencies
-      # Note: Not using --strict-peer-deps until npm@8.1.1 ships with Node.js
-      # due to https://github.com/npm/cli/issues/3868
-      run: npm install
+      run: npm install --strict-peer-deps
     - name: Lint
       run: npm run lint
     - name: Run tests
@@ -90,12 +91,12 @@ jobs:
         - windows-latest
         node:
         - '12.0'
-        - '*'
+        - '>=17.1'
         exclude:
         # Exclude os/version already run in test-primary
         - arch: x64
           os: ubuntu-latest
-          node: '*'
+          node: '>=17.1'
     steps:
     - uses: actions/checkout@v2
     - name: Set up Node.js ${{ matrix.node }}
@@ -107,9 +108,7 @@ jobs:
     - name: Display Node.js version
       run: node --version
     - name: Install dependencies
-      # Note: Not using --strict-peer-deps until npm@8.1.1 ships with Node.js
-      # due to https://github.com/npm/cli/issues/3868
-      run: npm install
+      run: npm install --strict-peer-deps
     - name: Run tests
       run: npm run test-unit-cov
     # Note: Not uploading to Codecov, due to poor support for matrix builds
