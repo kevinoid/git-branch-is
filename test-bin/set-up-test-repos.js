@@ -34,16 +34,27 @@ function initRepo(repoPath) {
     // The user name and email must be configured for the later git commands
     // to work.  On Travis CI (and probably others) there is no global config
     .then(() => git(
-      '-C', repoPath,
-      'config', 'user.name', 'Test User',
+      '-C',
+      repoPath,
+      'config',
+      'user.name',
+      'Test User',
     ))
     .then(() => git(
-      '-C', repoPath,
-      'config', 'user.email', 'test@example.com',
+      '-C',
+      repoPath,
+      'config',
+      'user.email',
+      'test@example.com',
     ))
     .then(() => git(
-      '-C', repoPath,
-      'commit', '-q', '-m', 'Initial Commit', '--allow-empty',
+      '-C',
+      repoPath,
+      'commit',
+      '-q',
+      '-m',
+      'Initial Commit',
+      '--allow-empty',
     ));
 }
 

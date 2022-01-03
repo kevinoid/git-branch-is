@@ -57,8 +57,10 @@ function gitBranchIsCmd(args, callback) {
     .arguments('<branch_name>')
     .option('-C <path>', 'run as if started in <path>')
     .option(
-      '--git-arg <arg>', 'additional argument to git (can be repeated)',
-      collect, [],
+      '--git-arg <arg>',
+      'additional argument to git (can be repeated)',
+      collect,
+      [],
     )
     .option('--git-dir <dir>', 'set the path to the repository')
     .option('--git-path <path>', 'set the path to the git binary')
