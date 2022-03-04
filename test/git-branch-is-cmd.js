@@ -14,6 +14,8 @@ const assertMatch = require('../test-lib/assert-match.js');
 const constants = require('../test-lib/constants.js');
 const gitBranchIsCmd = require('../bin/git-branch-is.js');
 
+const isWindows = /^win/i.test(process.platform);
+
 /** Gets a RegExp which matches a given branch name in git-branch-is output.
  *
  * @private
@@ -228,7 +230,13 @@ function describeWithBranch(branchName, repoDir) {
   });
 }
 
-describe('git-branch-is', () => {
+describe('git-branch-is', function() {
+  // Process creation (and git specifically) can be slow on Windows.
+  // Particularly in Windows CI environments.  Increase timeout.
+  if (isWindows) {
+    this.timeout(4000);
+  }
+
   describe('when on branch', () => {
     describeWithBranch(BRANCH_CURRENT, TEST_REPO_BRANCH_PATH);
   });
