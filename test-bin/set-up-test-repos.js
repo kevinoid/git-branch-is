@@ -8,16 +8,12 @@
 
 'use strict';
 
-const { promises: { mkdir: mkdirP } } = require('fs');
+// TODO [engine:node@>=14.14]: Use rm instead of rmdir.
+const { mkdir, rmdir } = require('fs/promises');
 const path = require('path');
-// TODO [engine:node@>=12.10]: Use fs.rmdir({recursive: true})
-const rimraf = require('rimraf');
-const { promisify } = require('util');
 
 const git = require('../test-lib/git.js');
 const constants = require('../test-lib/constants.js');
-
-const rimrafP = promisify(rimraf);
 
 // Local copy of shared constants
 const {
@@ -29,7 +25,7 @@ const {
 } = constants;
 
 function initRepo(repoPath) {
-  return rimrafP(repoPath)
+  return rmdir(repoPath, { recursive: true })
     .then(() => git('init', '-q', repoPath))
     // The user name and email must be configured for the later git commands
     // to work.  On Travis CI (and probably others) there is no global config
@@ -62,13 +58,13 @@ function setUpBranchRepo(repoPath) {
   return initRepo(repoPath)
     .then(() => git('-C', repoPath, 'branch', '-m', BRANCH_CURRENT))
     .then(() => git('-C', repoPath, 'branch', BRANCH_SAME_COMMIT))
-    .then(() => mkdirP(path.join(repoPath, SUBDIR_NAME)));
+    .then(() => mkdir(path.join(repoPath, SUBDIR_NAME)));
 }
 
 function setUpDetachedRepo(repoPath) {
   return initRepo(repoPath)
     .then(() => git('-C', repoPath, 'checkout', '--detach'))
-    .then(() => mkdirP(path.join(repoPath, SUBDIR_NAME)));
+    .then(() => mkdir(path.join(repoPath, SUBDIR_NAME)));
 }
 
 module.exports =
