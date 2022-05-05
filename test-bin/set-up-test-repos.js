@@ -8,12 +8,16 @@
 
 'use strict';
 
-// TODO [engine:node@>=14.14]: Use rm instead of rmdir.
-const { mkdir, rmdir } = require('fs/promises');
+const { mkdir } = require('fs/promises');
 const path = require('path');
+// TODO [engine:node@>=14.14]: Use fs.rm({force: true, recursive: true})
+const rimraf = require('rimraf');
+const { promisify } = require('util');
 
 const git = require('../test-lib/git.js');
 const constants = require('../test-lib/constants.js');
+
+const rimrafP = promisify(rimraf);
 
 // Local copy of shared constants
 const {
@@ -25,7 +29,7 @@ const {
 } = constants;
 
 function initRepo(repoPath) {
-  return rmdir(repoPath, { recursive: true })
+  return rimrafP(repoPath)
     .then(() => git('init', '-q', repoPath))
     // The user name and email must be configured for the later git commands
     // to work.  On Travis CI (and probably others) there is no global config
