@@ -48,9 +48,9 @@ function describeWithBranch(branchName, repoDir) {
   it('exit code 0 silently for same branch name', (done) => {
     gitBranchIsCmd([...repoArgs, branchName], (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -58,10 +58,10 @@ function describeWithBranch(branchName, repoDir) {
   it('exit code 1 with warning for different branch name', (done) => {
     gitBranchIsCmd([...repoArgs, OTHER_BRANCH], (err, result) => {
       assert.ifError(err);
-      assert.strictEqual(result.code, 1);
-      assert(!result.stdout);
       assertMatch(result.stderr, OTHER_BRANCH_RE);
       assertMatch(result.stderr, branchRE);
+      assert.strictEqual(result.stdout, null);
+      assert.strictEqual(result.code, 1);
       done();
     });
   });
@@ -71,11 +71,11 @@ function describeWithBranch(branchName, repoDir) {
       const branchUpper = branchName.toUpperCase();
       gitBranchIsCmd([...repoArgs, branchUpper], (err, result) => {
         assert.ifError(err);
-        assert.strictEqual(result.code, 1);
-        assert(!result.stdout);
         const branchUpperRE = new RegExp(`\\b${branchUpper}\\b`);
         assertMatch(result.stderr, branchUpperRE);
         assertMatch(result.stderr, branchRE);
+        assert.strictEqual(result.stdout, null);
+        assert.strictEqual(result.code, 1);
         done();
       });
     });
@@ -85,9 +85,9 @@ function describeWithBranch(branchName, repoDir) {
     const args = [...repoArgs, '-i', branchName.toUpperCase()];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -97,8 +97,8 @@ function describeWithBranch(branchName, repoDir) {
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
+      assert.strictEqual(result.stdout, null);
+      assert.strictEqual(result.stderr, undefined);
       done();
     });
   });
@@ -107,9 +107,9 @@ function describeWithBranch(branchName, repoDir) {
     const args = [...repoArgs, '-I', branchName];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
-      assert.strictEqual(result.code, 1);
-      assert(!result.stdout);
       assertMatch(result.stderr, branchRE);
+      assert.strictEqual(result.stdout, null);
+      assert.strictEqual(result.code, 1);
       done();
     });
   });
@@ -118,9 +118,9 @@ function describeWithBranch(branchName, repoDir) {
     const args = [...repoArgs, '-r', `^${branchName}$`];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -129,9 +129,9 @@ function describeWithBranch(branchName, repoDir) {
     const args = [...repoArgs, '-r', branchName.slice(1, -1)];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -140,9 +140,9 @@ function describeWithBranch(branchName, repoDir) {
     const args = [...repoArgs, '-r', ''];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -152,9 +152,9 @@ function describeWithBranch(branchName, repoDir) {
       [...repoArgs, '-i', '-r', `^${branchName.toUpperCase()}$`];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -162,10 +162,10 @@ function describeWithBranch(branchName, repoDir) {
   it('exit 1 with warning for non-match regex branch name', (done) => {
     gitBranchIsCmd([...repoArgs, '-r', OTHER_BRANCH], (err, result) => {
       assert.ifError(err);
-      assert.strictEqual(result.code, 1);
-      assert(!result.stdout);
       assertMatch(result.stderr, OTHER_BRANCH_RE);
       assertMatch(result.stderr, branchRE);
+      assert.strictEqual(result.stdout, null);
+      assert.strictEqual(result.code, 1);
       done();
     });
   });
@@ -175,11 +175,11 @@ function describeWithBranch(branchName, repoDir) {
       const branchUpper = branchName.toUpperCase();
       gitBranchIsCmd([...repoArgs, '-r', branchUpper], (err, result) => {
         assert.ifError(err);
-        assert.strictEqual(result.code, 1);
-        assert(!result.stdout);
         const branchUpperRE = getBranchRE(branchUpper);
         assertMatch(result.stderr, branchUpperRE);
         assertMatch(result.stderr, branchRE);
+        assert.strictEqual(result.stdout, null);
+        assert.strictEqual(result.code, 1);
         done();
       });
     });
@@ -189,9 +189,9 @@ function describeWithBranch(branchName, repoDir) {
     const args = [...repoArgs, '-I', '-r', OTHER_BRANCH];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -200,9 +200,9 @@ function describeWithBranch(branchName, repoDir) {
     const args = [...repoArgs, '-I', '-r', `^${branchName}$`];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
-      assert.strictEqual(result.code, 1);
-      assert(!result.stdout);
       assertMatch(result.stderr, branchRE);
+      assert.strictEqual(result.stdout, null);
+      assert.strictEqual(result.code, 1);
       done();
     });
   });
@@ -211,9 +211,9 @@ function describeWithBranch(branchName, repoDir) {
     const args = [...repoArgs, '-q', OTHER_BRANCH];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 1);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -222,9 +222,9 @@ function describeWithBranch(branchName, repoDir) {
     const args = [...repoArgs, '-v', branchName];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
-      assert.strictEqual(result.code, 0);
+      assert.strictEqual(result.stderr, undefined);
       assertMatch(result.stdout, branchRE);
-      assert(!result.stderr);
+      assert.strictEqual(result.code, 0);
       done();
     });
   });
@@ -248,9 +248,9 @@ describe('git-branch-is', function() {
   it('exit 2 with warning for invalid regex', (done) => {
     gitBranchIsCmd([...ARGS, '-r', 'b[ad'], (err, result) => {
       assert.ifError(err);
-      assert.strictEqual(result.code, 2);
-      assert(!result.stdout);
       assertMatch(result.stderr, /\bb\[ad\b/);
+      assert.strictEqual(result.stdout, undefined);
+      assert.strictEqual(result.code, 2);
       done();
     });
   });
@@ -260,9 +260,9 @@ describe('git-branch-is', function() {
   it('exit 2 with warning for invalid regex with quiet', (done) => {
     gitBranchIsCmd([...ARGS, '-q', '-r', 'b[ad'], (err, result) => {
       assert.ifError(err);
-      assert.strictEqual(result.code, 2);
-      assert(!result.stdout);
       assertMatch(result.stderr, /\bb\[ad\b/);
+      assert.strictEqual(result.stdout, undefined);
+      assert.strictEqual(result.code, 2);
       done();
     });
   });
@@ -287,9 +287,9 @@ describe('git-branch-is', function() {
     ];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -305,9 +305,9 @@ describe('git-branch-is', function() {
     ];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -325,9 +325,9 @@ describe('git-branch-is', function() {
     ];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -342,9 +342,9 @@ describe('git-branch-is', function() {
     ];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -362,9 +362,9 @@ describe('git-branch-is', function() {
     ];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -380,9 +380,9 @@ describe('git-branch-is', function() {
     ];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -393,9 +393,9 @@ describe('git-branch-is', function() {
     const args = [...ARGS, '-I', '-I', OTHER_BRANCH];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -404,9 +404,9 @@ describe('git-branch-is', function() {
     const args = [...ARGS, '--not', OTHER_BRANCH];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -416,9 +416,9 @@ describe('git-branch-is', function() {
     const args = [...ARGS, '-I', '--not', OTHER_BRANCH];
     gitBranchIsCmd(args, (err, result) => {
       assert.ifError(err);
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
       done();
     });
   });
@@ -427,9 +427,9 @@ describe('git-branch-is', function() {
     const promise = gitBranchIsCmd([...ARGS, BRANCH_CURRENT]);
     assert(promise instanceof global.Promise);
     return promise.then((result) => {
+      assert.strictEqual(result.stderr, undefined);
+      assert.strictEqual(result.stdout, null);
       assert.strictEqual(result.code, 0);
-      assert(!result.stdout);
-      assert(!result.stderr);
     });
   });
 
@@ -493,9 +493,9 @@ describe('git-branch-is', function() {
       [GIT_BRANCH_IS, OTHER_BRANCH],
       (err, stdout, stderr) => {
         assert(err instanceof Error);
-        assert.strictEqual(err.code, 1);
-        assertMatch(stderr, OTHER_BRANCH_RE);
         assertMatch(stderr, BRANCH_CURRENT_RE);
+        assertMatch(stderr, OTHER_BRANCH_RE);
+        assert.strictEqual(err.code, 1);
         done();
       },
     );
@@ -507,9 +507,9 @@ describe('git-branch-is', function() {
       [GIT_BRANCH_IS, OTHER_BRANCH, 'extra arg'],
       (err, stdout, stderr) => {
         assert(err instanceof Error);
-        assert.strictEqual(err.code, 1);
-        assert.strictEqual(stdout, '');
         assertMatch(stderr, /\bargument/);
+        assert.strictEqual(stdout, '');
+        assert.strictEqual(err.code, 1);
         done();
       },
     );
