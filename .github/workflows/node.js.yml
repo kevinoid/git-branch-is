@@ -28,24 +28,21 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        # '*' is "latest" (without check-latest, it is "latest in local cache")
+        # Note: '*' is "latest LTS version" (without check-latest, it would be
+        # "latest LTS version in local cache") because it first checks
+        # https://github.com/actions/node-versions/releases then falls back to
+        # https://nodejs.org/dist/index.json
+        # For explanation and discussion, see:
+        # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#check-latest-version=
         # https://github.com/actions/setup-node/issues/61#issuecomment-577548687
         # https://github.com/actions/setup-node/issues/164#issuecomment-648999618
         # https://github.com/actions/setup-node/pull/104
         #
-        # If node-version matches an LTS version from
-        # https://github.com/actions/node-versions/releases it will use that.
-        # If not, it will try matching https://nodejs.org/dist/index.json
-        # Therefore, currently * would match 16, so 17 must be explicit.
-        #
-        # TODO: Use 'latest' for most recent (LTS or not) when implemented?
-        # https://github.com/actions/setup-node/issues/257
-        #
-        # Require 17.1 or later for npm@>=8.1.1 which fixes --strict-peer-deps
-        # https://github.com/npm/cli/issues/3868
-        node-version: '>=17.1'
+        # Support for "current"/"latest"/"node" was added in v3.2.0
+        # https://github.com/actions/setup-node/pull/483
+        node-version: latest
         architecture: x64
         check-latest: true
     - name: Display Node.js version
@@ -92,12 +89,12 @@ jobs:
         - windows-latest
         node:
         - '14.13.1'
-        - '>=17.1'
+        - latest
         exclude:
         # Exclude os/version already run in test-primary
         - arch: x64
           os: ubuntu-latest
-          node: '>=17.1'
+          node: latest
     steps:
     - uses: actions/checkout@v2
     - name: Set up Node.js ${{ matrix.node }}
