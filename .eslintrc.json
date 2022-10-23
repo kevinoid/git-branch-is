@@ -16,6 +16,11 @@
     // Allow CommonJS modules
     "unicorn/prefer-module": "off",
 
+    // Don't prefer node: protocol when importing builtin modules
+    // Since it is not supported by Node.js < 14.18
+    // TODO[engine:node@>=14.18]: remove this to enable prefer-node-protocol
+    "unicorn/prefer-node-protocol": "off",
+
     // Don't prefer top-level await
     // Since top-level await is only supported in ECMAScript Modules (ESM)
     "unicorn/prefer-top-level-await": "off"
