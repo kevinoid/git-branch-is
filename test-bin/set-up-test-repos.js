@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * Set up git repositories for testing.
  *
