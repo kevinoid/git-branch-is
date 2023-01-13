@@ -3,7 +3,7 @@
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/kevinoid/git-branch-is/node.js.yml?branch=main&style=flat&label=build)](https://github.com/kevinoid/git-branch-is/actions?query=branch%3Amain)
 [![Coverage](https://img.shields.io/codecov/c/github/kevinoid/git-branch-is/main.svg?style=flat)](https://app.codecov.io/gh/kevinoid/git-branch-is/branch/main)
-[![Dependency Status](https://img.shields.io/david/kevinoid/git-branch-is.svg?style=flat)](https://david-dm.org/kevinoid/git-branch-is)
+[![Dependency Status](https://img.shields.io/librariesio/release/npm/git-branch-is.svg?style=flat)](https://libraries.io/npm/git-branch-is)
 [![Supported Node Version](https://img.shields.io/node/v/git-branch-is.svg?style=flat)](https://www.npmjs.com/package/git-branch-is)
 [![Version on NPM](https://img.shields.io/npm/v/git-branch-is.svg?style=flat)](https://www.npmjs.com/package/git-branch-is)
 
