@@ -90,7 +90,7 @@ function gitBranchIsCmd(args, callback) {
   cmdOpts.gitArgs = cmdOpts.gitArg;
 
   // treat --not as an alias for --invert-match
-  cmdOpts.invertMatch = cmdOpts.invertMatch || cmdOpts.not;
+  cmdOpts.invertMatch ||= cmdOpts.not;
 
   const expectedBranch = command.args[0];
 
