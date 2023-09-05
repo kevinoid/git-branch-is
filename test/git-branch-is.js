@@ -8,6 +8,8 @@
 const assert = require('assert');
 const path = require('path');
 
+// https://github.com/import-js/eslint-plugin-import/issues/2844
+// eslint-disable-next-line import/extensions
 const gitBranchIs = require('..');
 
 const assertMatch = require('../test-lib/assert-match.js');
