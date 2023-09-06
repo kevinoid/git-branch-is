@@ -58,7 +58,7 @@
     "commander": "^11.0.0"
   },
   "devDependencies": {
-    "@kevinoid/eslint-config": "^30.0.0",
+    "@kevinoid/eslint-config": "^31.0.0",
     "c8": "^8.0.0",
     "escape-string-regexp": "^4.0.0",
     "eslint": "^8.38.0",
