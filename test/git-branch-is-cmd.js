@@ -5,14 +5,15 @@
 
 'use strict';
 
-const assert = require('assert');
-const { execFile } = require('child_process');
-const escapeStringRegexp = require('escape-string-regexp');
-const path = require('path');
+const assert = require('node:assert');
+const { execFile } = require('node:child_process');
+const path = require('node:path');
 
+const escapeStringRegexp = require('escape-string-regexp');
+
+const gitBranchIsCmd = require('../bin/git-branch-is.js');
 const assertMatch = require('../test-lib/assert-match.js');
 const constants = require('../test-lib/constants.js');
-const gitBranchIsCmd = require('../bin/git-branch-is.js');
 
 const isWindows = /^win/i.test(process.platform);
 

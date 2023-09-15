@@ -7,11 +7,11 @@
 
 'use strict';
 
-const { mkdir, rm } = require('fs/promises');
-const path = require('path');
+const { mkdir, rm } = require('node:fs/promises');
+const path = require('node:path');
 
-const git = require('../test-lib/git.js');
 const constants = require('../test-lib/constants.js');
+const git = require('../test-lib/git.js');
 
 // Local copy of shared constants
 const {

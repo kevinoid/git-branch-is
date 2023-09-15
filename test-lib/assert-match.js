@@ -5,7 +5,7 @@
 
 'use strict';
 
-const assert = require('assert').ok;
+const assert = require('node:assert').ok;
 
 /** Asserts that a value matches a regular expression.
  *
