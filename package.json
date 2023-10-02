@@ -44,7 +44,7 @@
     "lint-js": "eslint --report-unused-disable-directives . && echo ESLint passed.",
     "postpublish": "git -C doc push && git push --follow-tags origin main gh-pages && echo Remember to update GitHub Releases from CHANGELOG.md",
     "postversion": "rimraf doc && git clone -b gh-pages -l -q . doc && npm run doc && git -C doc add . && git -C doc commit -n -m \"Docs for v$npm_package_version\"",
-    "preversion": "npm run test-cov && c8 check-coverage --statements 95 && depcheck --ignore-dirs doc && david && node ./bin/git-branch-is.js main && hub-ci-status -vv --wait",
+    "preversion": "npm run test-cov && c8 check-coverage --statements 95 && depcheck --ignore-dirs doc --ignores=\"eslint-*,rimraf\" && david && node ./bin/git-branch-is.js main && hub-ci-status -vv --wait",
     "test": "npm run lint && npm run test-unit",
     "test-cov": "npm run lint && npm run test-unit-cov",
     "pretest-unit": "node test-bin/set-up-test-repos.js",
