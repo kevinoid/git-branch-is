@@ -86,7 +86,7 @@ jobs:
         - ubuntu-latest
         - windows-latest
         node:
-        - '16'
+        - '18'
         - latest
         exclude:
         # Exclude os/version already run in test-primary
