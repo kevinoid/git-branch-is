@@ -28,7 +28,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         # Note: '*' is "latest LTS version" (without check-latest, it would be
         # "latest LTS version in local cache") because it first checks
@@ -96,7 +96,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up Node.js ${{ matrix.node }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node }}
         architecture: ${{ matrix.arch }}
