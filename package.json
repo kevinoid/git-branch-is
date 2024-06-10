@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@kevinoid/eslint-config": "^32.0.0",
-    "c8": "^9.0.0",
+    "c8": "^10.0.0",
     "escape-string-regexp": "^4.0.0",
     "eslint": "^8.38.0",
     "eslint-config-airbnb-base": "^15.0.0",
