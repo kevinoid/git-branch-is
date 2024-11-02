@@ -224,7 +224,7 @@ describe('gitBranchIs', () => {
 
   it('Promise resolves true for same branch name', () => {
     const promise = gitBranchIs(BRANCH_CURRENT);
-    assert(promise instanceof global.Promise);
+    assert(promise instanceof globalThis.Promise);
     return promise.then((result) => {
       assert.strictEqual(result, true);
     });
@@ -232,7 +232,7 @@ describe('gitBranchIs', () => {
 
   it('Promise resolves false for different branch name', () => {
     const promise = gitBranchIs('invalid');
-    assert(promise instanceof global.Promise);
+    assert(promise instanceof globalThis.Promise);
     return promise.then((result) => {
       assert.strictEqual(result, false);
     });
@@ -240,7 +240,7 @@ describe('gitBranchIs', () => {
 
   it('Promise rejects on Error', () => {
     const promise = gitBranchIs(BRANCH_CURRENT, 'opts');
-    assert(promise instanceof global.Promise);
+    assert(promise instanceof globalThis.Promise);
     return promise.then(
       (result) => { throw new Error('expecting Error'); },
       (err) => {
@@ -252,10 +252,10 @@ describe('gitBranchIs', () => {
 
   it('Promise flattens for function returning Promise', () => {
     function checkBranchName(branchName) {
-      return global.Promise.resolve(branchName === BRANCH_CURRENT);
+      return globalThis.Promise.resolve(branchName === BRANCH_CURRENT);
     }
     const promise = gitBranchIs(checkBranchName);
-    assert(promise instanceof global.Promise);
+    assert(promise instanceof globalThis.Promise);
     return promise.then((result) => {
       assert.strictEqual(result, true);
     });
@@ -264,10 +264,10 @@ describe('gitBranchIs', () => {
   it('Promise rejects for function returning Promise', () => {
     // Note: reject with non-Error to ensure no special handling
     function checkBranchName(branchName) {
-      return global.Promise.reject(branchName === BRANCH_CURRENT);
+      return globalThis.Promise.reject(branchName === BRANCH_CURRENT);
     }
     const promise = gitBranchIs(checkBranchName);
-    assert(promise instanceof global.Promise);
+    assert(promise instanceof globalThis.Promise);
     return promise.then(
       (result) => { throw new Error('expecting rejection'); },
       (err) => {
@@ -280,7 +280,7 @@ describe('gitBranchIs', () => {
     const errTest = new Error('test');
     function checkBranchName(branchName) { throw errTest; }
     const promise = gitBranchIs(checkBranchName);
-    assert(promise instanceof global.Promise);
+    assert(promise instanceof globalThis.Promise);
     return promise.then(
       (result) => { throw new Error('expecting rejection'); },
       (err) => { assert.strictEqual(err, errTest); },
@@ -290,7 +290,7 @@ describe('gitBranchIs', () => {
   describe('.getBranch()', () => {
     it('resolves to the branch name', () => {
       const promise = gitBranchIs.getBranch();
-      assert(promise instanceof global.Promise);
+      assert(promise instanceof globalThis.Promise);
       return promise.then((result) => {
         assert.strictEqual(result, BRANCH_CURRENT);
       });
@@ -298,7 +298,7 @@ describe('gitBranchIs', () => {
 
     it('rejects on Error', () => {
       const promise = gitBranchIs.getBranch(BRANCH_CURRENT);
-      assert(promise instanceof global.Promise);
+      assert(promise instanceof globalThis.Promise);
       return promise.then(
         (result) => { throw new Error('expecting Error'); },
         (err) => {

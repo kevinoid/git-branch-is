@@ -426,7 +426,7 @@ describe('git-branch-is', function() {
 
   it('returns a Promise with the result', () => {
     const promise = gitBranchIsCmd([...ARGS, BRANCH_CURRENT]);
-    assert(promise instanceof global.Promise);
+    assert(promise instanceof globalThis.Promise);
     return promise.then((result) => {
       assert.strictEqual(result.stderr, undefined);
       assert.strictEqual(result.stdout, null);
@@ -438,7 +438,7 @@ describe('git-branch-is', function() {
     const promise = gitBranchIsCmd(
       [...ARGS, '-C', OTHER_BRANCH, BRANCH_CURRENT],
     );
-    assert(promise instanceof global.Promise);
+    assert(promise instanceof globalThis.Promise);
     return promise.then(
       (result) => { throw new Error('expecting Error'); },
       (err) => { assert(err instanceof Error); },
@@ -449,19 +449,19 @@ describe('git-branch-is', function() {
     let hadPromise, oldPromise;
 
     before('remove global Promise', () => {
-      hadPromise = hasOwnProperty.call(global, 'Promise');
-      oldPromise = global.Promise;
+      hadPromise = Object.hasOwn(globalThis, 'Promise');
+      oldPromise = globalThis.Promise;
       // Note:  Deleting triggers Mocha's global leak detection.
       // Also wouldn't work if global scope had a prototype chain.
-      global.Promise = undefined;
+      globalThis.Promise = undefined;
     });
 
     after('restore global Promise', () => {
       if (oldPromise) {
         if (hadPromise) {
-          global.Promise = oldPromise;
+          globalThis.Promise = oldPromise;
         } else {
-          delete global.Promise;
+          delete globalThis.Promise;
         }
       }
     });
