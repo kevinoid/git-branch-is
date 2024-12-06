@@ -15,7 +15,7 @@
   "author": "Kevin Locke <kevin@kevinlocke.name>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kevinoid/git-branch-is.git"
+    "url": "git+https://github.com/kevinoid/git-branch-is.git"
   },
   "type": "commonjs",
   "files": [
