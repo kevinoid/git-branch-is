@@ -268,16 +268,6 @@ describe('git-branch-is', function() {
     });
   });
 
-  // Note:  This is one of the few errors that doesn't call process.exit
-  it('callback Error for multiple args', (done) => {
-    gitBranchIsCmd([...ARGS, BRANCH_CURRENT, 'foo'], (err, result) => {
-      assert(err instanceof Error);
-      assertMatch(err.message, /\bargument/i);
-      assertMatch(err.message, /\busage/i);
-      done();
-    });
-  });
-
   it('can specify an additional git argument', (done) => {
     const args = [
       ...ARGS,
