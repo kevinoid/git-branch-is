@@ -21,6 +21,8 @@ on:   # yamllint disable-line rule:truthy
   - cron: '40 8 * * *'
   workflow_dispatch: {}
 
+permissions: {}
+
 jobs:
   test-primary:
     name: Lint and Test on Node.js * x64 on ubuntu-latest
