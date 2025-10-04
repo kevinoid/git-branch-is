@@ -1,0 +1,30 @@
+name: GitHub Actions Security Analysis with zizmor
+
+# Note: on key treated as boolean key by YAML
+# https://github.com/adrienverge/yamllint/issues/158#issuecomment-454313233
+# However, GitHub Actions documentation is consistent in using it unquoted.
+on:   # yamllint disable-line rule:truthy
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['**']
+  schedule:
+  # Run once a month (at 8:40 AM UTC) to check for exogenous breakage.
+  - cron: '40 8 2 * *'
+  workflow_dispatch: {}
+
+permissions: {}
+
+jobs:
+  zizmor:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
+      with:
+        persist-credentials: false
+
+    - name: Run zizmor
+      uses: zizmorcore/zizmor-action@e673c3917a1aef3c65c972347ed84ccd013ecda4  # v0.2.0
