@@ -17,10 +17,14 @@ updates:
   directory: "/"
   schedule:
     interval: "daily"
+  cooldown:
+    default-days: 4
 - package-ecosystem: "npm"
   directory: "/"
   schedule:
     interval: "daily"
+  cooldown:
+    default-days: 4
   ignore:
   # eslint packages must be updated together due to peerDependencies.
   # Ignore all but @kevinoid/eslint-config, which declares peerDependencies.
