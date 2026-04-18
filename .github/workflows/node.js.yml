@@ -61,12 +61,11 @@ jobs:
       uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354  # v6.0.1
     - name: Upload coverage to Coveralls
       uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e  # v2.3.7
-      # Ignore intermittent server errors (which are out of our control).
-      # https://github.com/coverallsapp/github-action/issues/9
-      # https://github.com/coverallsapp/github-action/issues/79
-      # https://github.com/coverallsapp/github-action/issues/93
-      continue-on-error: true
       with:
+        # Ignore intermittent server errors which are out of our control.
+        # FIXME: Would like to ignore intermittent server errors only.  See:
+        # https://github.com/coverallsapp/github-action/issues/261
+        fail-on-error: false
         flag-name: 'ubuntu-latest_x64_*'
         github-token: ${{ secrets.GITHUB_TOKEN }}
         parallel: true
@@ -118,6 +117,10 @@ jobs:
     - name: Upload coverage to Coveralls
       uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e  # v2.3.7
       with:
+        # Ignore intermittent server errors which are out of our control.
+        # FIXME: Would like to ignore intermittent server errors only.  See:
+        # https://github.com/coverallsapp/github-action/issues/261
+        fail-on-error: false
         flag-name: ${{ matrix.os }}_${{ matrix.arch }}_${{ matrix.node }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
         parallel: true
@@ -129,5 +132,9 @@ jobs:
     - name: Coveralls Finished
       uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e  # v2.3.7
       with:
+        # Ignore intermittent server errors which are out of our control.
+        # FIXME: Would like to ignore intermittent server errors only.  See:
+        # https://github.com/coverallsapp/github-action/issues/261
+        fail-on-error: false
         github-token: ${{ secrets.github_token }}
         parallel-finished: true
