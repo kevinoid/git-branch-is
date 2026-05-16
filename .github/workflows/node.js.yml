@@ -51,6 +51,14 @@ jobs:
         check-latest: true
     - name: Display Node.js version
       run: node --version
+    # Workaround for https://github.com/bcoe/c8/issues/582
+    # Only apply to Node 26, since require() of ESM not supported on Node <20.19
+    # TODO [c8@>=12]: Remove this workaround.
+    - name: Override yargs for c8 on Node 26
+      shell: bash
+      run: >-
+        jq '.overrides.c8.yargs |= "^18.0.0"' package.json >package.json.new &&
+        mv -f package.json.new package.json
     - name: Install dependencies
       run: npm install --strict-peer-deps
     - name: Lint
@@ -108,6 +116,15 @@ jobs:
         check-latest: ${{ matrix.node == '*' }}
     - name: Display Node.js version
       run: node --version
+    # Workaround for https://github.com/bcoe/c8/issues/582
+    # Only apply to Node 26, since require() of ESM not supported on Node <20.19
+    # TODO [c8@>=12]: Remove this workaround.
+    - name: Override yargs for c8 on Node 26
+      if: matrix.node == 'latest'
+      shell: bash
+      run: >-
+        jq '.overrides.c8.yargs |= "^18.0.0"' package.json >package.json.new &&
+        mv -f package.json.new package.json
     - name: Install dependencies
       run: npm install --strict-peer-deps
     - name: Run tests
