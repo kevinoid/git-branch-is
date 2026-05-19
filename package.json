@@ -88,8 +88,7 @@
       "eslint-plugin-n",
       "eslint-plugin-promise",
       "eslint-plugin-regexp",
-      "eslint-plugin-unicorn",
-      "rimraf"
+      "eslint-plugin-unicorn"
     ]
   },
   "mocha": {
