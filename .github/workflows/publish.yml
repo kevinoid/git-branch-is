@@ -1,0 +1,30 @@
+# GitHub Actions publish workflow configuration
+# https://docs.github.com/actions/reference/workflow-syntax-for-github-actions
+# https://docs.github.com/actions/guides/building-and-testing-nodejs
+# https://docs.npmjs.com/trusted-publishers
+
+name: Publish
+
+# Note: on key treated as boolean key by YAML
+# https://github.com/adrienverge/yamllint/issues/158#issuecomment-454313233
+# However, GitHub Actions documentation is consistent in using it unquoted.
+on:   # yamllint disable-line rule:truthy
+  release:
+    types:
+    - published
+
+permissions: {}
+
+jobs:
+  publish_to_npm:
+    name: Publish release to npm
+    runs-on: ubuntu-latest
+    environment: npmjs
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+      with:
+        persist-credentials: false
+    - run: npm publish
