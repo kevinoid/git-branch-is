@@ -1,7 +1,7 @@
 /**
  * Set up and tear down git repositories for testing.
  *
- * @copyright Copyright 2016-2020 Kevin Locke <kevin@kevinlocke.name>
+ * @copyright Copyright 2016-2026 Kevin Locke <kevin@kevinlocke.name>
  * @license MIT
  */
 
