@@ -173,8 +173,7 @@ if (require.main === module) {
     if (errOrResult.stderr) { process.stderr.write(errOrResult.stderr); }
     if (err) { process.stderr.write(`${err.name}: ${err.message}\n`); }
 
-    const code = typeof errOrResult.code === 'number' ? errOrResult.code
+    process.exitCode = typeof errOrResult.code === 'number' ? errOrResult.code
       : err ? 1 : 0;
-    process.exit(code);
   });
 }
