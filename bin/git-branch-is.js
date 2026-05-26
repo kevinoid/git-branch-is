@@ -137,7 +137,7 @@ function gitBranchIsCmd(args, callback) {
     } else {
       isMatch = currentBranch === expectedBranch
         || (cmdOpts.ignoreCase
-            && currentBranch.toUpperCase() === expectedBranch.toUpperCase());
+          && currentBranch.toUpperCase() === expectedBranch.toUpperCase());
       if (cmdOpts.invertMatch) {
         isMatch = !isMatch;
       }
@@ -166,7 +166,7 @@ module.exports = gitBranchIsCmd;
 
 if (require.main === module) {
   // This file was invoked directly.
-  /* eslint-disable no-process-exit */
+
   gitBranchIsCmd(process.argv, (err, result) => {
     const errOrResult = err || result;
     if (errOrResult.stdout) { process.stdout.write(errOrResult.stdout); }

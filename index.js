@@ -80,7 +80,7 @@ function gitBranchIs(branchNameOrTest, options, callback) {
     try {
       result = currentBranch === branchNameOrTest
         || (typeof branchNameOrTest === 'function'
-         && branchNameOrTest(currentBranch));
+          && branchNameOrTest(currentBranch));
     } catch (errTest) {
       callback(errTest);
       return;

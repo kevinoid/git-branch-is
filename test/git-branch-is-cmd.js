@@ -460,7 +460,7 @@ describe('git-branch-is', function() {
       assert.throws(
         () => gitBranchIsCmd([...ARGS, BRANCH_CURRENT]),
         (err) => err instanceof TypeError
-                && /\bcallback\b/.test(err.message),
+          && /\bcallback\b/.test(err.message),
       );
     });
   });
