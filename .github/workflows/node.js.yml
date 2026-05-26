@@ -51,6 +51,10 @@ jobs:
         check-latest: true
     - name: Display Node.js version
       run: node --version
+    - name: Harden npm
+      run: >-
+        npm config set allow-git=none &&
+        npm config set ignore-scripts=true
     # Workaround for https://github.com/bcoe/c8/issues/582
     # Only apply to Node 26, since require() of ESM not supported on Node <20.19
     # TODO [c8@>=12]: Remove this workaround.
@@ -116,6 +120,10 @@ jobs:
         check-latest: ${{ matrix.node == '*' }}
     - name: Display Node.js version
       run: node --version
+    - name: Harden npm
+      run: >-
+        npm config set allow-git=none &&
+        npm config set ignore-scripts=true
     # Workaround for https://github.com/bcoe/c8/issues/582
     # Only apply to Node 26, since require() of ESM not supported on Node <20.19
     # TODO [c8@>=12]: Remove this workaround.
