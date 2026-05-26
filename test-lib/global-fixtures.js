@@ -1,5 +1,5 @@
 /**
- * Set up git repositories for testing.
+ * Set up and tear down git repositories for testing.
  *
  * @copyright Copyright 2016-2020 Kevin Locke <kevin@kevinlocke.name>
  * @license MIT
@@ -10,14 +10,15 @@
 const { mkdir, rm } = require('node:fs/promises');
 const path = require('node:path');
 
-const constants = require('../test-lib/constants.js');
-const git = require('../test-lib/git.js');
+const constants = require('./constants.js');
+const git = require('./git.js');
 
 // Local copy of shared constants
 const {
   BRANCH_CURRENT,
   BRANCH_SAME_COMMIT,
   SUBDIR_NAME,
+  TEST_REPO_PATH,
   TEST_REPO_BRANCH_PATH,
   TEST_REPO_DETACHED_PATH,
 } = constants;
@@ -65,33 +66,13 @@ function setUpDetachedRepo(repoPath) {
     .then(() => mkdir(path.join(repoPath, SUBDIR_NAME)));
 }
 
-module.exports =
-function setUpTestRepos(args, options, callback) {
-  if (args.length > 2) {
-    options.stderr.write('Error: No arguments expected.\n');
-    callback(1);
-    return;
-  }
-
-  // eslint-disable-next-line promise/catch-or-return
-  Promise.all([
+exports.mochaGlobalSetup = async function mochaGlobalSetup() {
+  return Promise.all([
     setUpBranchRepo(TEST_REPO_BRANCH_PATH),
     setUpDetachedRepo(TEST_REPO_DETACHED_PATH),
-  ])
-    /* eslint-disable promise/no-callback-in-promise */
-    .then(
-      () => callback(0),
-      (err) => {
-        options.stderr.write(`Unhandled Exception: ${err.stack}\n`);
-        callback(1);
-      },
-    );
+  ]);
 };
 
-if (require.main === module) {
-  // This file was invoked directly.
-  // Note:  Could pass process.exit as callback to force immediate exit.
-  module.exports(process.argv, process, (exitCode) => {
-    process.exitCode = exitCode;
-  });
-}
+exports.mochaGlobalTeardown = async function mochaGlobalTeardown() {
+  return rm(TEST_REPO_PATH, { force: true, recursive: true });
+};
