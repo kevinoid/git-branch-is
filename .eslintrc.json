@@ -1,36 +1,5 @@
-// ESLint configuration <https://eslint.org/docs/user-guide/configuring>
+// Deprecated ESLint configuration file eslint-plugin-import workaround
+// https://github.com/import-js/eslint-plugin-import/issues/3079
 {
-  "extends": "@kevinoid/eslint-config/node.js",
-
-  "rules": {
-    // Allow requiring devDependencies for build and test
-    "import/no-extraneous-dependencies": ["error", {
-      "devDependencies": [
-        "gulpfile.js",
-        "test-bin/**",
-        "test-lib/**",
-        "test/**"
-      ]
-    }],
-
-    // Allow CommonJS modules
-    "unicorn/prefer-module": "off",
-
-    // Don't prefer top-level await
-    // Since top-level await is only supported in ECMAScript Modules (ESM)
-    "unicorn/prefer-top-level-await": "off"
-  },
-
-  "overrides": [
-    {
-      "files": [
-        "bin/*.js",
-        "test-bin/*"
-      ],
-      "rules": {
-        // Executable scripts should have a shebang
-        "n/hashbang": "off"
-      }
-    }
-  ]
+  "root": true
 }
