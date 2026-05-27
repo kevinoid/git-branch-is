@@ -25,7 +25,6 @@ module.exports = [
               (conf) => conf.rules?.['import/no-extraneous-dependencies'],
             )
             .rules['import/no-extraneous-dependencies'][1].devDependencies,
-          'gulpfile.js',
           'test-bin/**',
           'test-lib/**',
           'test/**',
