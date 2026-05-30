@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Global</title>
+    <title>JSDoc: Module: git-branch-is</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">Module: git-branch-is</h1>
 
     
 
@@ -28,7 +28,6 @@
 
 <header>
     
-        <h2></h2>
         
     
 </header>
@@ -37,45 +36,6 @@
     <div class="container-overview">
     
         
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
 
         
     
@@ -104,7 +64,7 @@
     
 
     
-    <h4 class="name" id="gitBranchIsCmd"><span class="type-signature"></span>gitBranchIsCmd<span class="signature">(args<span class="signature-attributes">non-null</span>, callback<span class="signature-attributes">opt, nullable</span>)</span><span class="type-signature"> &rarr; {Promise|undefined}</span></h4>
+    <h4 class="name" id="~gitBranchIs"><span class="type-signature">(inner) </span>gitBranchIs<span class="signature">(branchNameOrTest, options<span class="signature-attributes">opt, nullable</span>, callback<span class="signature-attributes">opt, nullable</span>)</span><span class="type-signature"> &rarr; {Promise|undefined}</span></h4>
     
 
     
@@ -112,7 +72,7 @@
 
 
 <div class="description">
-    Entry point for this command.
+    Checks that the current branch of a git repository has a given name.
 </div>
 
 
@@ -150,13 +110,16 @@
 
         <tr>
             
-                <td class="name"><code>args</code></td>
+                <td class="name"><code>branchNameOrTest</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">string</span>
+|
+
+<span class="param-type">function</span>
 
 
             
@@ -174,7 +137,43 @@
 
             
 
-            <td class="description last">Command-line arguments.</td>
+            <td class="description last">Expected name of
+current branch or a test function to apply to the branch name.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">GitBranchIsOptions</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Options.</td>
         </tr>
 
     
@@ -209,9 +208,10 @@
 
             
 
-            <td class="description last">Callback for the
-command result or error.  Required if <code>global.Promise</code> is not
-defined.</td>
+            <td class="description last">Callback function called
+with the return value of <code>branchNameOrTest</code> if it is a function,
+or the result of identity checking <code>branchNameOrTest</code> to the
+current branch name.</td>
         </tr>
 
     
@@ -252,7 +252,7 @@ defined.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bin_git-branch-is.js.html">bin/git-branch-is.js</a>, <a href="bin_git-branch-is.js.html#line44">line 44</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line48">line 48</a>
     </li></ul></dd>
     
 
@@ -281,9 +281,10 @@ defined.</td>
 
         
 <div class="param-desc">
-    If <code>callback</code> is not given and
-<code>global.Promise</code> is defined, a <code>Promise</code> which will
-resolve on completion.
+    If <code>callback</code> is not given, a
+<code>Promise</code> with the return value of <code>branchNameOrTest</code>
+if it is a function, or the result of identity checking
+<code>branchNameOrTest</code> to the current branch name.
 </div>
 
 
@@ -317,13 +318,13 @@ resolve on completion.
 
         
                 
-<h4 class="name" id="CommandResult">CommandResult</h4>
+<h4 class="name" id="~GitBranchIsOptions">GitBranchIsOptions</h4>
 
 
 
 
 <div class="description">
-    Result from command entry points.
+    Options for gitBranchIs.
 </div>
 
 
@@ -370,40 +371,7 @@ resolve on completion.
 
         <tr>
             
-                <td class="name"><code>code</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                    &lt;nullable><br>
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Exit code for the command.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>stdout</code></td>
+                <td class="name"><code>cwd</code></td>
             
 
             <td class="type">
@@ -429,14 +397,46 @@ resolve on completion.
 
             
 
-            <td class="description last">Content to write to stdout.</td>
+            <td class="description last">Current working directory where the branch name is
+tested.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>stderr</code></td>
+                <td class="name"><code>gitArgs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Extra arguments to pass to git.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>gitDir</code></td>
             
 
             <td class="type">
@@ -462,7 +462,40 @@ resolve on completion.
 
             
 
-            <td class="description last">Content to write to stderr.</td>
+            <td class="description last">Path to the repository (i.e.
+<code>--git-dir=</code> option to <code>git</code>).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>gitPath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Git binary name or path to use (default:
+<code>'git'</code>).</td>
         </tr>
 
     
@@ -501,7 +534,7 @@ resolve on completion.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bin_git-branch-is.js.html">bin/git-branch-is.js</a>, <a href="bin_git-branch-is.js.html#line21">line 21</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
