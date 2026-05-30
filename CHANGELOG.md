@@ -1,3 +1,19 @@
+# [5.0.0](https://github.com/kevinoid/git-branch-is/compare/v4.0.0...v5.0.0) (2026-05-30)
+
+### BREAKING CHANGES
+
+* **deps:** Require Node.js `^20.19 || >=22.12`.
+* package.json: Declare exports ([90f33af](https://github.com/kevinoid/git-branch-is/commit/90f33afbd3e58c65ea2f818a8d91817548f529c0))
+
+### Features
+
+* implement trusted publishing from GitHub ([61d6c06](https://github.com/kevinoid/git-branch-is/commit/61d6c06e3203aa93ebee8d42f6356eb3a7e0da4b))
+* **deps:** bump commander from 6.0.0 to 15.0.0 ([5ce903a](https://github.com/kevinoid/git-branch-is/commit/5ce903a0776b662574b867ac479b557bd7757be8))
+* use process.exitCode instead of process.exit ([8b5f53d](https://github.com/kevinoid/git-branch-is/commit/8b5f53d24de393de066ae3e9ebfddb24fc05505a))
+* **package:** use git+https for repository.url ([6a59dc7](https://github.com/kevinoid/git-branch-is/commit/6a59dc7122fb87a67f24634efe8eb3c45d914946))
+* switch from nyc to c8 for native V8 coverage ([d72a313](https://github.com/kevinoid/git-branch-is/commit/d72a3136254166eda40fb56c550283758c25ac1f))
+
+
 # [4.0.0](https://github.com/kevinoid/git-branch-is/compare/v3.1.0...v4.0.0) (2020-07-31)
 
 ### BREAKING CHANGES
