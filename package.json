@@ -37,7 +37,7 @@
   "scripts": {
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -u",
     "clean": "rimraf coverage && rimraf doc",
-    "check-deps": "npm exec npm-deprecated-check -- current --verbose --failfast",
+    "check-deps": "npm exec npm-deprecated-check -- current --verbose --failfast --ignore commander",
     "doc": "npm run doc-js && npm run doc-spec",
     "doc-js": "rimraf doc/api && jsdoc -c jsdoc.conf.json .",
     "doc-spec": "rimraf doc/spec && mkdir doc/spec && mocha --reporter doc --recursive test | nodecat doc-src/spec/header.xhtml - doc-src/spec/footer.xhtml > doc/spec/index.xhtml",
