@@ -65,6 +65,8 @@ jobs:
         mv -f package.json.new package.json
     - name: Install dependencies
       run: npm install --strict-peer-deps
+    - name: Check for deprecated dependencies
+      run: npm run check-deps
     - name: Lint
       run: npm run lint
     - name: Run tests
