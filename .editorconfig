@@ -11,3 +11,8 @@ trim_trailing_whitespace = true
 [*.{cjs,coffee,js,json,mjs,yml}]
 indent_size = 2
 indent_style = space
+
+[*.diff]
+# Do not trim trailing whitespace from diffs (e.g. git patch edits)
+# It can break the format or cause the diff to fail to apply.
+trim_trailing_whitespace = false
