@@ -74,7 +74,7 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f  # v7.0.0
     - name: Upload coverage to Coveralls
-      uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e  # v2.3.7
+      uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329  # v2.3.8
       with:
         # Ignore intermittent server errors which are out of our control.
         # FIXME: Would like to ignore intermittent server errors only.  See:
@@ -146,7 +146,7 @@ jobs:
     # Note: Not uploading to Codecov, due to poor support for matrix builds
     # https://github.com/codecov/codecov-action/issues/40
     - name: Upload coverage to Coveralls
-      uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e  # v2.3.7
+      uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329  # v2.3.8
       with:
         # Ignore intermittent server errors which are out of our control.
         # FIXME: Would like to ignore intermittent server errors only.  See:
@@ -161,7 +161,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Coveralls Finished
-      uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e  # v2.3.7
+      uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329  # v2.3.8
       with:
         # Ignore intermittent server errors which are out of our control.
         # FIXME: Would like to ignore intermittent server errors only.  See:
