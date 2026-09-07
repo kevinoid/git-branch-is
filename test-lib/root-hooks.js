@@ -12,6 +12,7 @@ let origCWD;
 
 exports.mochaHooks = {
   beforeAll() {
+    // eslint-disable-next-line unicorn/no-top-level-assignment-in-function
     origCWD = process.cwd();
     process.chdir(TEST_REPO_BRANCH_PATH);
   },
