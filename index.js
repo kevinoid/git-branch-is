@@ -149,7 +149,7 @@ gitBranchIs.getBranch = function getBranch(options, callback) {
       { cwd: combinedOpts.cwd },
       (errExec, stdout, stderr) => {
         if (errExec) {
-          if (errExec.code === 1 && !stdout && !stderr) {
+          if (!stdout && !stderr && errExec.code === 1) {
             // Not on a branch
             callback(null, ''); // eslint-disable-line unicorn/no-null
           } else {
