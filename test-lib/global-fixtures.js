@@ -23,47 +23,47 @@ const {
   TEST_REPO_DETACHED_PATH,
 } = constants;
 
-function initRepo(repoPath) {
-  return rm(repoPath, { force: true, recursive: true })
-    .then(() => git('init', '-q', repoPath))
-    // The user name and email must be configured for the later git commands
-    // to work.  On Travis CI (and probably others) there is no global config
-    .then(() => git(
-      '-C',
-      repoPath,
-      'config',
-      'user.name',
-      'Test User',
-    ))
-    .then(() => git(
-      '-C',
-      repoPath,
-      'config',
-      'user.email',
-      'test@example.com',
-    ))
-    .then(() => git(
-      '-C',
-      repoPath,
-      'commit',
-      '-q',
-      '-m',
-      'Initial Commit',
-      '--allow-empty',
-    ));
+async function initRepo(repoPath) {
+  await rm(repoPath, { force: true, recursive: true });
+  await git('init', '-q', repoPath);
+  // The user name and email must be configured for the later git commands
+  // to work.  On Travis CI (and probably others) there is no global config
+  await git(
+    '-C',
+    repoPath,
+    'config',
+    'user.name',
+    'Test User',
+  );
+  await git(
+    '-C',
+    repoPath,
+    'config',
+    'user.email',
+    'test@example.com',
+  );
+  await git(
+    '-C',
+    repoPath,
+    'commit',
+    '-q',
+    '-m',
+    'Initial Commit',
+    '--allow-empty',
+  );
 }
 
-function setUpBranchRepo(repoPath) {
-  return initRepo(repoPath)
-    .then(() => git('-C', repoPath, 'branch', '-m', BRANCH_CURRENT))
-    .then(() => git('-C', repoPath, 'branch', BRANCH_SAME_COMMIT))
-    .then(() => mkdir(path.join(repoPath, SUBDIR_NAME)));
+async function setUpBranchRepo(repoPath) {
+  await initRepo(repoPath);
+  await git('-C', repoPath, 'branch', '-m', BRANCH_CURRENT);
+  await git('-C', repoPath, 'branch', BRANCH_SAME_COMMIT);
+  await mkdir(path.join(repoPath, SUBDIR_NAME));
 }
 
-function setUpDetachedRepo(repoPath) {
-  return initRepo(repoPath)
-    .then(() => git('-C', repoPath, 'checkout', '--detach'))
-    .then(() => mkdir(path.join(repoPath, SUBDIR_NAME)));
+async function setUpDetachedRepo(repoPath) {
+  await initRepo(repoPath);
+  await git('-C', repoPath, 'checkout', '--detach');
+  await mkdir(path.join(repoPath, SUBDIR_NAME));
 }
 
 exports.mochaGlobalSetup = async function mochaGlobalSetup() {
