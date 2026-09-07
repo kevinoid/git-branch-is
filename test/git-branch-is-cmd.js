@@ -416,6 +416,7 @@ describe('git-branch-is', function() {
 
   it('returns a Promise with the result', () => {
     const promise = gitBranchIsCmd([...ARGS, BRANCH_CURRENT]);
+    // eslint-disable-next-line unicorn/no-unnecessary-global-this
     assert(promise instanceof globalThis.Promise);
     return promise.then((result) => {
       assert.strictEqual(result.stderr, undefined);
@@ -428,6 +429,7 @@ describe('git-branch-is', function() {
     const promise = gitBranchIsCmd(
       [...ARGS, '-C', OTHER_BRANCH, BRANCH_CURRENT],
     );
+    // eslint-disable-next-line unicorn/no-unnecessary-global-this
     assert(promise instanceof globalThis.Promise);
     return promise.then(
       (result) => { throw new Error('expecting Error'); },
@@ -440,6 +442,7 @@ describe('git-branch-is', function() {
 
     before('remove global Promise', () => {
       hadPromise = Object.hasOwn(globalThis, 'Promise');
+      // eslint-disable-next-line unicorn/no-unnecessary-global-this
       oldPromise = globalThis.Promise;
       // Note:  Deleting triggers Mocha's global leak detection.
       // Also wouldn't work if global scope had a prototype chain.

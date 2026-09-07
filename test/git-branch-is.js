@@ -220,6 +220,7 @@ describe('gitBranchIs', () => {
 
   it('Promise resolves true for same branch name', () => {
     const promise = gitBranchIs(BRANCH_CURRENT);
+    // eslint-disable-next-line unicorn/no-unnecessary-global-this
     assert(promise instanceof globalThis.Promise);
     return promise.then((result) => {
       assert.strictEqual(result, true);
@@ -228,6 +229,7 @@ describe('gitBranchIs', () => {
 
   it('Promise resolves false for different branch name', () => {
     const promise = gitBranchIs('invalid');
+    // eslint-disable-next-line unicorn/no-unnecessary-global-this
     assert(promise instanceof globalThis.Promise);
     return promise.then((result) => {
       assert.strictEqual(result, false);
@@ -236,6 +238,7 @@ describe('gitBranchIs', () => {
 
   it('Promise rejects on Error', () => {
     const promise = gitBranchIs(BRANCH_CURRENT, 'opts');
+    // eslint-disable-next-line unicorn/no-unnecessary-global-this
     assert(promise instanceof globalThis.Promise);
     return promise.then(
       (result) => { throw new Error('expecting Error'); },
@@ -248,9 +251,11 @@ describe('gitBranchIs', () => {
 
   it('Promise flattens for function returning Promise', () => {
     function isBranchCurrentPromise(branchName) {
+      // eslint-disable-next-line unicorn/no-unnecessary-global-this
       return globalThis.Promise.resolve(branchName === BRANCH_CURRENT);
     }
     const promise = gitBranchIs(isBranchCurrentPromise);
+    // eslint-disable-next-line unicorn/no-unnecessary-global-this
     assert(promise instanceof globalThis.Promise);
     return promise.then((result) => {
       assert.strictEqual(result, true);
@@ -260,9 +265,11 @@ describe('gitBranchIs', () => {
   it('Promise rejects for function returning Promise', () => {
     // Note: reject with non-Error to ensure no special handling
     function isBranchCurrentReject(branchName) {
+      // eslint-disable-next-line unicorn/no-unnecessary-global-this
       return globalThis.Promise.reject(branchName === BRANCH_CURRENT);
     }
     const promise = gitBranchIs(isBranchCurrentReject);
+    // eslint-disable-next-line unicorn/no-unnecessary-global-this
     assert(promise instanceof globalThis.Promise);
     return promise.then(
       (result) => { throw new Error('expecting rejection'); },
@@ -276,6 +283,7 @@ describe('gitBranchIs', () => {
     const errTest = new Error('test');
     function checkBranchName(branchName) { throw errTest; }
     const promise = gitBranchIs(checkBranchName);
+    // eslint-disable-next-line unicorn/no-unnecessary-global-this
     assert(promise instanceof globalThis.Promise);
     return promise.then(
       (result) => { throw new Error('expecting rejection'); },
@@ -286,6 +294,7 @@ describe('gitBranchIs', () => {
   describe('.getBranch()', () => {
     it('resolves to the branch name', () => {
       const promise = gitBranchIs.getBranch();
+      // eslint-disable-next-line unicorn/no-unnecessary-global-this
       assert(promise instanceof globalThis.Promise);
       return promise.then((result) => {
         assert.strictEqual(result, BRANCH_CURRENT);
@@ -294,6 +303,7 @@ describe('gitBranchIs', () => {
 
     it('rejects on Error', () => {
       const promise = gitBranchIs.getBranch(BRANCH_CURRENT);
+      // eslint-disable-next-line unicorn/no-unnecessary-global-this
       assert(promise instanceof globalThis.Promise);
       return promise.then(
         (result) => { throw new Error('expecting Error'); },
