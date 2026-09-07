@@ -414,27 +414,28 @@ describe('git-branch-is', function() {
     });
   });
 
-  it('returns a Promise with the result', () => {
+  it('returns a Promise with the result', async () => {
     const promise = gitBranchIsCmd([...ARGS, BRANCH_CURRENT]);
     // eslint-disable-next-line unicorn/no-unnecessary-global-this
     assert(promise instanceof globalThis.Promise);
-    return promise.then((result) => {
-      assert.strictEqual(result.stderr, undefined);
-      assert.strictEqual(result.stdout, null);
-      assert.strictEqual(result.code, 0);
-    });
+    const result = await promise;
+    assert.strictEqual(result.stderr, undefined);
+    assert.strictEqual(result.stdout, null);
+    assert.strictEqual(result.code, 0);
   });
 
-  it('rejects the Promise with an Error', () => {
+  it('rejects the Promise with an Error', async () => {
     const promise = gitBranchIsCmd(
       [...ARGS, '-C', OTHER_BRANCH, BRANCH_CURRENT],
     );
     // eslint-disable-next-line unicorn/no-unnecessary-global-this
     assert(promise instanceof globalThis.Promise);
-    return promise.then(
-      (result) => { throw new Error('expecting Error'); },
-      (err) => { assert(err instanceof Error); },
-    );
+    try {
+      await promise;
+      throw new Error('expecting Error');
+    } catch (err) {
+      assert(err instanceof Error);
+    }
   });
 
   describe('without global Promise', () => {
