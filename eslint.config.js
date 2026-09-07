@@ -66,6 +66,10 @@ module.exports = [
       // Allow null use in tests
       'unicorn/no-null': 'off',
 
+      // Allow `this` outside of classes
+      // For Mocha (e.g. this.timeout()) and testing `this` (e.g. in callbacks)
+      'unicorn/no-this-outside-of-class': 'off',
+
       // Allow EventEmitter use in tests
       'unicorn/prefer-event-target': 'off',
     },
