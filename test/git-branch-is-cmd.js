@@ -446,12 +446,15 @@ describe('git-branch-is', function() {
       oldPromise = globalThis.Promise;
       // Note:  Deleting triggers Mocha's global leak detection.
       // Also wouldn't work if global scope had a prototype chain.
+      // eslint-disable-next-line unicorn/no-global-object-property-assignment
       globalThis.Promise = undefined;
     });
 
     after('restore global Promise', () => {
       if (oldPromise) {
         if (hadPromise) {
+          // eslint-disable-next-line @stylistic/max-len
+          // eslint-disable-next-line unicorn/no-global-object-property-assignment
           globalThis.Promise = oldPromise;
         } else {
           delete globalThis.Promise;
