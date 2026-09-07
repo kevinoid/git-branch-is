@@ -68,10 +68,10 @@ describe('gitBranchIs', () => {
 
   it('callback true for function comparing branch name', (done) => {
     // eslint-disable-next-line unicorn/consistent-function-scoping
-    function checkBranchName(branchName) {
+    function isBranchCurrent(branchName) {
       return branchName === BRANCH_CURRENT;
     }
-    gitBranchIs(checkBranchName, (err, result) => {
+    gitBranchIs(isBranchCurrent, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result, true);
       done();
@@ -79,11 +79,7 @@ describe('gitBranchIs', () => {
   });
 
   it('callback false for function returning false', (done) => {
-    // eslint-disable-next-line unicorn/consistent-function-scoping
-    function returnsFalse(branchName) {
-      return false;
-    }
-    gitBranchIs(returnsFalse, (err, result) => {
+    gitBranchIs(() => false, (err, result) => {
       assert.ifError(err);
       assert.strictEqual(result, false);
       done();
@@ -251,10 +247,10 @@ describe('gitBranchIs', () => {
   });
 
   it('Promise flattens for function returning Promise', () => {
-    function checkBranchName(branchName) {
+    function isBranchCurrentPromise(branchName) {
       return globalThis.Promise.resolve(branchName === BRANCH_CURRENT);
     }
-    const promise = gitBranchIs(checkBranchName);
+    const promise = gitBranchIs(isBranchCurrentPromise);
     assert(promise instanceof globalThis.Promise);
     return promise.then((result) => {
       assert.strictEqual(result, true);
@@ -263,10 +259,10 @@ describe('gitBranchIs', () => {
 
   it('Promise rejects for function returning Promise', () => {
     // Note: reject with non-Error to ensure no special handling
-    function checkBranchName(branchName) {
+    function isBranchCurrentReject(branchName) {
       return globalThis.Promise.reject(branchName === BRANCH_CURRENT);
     }
-    const promise = gitBranchIs(checkBranchName);
+    const promise = gitBranchIs(isBranchCurrentReject);
     assert(promise instanceof globalThis.Promise);
     return promise.then(
       (result) => { throw new Error('expecting rejection'); },
