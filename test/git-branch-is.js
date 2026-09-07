@@ -9,7 +9,7 @@ const assert = require('node:assert');
 const path = require('node:path');
 
 // https://github.com/import-js/eslint-plugin-import/issues/2844
-// eslint-disable-next-line import/extensions
+// eslint-disable-next-line import-x/extensions
 const gitBranchIs = require('..');
 const assertMatch = require('../test-lib/assert-match.js');
 const constants = require('../test-lib/constants.js');

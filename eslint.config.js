@@ -18,13 +18,13 @@ module.exports = [
   {
     rules: {
       // Allow requiring devDependencies for build and test
-      'import/no-extraneous-dependencies': ['error', {
+      'import-x/no-extraneous-dependencies': ['error', {
         devDependencies: [
           ...nodejs
             .findLast(
-              (conf) => conf.rules?.['import/no-extraneous-dependencies'],
+              (conf) => conf.rules?.['import-x/no-extraneous-dependencies'],
             )
-            .rules['import/no-extraneous-dependencies'][1].devDependencies,
+            .rules['import-x/no-extraneous-dependencies'][1].devDependencies,
           'test-bin/**',
           'test-lib/**',
           'test/**',
