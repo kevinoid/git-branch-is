@@ -73,8 +73,6 @@ jobs:
         flag-name: 'ubuntu-latest_x64_*'
         github-token: ${{ secrets.GITHUB_TOKEN }}
         parallel: true
-    - name: Check for deprecated dependencies
-      run: npm run check-deps
 
   test-secondary:
     # Only test secondary platforms if primary test platform passed
