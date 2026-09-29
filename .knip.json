@@ -1,0 +1,15 @@
+{
+  "ignoreBinaries": [
+    // Ignore version binaries.  Install by running version-deps script.
+    "conventional-changelog",
+    "depcheck",
+    "david",
+    "hub-ci-status"
+  ],
+  "ignoreFiles": [
+    // This file is executed from tests, rather than imported
+    "test-bin/echo-surprise.js"
+  ],
+  "treatConfigHintsAsErrors": true,
+  "treatTagHintsAsErrors": true
+}

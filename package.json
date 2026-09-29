@@ -47,8 +47,8 @@
     "release": "git -C doc push && git push --follow-tags origin main gh-pages && echo \"Create a GitHub Release (from CHANGELOG.md) to run publish workflow.\"",
     "postversion": "rimraf doc && git clone -b gh-pages -l -q . doc && npm run doc && git -C doc add . && git -C doc commit -n -m \"Docs for v$npm_package_version\"",
     "preversion": "npm run test-cov && c8 check-coverage --statements 95 && depcheck --ignore-dirs doc --ignores=\"eslint-*,rimraf\" && david && node ./bin/git-branch-is.js main && hub-ci-status -vv --wait",
-    "test": "npm run lint && npm run test-unit",
-    "test-cov": "npm run lint && npm run test-unit-cov",
+    "test": "npm run lint && npm run test-unit && knip",
+    "test-cov": "npm run lint && npm run test-unit-cov && knip",
     "test-unit": "node --disable-proto=throw --throw-deprecation --unhandled-rejections=strict node_modules/mocha/bin/mocha.js --require ./test-lib/global-fixtures.js --require ./test-lib/root-hooks.js --parallel --recursive test",
     "test-unit-cov": "c8 --reporter=lcov --reporter=text npm run test-unit",
     "version": "npm run changelog && echo && echo === Please edit CHANGELOG.md as desired, then exit === && echo && \"${npm_config_shell:-${SHELL:-bash}}\" && git commit -m \"Update CHANGELOG.md for $npm_package_version\" CHANGELOG.md",
@@ -64,6 +64,7 @@
     "eslint": "^10.8.1",
     "globals": "^17.0.0",
     "jsdoc": "^4.0.0",
+    "knip": "^6.0.0",
     "mocha": "^12.0.0",
     "nodecat": "^3.0.0",
     "rimraf": "^6.0.0"
