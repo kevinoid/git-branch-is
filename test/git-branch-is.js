@@ -12,8 +12,6 @@ const path = require('node:path');
 // eslint-disable-next-line import-x/extensions
 const gitBranchIs = require('..');
 const assertMatch = require('../test-lib/assert-match.js');
-const constants = require('../test-lib/constants.js');
-
 // Local copy of shared constants
 const {
   BRANCH_CURRENT,
@@ -23,7 +21,7 @@ const {
   SURPRISE_BIN,
   TEST_REPO_BRANCH_PATH,
   TEST_REPO_DETACHED_PATH,
-} = constants;
+} = require('../test-lib/constants.js');
 
 describe('gitBranchIs', () => {
   it('callback true for current branch name', (done) => {
